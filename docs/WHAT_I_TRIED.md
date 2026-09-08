@@ -317,3 +317,43 @@ ties at large ones — and it gives the "how far off" number for free.
 Three dead ends, two real wins. That's a normal hit rate. The dead ends are
 worth writing up — the rubric explicitly rewards "clear insight from why a bold
 approach didn't work".
+
+---
+
+## Round 4: new features — change-point and spatial context
+
+Added two feature groups to the 60:
+
+* **change-point** (+24): for each colour, the size, direction and *timing* of its
+  single biggest year-to-year jump, plus the overall trend slope. The base set
+  had "average change" and "wobble of change" but never *when* the change hit.
+* **spatial** (+24): each patch's features re-averaged over its 8 nearest
+  neighbours on the map. Age groups cluster by neighbourhood, so "what's around
+  me" is a signal. Uses neighbours' features only, never their answers.
+
+Quick-run table (5x2 CV, rougher than final):
+
+| feature set | Madrid own score | zero-shot raw | zero-shot CORAL | few-shot @25 | @200 |
+|---|---:|---:|---:|---:|---:|
+| base (60) | 0.623 | 0.431 | 0.542 | 0.546 | 0.673 |
+| + change-point (84) | 0.627 | **0.480** | 0.556 | 0.507 | 0.672 |
+| + spatial (84) | **0.661** | **0.330** | 0.562 | 0.526 | **0.684** |
+| + both (108) | 0.660 | 0.358 | **0.574** | 0.498 | 0.683 |
+
+What this says:
+
+* **Spatial context is the strongest lever for in-city accuracy** (+3.8 on
+  Madrid's own score) — but it *collapses* raw zero-shot (0.43 → 0.33). Madrid's
+  neighbourhood layout is nothing like Amsterdam's, so a model leaning on "what's
+  around me" is leaning on the wrong thing in a new city.
+* **CORAL rescues that collapse** — with CORAL, +both gives the best zero-shot
+  number yet (0.574). The more city-specific your features, the more you need the
+  alignment step.
+* **Change-point helps raw zero-shot** (+5) because *when* construction happened
+  is city-independent physics, not a Madrid quirk.
+* **Few-shot barely benefits from any of it** (0.673 → 0.684 at best) and the
+  small-budget number gets *worse* (0.546 → 0.498 at 25) — more features need
+  more support points before whitening is stable.
+
+The real lesson: **there is no single best feature set — it depends on which
+scenario you are scoring.** See `LESSONS.md`.

@@ -231,12 +231,70 @@ class CityData:
         return len(self.X)
 
 
-def build_features(panel: Panel, late_from: int = LATE_FROM) -> CityData:
-    """Collapse each pixel's time series into the 60-feature vector.
+def _changepoint_block(cube, years, add) -> None:
+    """Per-band features about *when* and *how sharply* the series changed.
 
-    Groups: overall mean/std per band (12) and per index (10), early- and
-    late-period mean/std per band (24), year-on-year change mean/std per band
+    The base feature set has "average change" and "wobble of change" but not the
+    timing of the change. For a class-3 pixel the big jump sits early in the
+    record, for class-4 late, for classes 1-2 there is no real jump. Timing +
+    magnitude together map onto the four classes better than magnitude alone.
+    """
+    t = (years - years.mean()) / years.std()          # centred time axis
+    denom = float((t * t).sum())
+    n_steps = cube[BANDS[0]].shape[1] - 1
+
+    for band in BANDS:
+        series = cube[band]
+        # least-squares slope of the whole series (systematic brighten/darken)
+        add(f'{band}_slope', (series * t).sum(axis=1) / denom)
+
+        diff = np.diff(series, axis=1)
+        absd = np.abs(diff)
+        j = absd.argmax(axis=1)
+        rows = np.arange(len(series))
+        add(f'{band}_maxjump', absd[rows, j])                     # size of biggest jump
+        add(f'{band}_maxjump_signed', diff[rows, j])              # its direction
+        add(f'{band}_maxjump_when', j.astype(np.float32) / n_steps)  # 0=start .. 1=end
+
+
+def _spatial_block(X: np.ndarray, names: list[str], coords: np.ndarray,
+                   k: int = 8) -> tuple[np.ndarray, list[str]]:
+    """Neighbourhood-averaged copies of the most age-indicative features.
+
+    Age classes cluster geographically - whole blocks share a construction era -
+    so averaging a pixel's k nearest neighbours (in grid coordinates) adds
+    context. Uses neighbours' *features* only, never their labels, and features
+    exist for every pixel, so this is leakage-free.
+    """
+    from scipy.spatial import cKDTree
+
+    want = [n for n in names
+            if n.endswith('_mean') and any(n.startswith(b) for b in BANDS)]
+    want += [f'd_{b}_std' for b in BANDS]
+    cols = [names.index(n) for n in want]
+
+    tree = cKDTree(coords)
+    _, nn = tree.query(coords, k=k + 1)          # first neighbour is self
+    nn = nn[:, 1:]
+    nbr_mean = X[:, cols][nn].mean(axis=1)       # (n_pixels, len(cols))
+    return nbr_mean.astype(np.float32), [f'nbr_{n}' for n in want]
+
+
+def build_features(
+    panel: Panel,
+    late_from: int = LATE_FROM,
+    changepoint: bool = False,
+    spatial: bool = False,
+) -> CityData:
+    """Collapse each pixel's time series into a feature vector.
+
+    Base groups (60): overall mean/std per band (12) and per index (10), early-
+    and late-period mean/std per band (24), year-on-year change mean/std per band
     (12), and two period-coverage indicators.
+
+    ``changepoint`` adds slope, biggest-jump size, biggest-jump direction and
+    biggest-jump timing per band (+24). ``spatial`` adds neighbourhood-averaged
+    band means and change-wobble (+18).
 
     The early/late split matters because 1984-2003 shows the *previous* land use
     at a location while 2004+ shows the current building. For classes 1 and 2
@@ -271,11 +329,26 @@ def build_features(panel: Panel, late_from: int = LATE_FROM) -> CityData:
     add('has_early_data', panel.observed[:, early].any(axis=1))
     add('has_late_data', panel.observed[:, late].any(axis=1))
 
-    return CityData(np.column_stack(columns), panel.labels, names,
-                    panel.pixels, panel.city)
+    if changepoint:
+        _changepoint_block(cube, years, add)
+
+    X = np.column_stack(columns)
+
+    if spatial:
+        coords = panel.pixels[PID].to_numpy(dtype=np.float64)
+        sp_X, sp_names = _spatial_block(X, names, coords)
+        X = np.column_stack([X, sp_X])
+        names = names + sp_names
+
+    return CityData(X, panel.labels, names, panel.pixels, panel.city)
 
 
-def build_city(path: str, late_from: int = LATE_FROM) -> CityData:
+def build_city(
+    path: str,
+    late_from: int = LATE_FROM,
+    changepoint: bool = False,
+    spatial: bool = False,
+) -> CityData:
     """Run the whole pipeline for one city: parquet path in, features out."""
     df = assign_age_class(load_city(path))
     city = df['city'].iloc[0]
@@ -284,4 +357,5 @@ def build_city(path: str, late_from: int = LATE_FROM) -> CityData:
 
     panel = add_spectral_indices(to_panel(flat, city))
     del flat
-    return build_features(panel, late_from=late_from)
+    return build_features(panel, late_from=late_from,
+                          changepoint=changepoint, spatial=spatial)
