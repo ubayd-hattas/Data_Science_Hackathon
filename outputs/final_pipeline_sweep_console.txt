@@ -1,0 +1,19 @@
+=== Stage 1: spatial-block CV (leakage-safe internal estimate) ===
+Spatial CV macro-F1: 0.5884 +/- 0.0158  (376.5s)
+
+=== Stage 1: train final model on all Madrid ===
+  done in 94.7s
+  saved Stage 1 model to C:\Users\0geda\OneDrive - University of Cape Town\Desktop\StatsGeeks\Data_Science_Hackathon\outputs\stage1_model.pkl
+
+=== Stage 2: prior-corrected zero-shot ===
+Zero-shot (uniform-prior-corrected) macro-F1: 0.4732
+
+=== Stage 2: adaptation sweep, n=[5, 25, 50, 100, 200] ===
+     5/class: 0.5592 +/- 0.0316
+    25/class: 0.5976 +/- 0.0235
+    50/class: 0.6086 +/- 0.0095
+   100/class: 0.6200 +/- 0.0064
+   200/class: 0.6215 +/- 0.0047
+(10.4s)
+
+Wrote C:\Users\0geda\OneDrive - University of Cape Town\Desktop\StatsGeeks\Data_Science_Hackathon\outputs\final_pipeline_sweep.json

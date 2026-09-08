@@ -1,0 +1,13 @@
+Fitting LDA embedding on Madrid (supervised, closed-form)...
+  done in 0.7s, explained_variance_ratio=[0.74396906 0.18167659 0.07435434]
+  sanity check -- Madrid self nearest-centroid F1 (subsample): 0.5383
+
+=== LDA-embedding nearest-prototype transfer (Amsterdam) ===
+     5/class: 0.5154 +/- 0.0530   (below organiser 0.5437)
+    25/class: 0.5881 +/- 0.0250   (below organiser 0.5986)
+    50/class: 0.5973 +/- 0.0130   (below organiser 0.6079)
+   100/class: 0.6087 +/- 0.0053   (below organiser 0.6129)
+   200/class: 0.6081 +/- 0.0062   (below organiser 0.6150)
+(0.3s)
+
+Wrote C:\Users\0geda\OneDrive - University of Cape Town\Desktop\StatsGeeks\Data_Science_Hackathon\outputs\lda_embedding_transfer_results.json
