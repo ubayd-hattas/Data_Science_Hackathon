@@ -69,3 +69,112 @@ Fresh Madrid CV row-normalised confusion-matrix proportions (rows are actual cla
 - The 25 repeated-CV fold scores are not independent: folds share training data, and repeats reuse the same pixels. Their SD is a dispersion summary, not a standard error or independent uncertainty estimate.
 - The organiser split is non-spatial. In the audited 5-fold split, 55,796 of 69,725 orthogonally adjacent Madrid pixel pairs (80.0%) cross fold boundaries.
 - No exact raw-row duplicates, pixel-year duplicates, or varying per-pixel targets were found in either parquet file.
+
+## M001 Madrid to Amsterdam triplet metric learning
+
+- **Status:** completed 2026-09-08.
+- **Purpose:** test whether a Madrid-supervised triplet embedding improves few-shot Amsterdam classification over raw organiser features.
+- **Command (default):** `.venv/Scripts/python.exe src/metric_learning_experiment.py`
+- **Direction:** Madrid labelled features -> train embedding -> embed Amsterdam -> adapt using Amsterdam support labels -> evaluate on disjoint Amsterdam query pixels.
+- **Shared evaluation:** 10 deterministic trials (seed 42) at 5, 25, 50, 100, and 200 support pixels per class. Every method uses the exact same saved support/query indices in `outputs/amsterdam_fixed_splits.npz`.
+- **Metric:** four-class macro F1 on the query set; reported uncertainty is population SD across the 10 fixed trials.
+- **Features:** the exact organiser 60-feature matrices, scaled with a `StandardScaler` fitted on Madrid only, cached in `outputs/features_60.npz`.
+- **Raw logistic:** Amsterdam-support-only `LogisticRegression(C=1.0, max_iter=2000)`.
+- **Embedding:** 60 -> Dense(64, ReLU) -> Dense(32, ReLU) -> Dense(16) -> L2 normalization. NumPy implementation, Adam (learning rate 0.001), squared-Euclidean triplet loss, margin 0.2, 100 epochs, 32 batches/epoch, 256 triplets/batch.
+- **Default triplets:** uniformly sampled Madrid anchor classes, random same-class positive, and random different-class negative. Amsterdam labels are never used in embedding training; query labels are used only for evaluation.
+
+### Fair-split Amsterdam results
+
+| Labels/class | Raw prototype | Raw logistic | Embedding prototype | Embedding logistic |
+|---:|---:|---:|---:|---:|
+| 5 | 0.5437 +/- 0.0324 | **0.5457 +/- 0.0446** | 0.5167 +/- 0.0585 | 0.4618 +/- 0.0572 |
+| 25 | 0.5960 +/- 0.0222 | **0.6187 +/- 0.0227** | 0.5804 +/- 0.0253 | 0.5584 +/- 0.0393 |
+| 50 | 0.6052 +/- 0.0133 | **0.6467 +/- 0.0092** | 0.5826 +/- 0.0215 | 0.5788 +/- 0.0139 |
+| 100 | 0.6111 +/- 0.0103 | **0.6679 +/- 0.0095** | 0.5873 +/- 0.0129 | 0.5974 +/- 0.0086 |
+| 200 | 0.6152 +/- 0.0050 | **0.6867 +/- 0.0056** | 0.5911 +/- 0.0037 | 0.6074 +/- 0.0042 |
+
+The organiser-style raw prototype values differ slightly from B000 at budgets above 5 because this experiment creates and persists a new fixed split set containing exactly the five required budgets. B000's sequential random stream also drew the extra 10/class condition before drawing its 25/class and larger conditions.
+
+### Minimal adjustment
+
+Because the default embedding lost to the raw representation, one permitted adjustment was tested: online selection of the closest negative from eight randomly drawn different-class Madrid candidates, with every other setting unchanged. It collapsed toward the margin (final loss 0.2001) and degraded embedding-prototype F1 to 0.4003, 0.4731, 0.4804, 0.4800, and 0.4914 across the five budgets. It was rejected. The full result is retained in `outputs/metric_learning_results_hard_negative_8.json`; no further tuning was performed.
+
+### Interpretation
+
+- The Madrid-trained embedding did **not** improve Amsterdam at any budget. Against the central raw-prototype comparison, its deficits were 0.0270, 0.0156, 0.0226, 0.0238, and 0.0241 macro F1 from 5 through 200 labels/class.
+- Metric learning did not help most in the low-data regime: at 5/class, embedding prototype scored 0.5167 versus 0.5437 raw, and embedding logistic scored 0.4618 versus 0.5457 raw.
+- At 25/class, the default embedding-prototype aggregate confusion matrix gives approximate per-class F1 values of C1 0.677, C2 0.490, C3 0.593, and C4 0.563. Class 2 remains the clearest failure, with substantial confusion into class 1 and class 3.
+- The PCA view shows an age-related continuum but extensive class overlap and a different Amsterdam density along that continuum. A Madrid-only class-separation objective has no direct pressure to remove city-specific effects. The city-dependent first boundary (Madrid 1960 versus Amsterdam 1945), random triplet supervision, spectral domain shift, and information loss from compressing 60 scaled features to a unit-normalized 16-vector are plausible causes.
+- Raw Amsterdam-support logistic regression is the strongest tested method at 25/class (0.6187 +/- 0.0227) and overall (0.6867 +/- 0.0056 at 200/class).
+
+### Artifacts
+
+- `src/metric_learning_experiment.py`: minimal end-to-end experiment runner and shared macro-F1 evaluator.
+- `outputs/features_60.npz`: reusable Madrid and Amsterdam scaled feature matrices, targets, pixel keys, feature names, and scaler parameters.
+- `outputs/amsterdam_fixed_splits.npz`: reusable fixed support/query indices.
+- `outputs/metric_learning_results.json`: complete default scores, configuration, loss trace, and embedding-prototype confusion counts.
+- `outputs/metric_learning_results_random_negative.json`: preserved copy of the default result.
+- `outputs/metric_learning_results_hard_negative_8.json`: the single rejected adjustment.
+- `outputs/figures/macro_f1_vs_budget.png`: presentation-ready budget curve.
+- `outputs/figures/embedding_pca_by_city.png`: Madrid and Amsterdam embedding PCA coloured by age class.
+
+## F002 feature-group transfer and domain-shift ablation
+
+- **Status:** completed 2026-09-08; broad modelling concluded.
+- **Command:** `.venv/Scripts/python.exe src/transfer_ablation_experiment.py`
+- **Purpose:** test whether temporal/change information transfers better than absolute spectral appearance, quantify Madrid-Amsterdam shift, and test one evidence-led correction.
+- **Reused inputs:** `outputs/features_60.npz` and `outputs/amsterdam_fixed_splits.npz`; no Landsat preprocessing was rerun.
+- **Evaluation:** the same ten support/query trials and five required budgets as M001. Each cell below is prototype mean +/- population SD, then logistic mean +/- population SD.
+
+### Feature-transfer results
+
+| Representation | 5/class P / L | 25/class P / L | 50/class P / L | 100/class P / L | 200/class P / L |
+|---|---:|---:|---:|---:|---:|
+| All 60 | 0.5437 +/- 0.0324 / 0.5457 +/- 0.0446 | 0.5960 +/- 0.0222 / **0.6187 +/- 0.0227** | 0.6052 +/- 0.0133 / **0.6467 +/- 0.0092** | 0.6111 +/- 0.0103 / **0.6679 +/- 0.0095** | 0.6152 +/- 0.0050 / **0.6867 +/- 0.0056** |
+| Absolute spectral means (6) | 0.3874 +/- 0.0422 / 0.3810 +/- 0.0423 | 0.4022 +/- 0.0301 / 0.4225 +/- 0.0305 | 0.4035 +/- 0.0146 / 0.4360 +/- 0.0201 | 0.4044 +/- 0.0104 / 0.4264 +/- 0.0208 | 0.4056 +/- 0.0106 / 0.4450 +/- 0.0144 |
+| Spectral indices (10) | 0.3891 +/- 0.0458 / 0.4097 +/- 0.0432 | 0.4189 +/- 0.0298 / 0.4713 +/- 0.0219 | 0.4219 +/- 0.0123 / 0.4987 +/- 0.0103 | 0.4243 +/- 0.0073 / 0.5092 +/- 0.0064 | 0.4254 +/- 0.0055 / 0.5201 +/- 0.0069 |
+| Temporal variability / SDs (29) | 0.5355 +/- 0.0392 / **0.5476 +/- 0.0358** | 0.5745 +/- 0.0226 / 0.6047 +/- 0.0258 | 0.5813 +/- 0.0147 / 0.6315 +/- 0.0097 | 0.5809 +/- 0.0126 / 0.6449 +/- 0.0112 | 0.5857 +/- 0.0069 / 0.6575 +/- 0.0071 |
+| Early-period statistics (12) | 0.4739 +/- 0.0478 / 0.4640 +/- 0.0422 | 0.5090 +/- 0.0199 / 0.5252 +/- 0.0179 | 0.5199 +/- 0.0171 / 0.5418 +/- 0.0146 | 0.5230 +/- 0.0072 / 0.5572 +/- 0.0108 | 0.5220 +/- 0.0073 / 0.5709 +/- 0.0056 |
+| Late-period statistics (12) | 0.4303 +/- 0.0546 / 0.4375 +/- 0.0464 | 0.4603 +/- 0.0265 / 0.4864 +/- 0.0241 | 0.4610 +/- 0.0175 / 0.5014 +/- 0.0211 | 0.4533 +/- 0.0163 / 0.5172 +/- 0.0130 | 0.4632 +/- 0.0089 / 0.5296 +/- 0.0094 |
+| Year-to-year change (12) | 0.4070 +/- 0.0300 / 0.4026 +/- 0.0251 | 0.4580 +/- 0.0190 / 0.4618 +/- 0.0145 | 0.4560 +/- 0.0180 / 0.4718 +/- 0.0147 | 0.4552 +/- 0.0131 / 0.4755 +/- 0.0139 | 0.4611 +/- 0.0051 / 0.4911 +/- 0.0096 |
+
+The two data-presence flags were characterized but not tested as a standalone classifier: their mean absolute SMD is only 0.027 and two nearly constant binary inputs are not a scientifically credible representation by themselves.
+
+### Madrid-Amsterdam shift
+
+Shift is the absolute difference between the city means divided by pooled within-city SD, averaged across features in each group.
+
+| Feature group | Mean absolute SMD |
+|---|---:|
+| Absolute spectral means | 1.849 |
+| Early-period statistics | 1.366 |
+| Late-period statistics | 0.977 |
+| Year-to-year change | 0.849 |
+| Temporal variability / SDs | 0.674 |
+| Spectral indices | 0.593 |
+| Data-presence flags | 0.027 |
+
+Absolute means have both the largest measured shift and weak transfer, while variability has lower shift and is the strongest reduced subset. The pattern is not general: year-to-year change and indices still transfer poorly. Across the six predictive groups, shift versus 25/class F1 correlations are Pearson -0.364 / Spearman -0.200 for prototype and Pearson -0.476 / Spearman -0.314 for logistic. This is weak-to-moderate directional evidence, not support for a reliable monotonic relationship. The stated change-transfer hypothesis is rejected.
+
+### Targeted correction
+
+Because large marginal location/scale shifts were observed, one correction was tested: standardise each feature using only the labelled Amsterdam support rows in that trial, then apply those statistics to its query rows. This is inductive and uses no unlabeled query/test features. For logistic regression, corrected scores were 0.5374 +/- 0.0490, 0.6149 +/- 0.0230, 0.6435 +/- 0.0092, 0.6660 +/- 0.0090, and 0.6861 +/- 0.0061 from 5 through 200/class. It did not beat raw logistic at any budget and was rejected.
+
+### Decision
+
+- **Strongest 25/class:** all-60 Amsterdam-support logistic, 0.6187 +/- 0.0227.
+- **Strongest overall:** the same method; it is best at four of five budgets and reaches 0.6867 +/- 0.0056 at 200/class.
+- **Madrid contribution:** no Madrid-trained classifier or embedding improved Amsterdam-support logistic. The selected pipeline retains only the Madrid-fitted feature scaler.
+- **Metric retry:** skipped. No reduced representation beat all 60 features at 25/class, and explicit support normalization did not improve them.
+- **Conclusion:** domain shift is substantial, especially in absolute levels, but discriminative utility is complementary across groups and shift magnitude alone does not predict transfer. Freeze broad modelling and proceed to reproducibility validation and packaging.
+
+### Artifacts
+
+- `src/transfer_ablation_experiment.py`
+- `outputs/feature_transfer_results.json`
+- `outputs/consolidated_results.json`
+- `outputs/figures/feature_group_domain_shift.png`
+- `outputs/figures/feature_group_shift_vs_transfer.png`
+- `outputs/figures/final_comparison_f1_vs_budget.png`
+- `outputs/figures/strongest_25_confusion_matrix.png`
+- `FINAL_FINDINGS.md`
