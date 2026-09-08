@@ -1,16 +1,20 @@
-"""Reproduce the Notebook 4 result and test whether the Madrid embedding helps.
+"""Baseline + domain-adaptation comparison for Madrid -> Amsterdam transfer.
 
-Runs four things and prints a comparison:
-  1. Madrid 5x5 CV                          (headline in-city estimate)
-  2. Zero-shot RF -> Amsterdam              (raw domain gap)
-  3. Few-shot prototypes, RAW features      (what Notebook 4 actually does)
-  4. Few-shot prototypes, Madrid EMBEDDING  (what the approach note specifies)
+Reports:
+  [1] Madrid 5xN CV                          in-city reference
+  [2] Zero-shot RF -> Amsterdam              raw domain gap
+      2b. + CORAL-aligned Madrid features    (still no Amsterdam labels)
+  [3] Few-shot prototype curve, several feature treatments:
+        raw            reuse the Madrid StandardScaler  (== Notebook 4)
+        rescale        match per-feature mean/var to Amsterdam
+        zca            transductively whiten Amsterdam by its own covariance
+        embedding      Madrid-trained triplet embedding
+        embedding+zca  whiten the embedding space
 
-Plus the diagnostic: (3) with the standardiser refitted on Amsterdam. If that
-barely moves the curve, nothing Madrid-trained is reaching Amsterdam in the
-raw-feature version, and (4) is the fix.
+All treatments are unsupervised w.r.t. Amsterdam labels: the support/query split
+is the only place a target label is touched.
 
-Usage:  python scripts/run_baseline.py
+Usage:  python scripts/run_baseline.py [--quick] [--no-embedding]
 """
 
 import functools
@@ -20,20 +24,22 @@ from pathlib import Path
 
 import numpy as np
 
-print = functools.partial(print, flush=True)  # noqa: A001  (see progress live)
+print = functools.partial(print, flush=True)  # noqa: A001
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-QUICK = "--quick" in sys.argv  # smaller CV + fewer epochs for a fast first look
-
+from src.adapt import make_coral, rescale_to, zca_whiten
 from src.data import build_city
 from src.embedding import TripletEmbedding
 from src.evaluate import (
-    few_shot_curve, fit_final_rf, madrid_cv, plot_curve, summary_table, zero_shot,
+    FewShotResult, few_shot_curve, fit_final_rf, madrid_cv, plot_curve,
+    summary_table, zero_shot,
 )
 
 SEED = 42
+QUICK = "--quick" in sys.argv
+NO_EMB = "--no-embedding" in sys.argv
 
 
 def main() -> None:
@@ -41,79 +47,93 @@ def main() -> None:
     print("Loading + feature engineering ...")
     madrid = build_city(str(ROOT / "data" / "madrid_train.parquet"))
     ams = build_city(str(ROOT / "data" / "amsterdam_data.parquet"))
-    print(f"  Madrid {madrid.X.shape}  Amsterdam {ams.X.shape}   ({time.time()-t0:.1f}s)")
+    Xm, ym, Xa, ya = madrid.X, madrid.y, ams.X, ams.y
+    print(f"  Madrid {Xm.shape}  Amsterdam {Xa.shape}   ({time.time()-t0:.1f}s)")
 
-    # 1. Madrid CV -----------------------------------------------------------
-    n_rep = 2 if QUICK else 5
-    rf_p = dict(n_estimators=150 if QUICK else 300, class_weight="balanced",
-                random_state=SEED, n_jobs=-1)
-    print(f"\n[1] Madrid 5x{n_rep} cross-validation ...")
-    cv = madrid_cv(madrid.X, madrid.y, n_repeats=n_rep, rf_params=rf_p, seed=SEED)
+    n_rep = 3 if QUICK else 5
+    n_tree = 200 if QUICK else 300
+    rf_p = dict(n_estimators=n_tree, class_weight="balanced",
+               random_state=SEED, n_jobs=-1)
+
+    # [1] Madrid CV --------------------------------------------------------
+    print(f"\n[1] Madrid 5x{n_rep} CV ({n_tree} trees) ...")
+    cv = madrid_cv(Xm, ym, n_repeats=n_rep, rf_params=rf_p, seed=SEED)
     print("   ", cv)
 
-    # 2. Zero-shot ---------------------------------------------------------
+    # [2] Zero-shot, raw + CORAL ----------------------------------------
     print("\n[2] Zero-shot RF -> Amsterdam ...")
-    rf = fit_final_rf(madrid.X, madrid.y, rf_params=rf_p)
-    f1_zero = zero_shot(rf, ams.X, ams.y)
-    print(f"    macro-F1: {f1_zero:.4f}")
+    rf_raw = fit_final_rf(Xm, ym, rf_params=rf_p)
+    f1_zero = zero_shot(rf_raw, Xa, ya)
+    coral = make_coral(Xm, Xa)
+    rf_coral = fit_final_rf(coral(Xm), ym, rf_params=rf_p)
+    f1_zero_coral = zero_shot(rf_coral, Xa, ya)
+    print(f"    raw            {f1_zero:.4f}")
+    print(f"    CORAL-aligned  {f1_zero_coral:.4f}")
 
-    # 3. Few-shot, raw features (Notebook 4) -------------------------------
-    print("\n[3] Few-shot prototypes on RAW features ...")
-    fs_raw = few_shot_curve(ams.X, ams.y, transform=None, seed=SEED)
-    print(fs_raw.table())
+    # [3] Few-shot prototype curves -----------------------------------
+    # Prototype distance is scale-sensitive, so every variant standardises the
+    # 60 features; they differ only in *whose* statistics do it.
+    print("\n[3] Few-shot prototype transfer ...")
+    mu_m, sd_m = Xm.mean(0), Xm.std(0) + 1e-8       # Madrid stats (== Notebook 4)
+    mu_a, sd_a = Xa.mean(0), Xa.std(0) + 1e-8       # Amsterdam stats (transductive)
 
-    # 3b. diagnostic: does the raw-feature version use Madrid at all? -----
-    #     Notebook 3 standardises with a scaler fitted on Madrid. Refit it on
-    #     Amsterdam instead and see if the curve changes.
-    mu_a, sd_a = ams.X.mean(0), ams.X.std(0) + 1e-8
-    fs_raw_amsscale = few_shot_curve(
-        (ams.X - mu_a) / sd_a, ams.y, transform=None, seed=SEED
-    )
+    variants: dict[str, FewShotResult] = {}
+    variants["madrid_scale"] = few_shot_curve((Xa - mu_m) / sd_m, ya, seed=SEED)
+    variants["ams_scale"] = few_shot_curve((Xa - mu_a) / sd_a, ya, seed=SEED)
+    variants["zca"] = few_shot_curve(Xa, ya, transform=zca_whiten(Xa), seed=SEED)
 
-    # 4. Few-shot, Madrid-trained embedding ------------------------------
-    print("\n[4] Few-shot prototypes in a Madrid-trained triplet embedding ...")
-    te = time.time()
-    emb = TripletEmbedding(dim=16, epochs=15 if QUICK else 60,
-                           semi_hard=False, seed=SEED).fit(madrid.X, madrid.y)
-    print(f"    embedding trained in {time.time()-te:.1f}s   "
-          f"(final triplet loss {emb.history_[-1]:.4f})")
-    fs_emb = few_shot_curve(ams.X, ams.y, transform=emb.transform, seed=SEED)
-    print(fs_emb.table())
+    if not NO_EMB:
+        te = time.time()
+        emb = TripletEmbedding(dim=16, epochs=15 if QUICK else 60,
+                               semi_hard=False, seed=SEED).fit(Xm, ym)
+        print(f"    embedding trained in {time.time()-te:.1f}s "
+              f"(loss {emb.history_[0]:.3f} -> {emb.history_[-1]:.3f})")
+        Za = emb.transform(Xa)
+        variants["embedding"] = few_shot_curve(Za, ya, transform=None, seed=SEED)
+        variants["embed+zca"] = few_shot_curve(
+            Za, ya, transform=zca_whiten(Za), seed=SEED
+        )
 
-    # --- comparison -----------------------------------------------------
-    print("\n" + "=" * 64)
-    print("COMPARISON  (macro-F1, mean over 10 draws)")
-    print("=" * 64)
-    print(f"{'shots':>6} | {'raw (NB4)':>12} | {'raw, AMS-scale':>15} | {'MAD embedding':>14}")
-    print("-" * 64)
-    for s in fs_raw.shots:
-        print(f"{s:>6} | {fs_raw.per_shot[s].mean():>12.4f} | "
-              f"{fs_raw_amsscale.per_shot[s].mean():>15.4f} | "
-              f"{fs_emb.per_shot[s].mean():>14.4f}")
-    print("-" * 64)
-    d = abs(fs_raw.means - fs_raw_amsscale.means).max()
-    print(f"max |raw - raw(AMS-scale)| = {d:.4f}  "
-          f"->  {'Madrid scaler is doing ~nothing' if d < 0.01 else 'Madrid scaler matters'}")
+    # --- comparison table ------------------------------------------
+    names = list(variants)
+    shots = variants["madrid_scale"].shots
+    print("\n" + "=" * (12 + 15 * len(names)))
+    print("FEW-SHOT macro-F1  (mean over 10 draws)")
+    print("=" * (12 + 15 * len(names)))
+    print(f"{'shots':>6} |" + "".join(f" {n:>13} |" for n in names))
+    print("-" * (12 + 15 * len(names)))
+    for s in shots:
+        print(f"{s:>6} |" + "".join(
+            f" {variants[n].per_shot[s].mean():>13.4f} |" for n in names))
+    print("-" * (12 + 15 * len(names)))
+    print(f"  Madrid CV {cv.mean:.3f}   zero-shot raw {f1_zero:.3f}   "
+          f"zero-shot CORAL {f1_zero_coral:.3f}")
 
-    # --- deliverables -------------------------------------------------
+    # --- deliverables --------------------------------------------
     out = ROOT / "results"
     out.mkdir(exist_ok=True)
-    (out / "summary_raw.md").write_text(summary_table(cv, f1_zero, fs_raw))
-    (out / "summary_embedding.md").write_text(summary_table(cv, f1_zero, fs_emb))
+    best = max(names, key=lambda n: variants[n].means[-1])
+    (out / "summary.md").write_text(
+        f"# Transfer results\n\n"
+        f"Madrid CV: {cv.mean:.3f} +/- {cv.std:.3f}\n\n"
+        f"Zero-shot: raw {f1_zero:.3f}, CORAL {f1_zero_coral:.3f}\n\n"
+        + summary_table(cv, f1_zero, variants[best]).replace(
+            "Few-shot,", f"Few-shot [{best}],")
+    )
     try:
-        plot_curve(fs_raw, f1_zero, cv, str(out / "curve_raw.png"))
-        plot_curve(fs_emb, f1_zero, cv, str(out / "curve_embedding.png"))
+        for n, fs in variants.items():
+            plot_curve(fs, f1_zero, cv, str(out / f"curve_{n.replace('+','_')}.png"))
     except ModuleNotFoundError as exc:
         print(f"    (skipped plots: {exc})")
     np.savez(
         out / "scores.npz",
-        cv_fold_f1=cv.fold_f1, f1_zero=f1_zero,
-        shots=np.array(fs_raw.shots),
-        raw_means=fs_raw.means, raw_stds=fs_raw.stds,
-        raw_amsscale_means=fs_raw_amsscale.means,
-        emb_means=fs_emb.means, emb_stds=fs_emb.stds,
+        shots=np.array(shots), cv_mean=cv.mean, cv_std=cv.std,
+        f1_zero=f1_zero, f1_zero_coral=f1_zero_coral,
+        **{f"{n.replace('+','_')}_means": variants[n].means for n in names},
+        **{f"{n.replace('+','_')}_stds": variants[n].stds for n in names},
     )
-    print(f"\nwrote results/ ({time.time()-t0:.1f}s total)")
+    print(f"\nbest at 200 shots: '{best}' ({variants[best].means[-1]:.4f})")
+    print(f"wrote results/  ({time.time()-t0:.1f}s total)")
 
 
 if __name__ == "__main__":
