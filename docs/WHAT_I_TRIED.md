@@ -395,3 +395,55 @@ Every budget improved, nothing regressed. The 25-label number — which the
 
 Wins are stacking up on the few-shot side now. Best few-shot numbers to date:
 0.54 / 0.62 / 0.64 / 0.66 / 0.68 at 5 / 25 / 50 / 100 / 200 labels per group.
+
+---
+
+## Round 6: self-training (dead end) and RF-head vs prototype (win)
+
+**Self-training** — pseudo-label the most confident of the 25k unlabelled
+Amsterdam patches, add them to the training set, refit, repeat.
+
+| method | 5 | 25 | 50 | 100 | 200 |
+|---|---:|---:|---:|---:|---:|
+| prototype (baseline) | 0.558 | 0.619 | 0.634 | 0.657 | 0.680 |
+| prototype + self-training | 0.507 | 0.582 | 0.600 | 0.597 | 0.621 |
+| small RF + self-training | 0.559 | 0.603 | 0.606 | 0.604 | 0.585 |
+
+Worse in every cell, and it degrades further each round. At low budgets the base
+model is ~35% wrong, so the pseudo-labels are ~35% wrong, and refitting on them
+drags the model toward that error. Not fixable with the obvious knobs (fewer
+promotions, higher confidence bar) — those made it worse, not better. Dead end.
+
+**RF head instead of nearest-prototype** — same whitened + shrunk features, but
+label the queries with a small Random Forest rather than the nearest class mean.
+
+| budget | nearest-prototype | small RF | gain |
+|---:|---:|---:|---:|
+| 5 | 0.558 | 0.574 | +0.016 |
+| 25 | 0.619 | **0.639** | +0.020 |
+| 50 | 0.634 | 0.649 | +0.015 |
+| 100 | 0.657 | 0.675 | +0.018 |
+| 200 | 0.680 | 0.680 | tie |
+
+A clean ~+0.02 at every budget except the top, and the 25-label number (the
+low-data prize) improves again. Already in the harness.
+
+### Running tally
+
+| idea | outcome |
+|---|---|
+| embedding network | dead end |
+| CORAL | **+10 zero-shot** |
+| whitening | **+6 few-shot @50+** |
+| CORAL + whitening combined | same as whitening alone |
+| ordinal training | dead end |
+| class-mix correction | dead end |
+| change-point features | **+5 zero-shot raw** |
+| spatial features | +4 Madrid-CV, breaks raw transfer |
+| shrinkage whitening | **+15 / +6 / +3 at 5 / 25 / 50 labels** |
+| self-training | dead end |
+| RF head vs prototype | **+2 at every budget < 200** |
+
+Best few-shot line to date: **0.57 / 0.64 / 0.65 / 0.68 / 0.68** at
+5 / 25 / 50 / 100 / 200 labels per group  (from a starting 0.42 / 0.55 / 0.61 /
+0.64 / 0.67). Numbers are from quick runs — the full run will shift them a little.

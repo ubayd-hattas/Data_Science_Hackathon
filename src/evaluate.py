@@ -245,3 +245,97 @@ def few_shot_classifier_curve(
             out.per_shot_extra[n] = np.asarray(extras)
 
     return out
+
+
+# ── Prototype classifier object + self-training ────────────────────────────
+
+class PrototypeClassifier:
+    """Nearest-class-mean with soft scores (softmax of negative sq. distance)."""
+
+    def __init__(self, temperature: float = 1.0):
+        self.temperature = temperature
+
+    def fit(self, X, y):
+        self.classes_ = np.unique(y)
+        self.proto_ = np.stack([X[y == c].mean(axis=0) for c in self.classes_])
+        return self
+
+    def _neg_d2(self, X):
+        return -((X[:, None, :] - self.proto_[None, :, :]) ** 2).sum(axis=2)
+
+    def predict(self, X):
+        return self.classes_[self._neg_d2(X).argmax(axis=1)]
+
+    def predict_proba(self, X):
+        z = self._neg_d2(X) / self.temperature
+        z -= z.max(axis=1, keepdims=True)
+        e = np.exp(z)
+        return e / e.sum(axis=1, keepdims=True)
+
+
+def few_shot_selftrain_curve(
+    X_target: np.ndarray,
+    y_target: np.ndarray,
+    make_clf,
+    shots=DEFAULT_SHOTS,
+    n_trials: int = 10,
+    transform: "Transform | None" = None,
+    seed: int = 42,
+    rounds: int = 3,
+    add_frac: float = 0.15,
+) -> "FewShotResult":
+    """Few-shot curve with iterative self-training on the unlabelled query pool.
+
+    Each round: fit ``make_clf()`` on the labelled + pseudo-labelled set, score
+    every remaining pool point's confidence, promote the most confident ones
+    (balanced across predicted classes) to pseudo-labels, repeat. Final score is
+    macro-F1 over the original query set. No true target label beyond the support
+    set is ever used.
+    """
+    Z = transform(X_target) if transform is not None else X_target
+    y = np.asarray(y_target)
+    rng = np.random.default_rng(seed)
+    classes = np.unique(y)
+    out = FewShotResult(tuple(shots))
+
+    for n in shots:
+        scores = []
+        for _ in range(n_trials):
+            support = []
+            for c in classes:
+                idx = np.where(y == c)[0]
+                support.extend(rng.choice(idx, min(n, len(idx)), replace=False).tolist())
+            support = np.asarray(support)
+            query = np.where(~np.isin(np.arange(len(y)), support))[0]
+
+            lab_idx = list(support)
+            lab_y = list(y[support])
+            pool = list(query)
+            per_round = max(1, int(add_frac * len(query) / max(rounds, 1)))
+
+            for _r in range(rounds):
+                if not pool:
+                    break
+                clf = make_clf().fit(Z[np.array(lab_idx)], np.array(lab_y))
+                proba = clf.predict_proba(Z[np.array(pool)])
+                pred = classes[proba.argmax(axis=1)]
+                conf = proba.max(axis=1)
+                take = []
+                for c in classes:                       # balanced promotion
+                    ci = np.where(pred == c)[0]
+                    if len(ci) == 0:
+                        continue
+                    ci = ci[np.argsort(conf[ci])[::-1][: per_round // len(classes) + 1]]
+                    take.extend(ci.tolist())
+                take = sorted(set(take))
+                for t in take:
+                    lab_idx.append(pool[t])
+                    lab_y.append(int(pred[t]))
+                pool = [p for i, p in enumerate(pool) if i not in set(take)]
+
+            clf = make_clf().fit(Z[np.array(lab_idx)], np.array(lab_y))
+            pred_q = clf.predict(Z[query])
+            scores.append(f1_score(y[query], pred_q, average="macro", zero_division=0))
+        out.per_shot[n] = np.asarray(scores)
+
+    return out
