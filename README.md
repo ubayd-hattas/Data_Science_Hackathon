@@ -26,6 +26,7 @@ transfer a Madrid-trained model to Amsterdam with few labels.
 │   ├── WHAT_I_TRIED.md               Plain-language diary of the analysis so far
 │   ├── METRIC_LEARNING_APPROACH.md   Strategy write-up
 │   └── Evaluation Rubric Overview.docx   Organisers' grading rubric
+├── scripts/                       Experiment drivers (run_*.py) + notebook builder
 └── requirements.txt
 ```
 
