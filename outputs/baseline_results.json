@@ -1,0 +1,359 @@
+{
+  "implementation": "faithful organiser notebook 3 and 4 reproduction",
+  "environment": {
+    "python": "3.13.13",
+    "numpy": "2.5.3",
+    "pandas": "3.0.5",
+    "matplotlib": "3.11.1",
+    "scikit_learn": "1.9.0",
+    "pyarrow": "25.0.1"
+  },
+  "seed": 42,
+  "feature_count": 60,
+  "feature_names": [
+    "Blue_mean",
+    "Green_mean",
+    "Red_mean",
+    "NIR_mean",
+    "SWIR1_mean",
+    "SWIR2_mean",
+    "Blue_std",
+    "Green_std",
+    "Red_std",
+    "NIR_std",
+    "SWIR1_std",
+    "SWIR2_std",
+    "NDVI_mean",
+    "NDBI_mean",
+    "UI_mean",
+    "MNDWI_mean",
+    "BSI_mean",
+    "NDVI_std",
+    "NDBI_std",
+    "UI_std",
+    "MNDWI_std",
+    "BSI_std",
+    "Blue_early_mean",
+    "Green_early_mean",
+    "Red_early_mean",
+    "NIR_early_mean",
+    "SWIR1_early_mean",
+    "SWIR2_early_mean",
+    "Blue_early_std",
+    "Green_early_std",
+    "Red_early_std",
+    "NIR_early_std",
+    "SWIR1_early_std",
+    "SWIR2_early_std",
+    "Blue_late_mean",
+    "Green_late_mean",
+    "Red_late_mean",
+    "NIR_late_mean",
+    "SWIR1_late_mean",
+    "SWIR2_late_mean",
+    "Blue_late_std",
+    "Green_late_std",
+    "Red_late_std",
+    "NIR_late_std",
+    "SWIR1_late_std",
+    "SWIR2_late_std",
+    "d_Blue_mean",
+    "d_Green_mean",
+    "d_Red_mean",
+    "d_NIR_mean",
+    "d_SWIR1_mean",
+    "d_SWIR2_mean",
+    "d_Blue_std",
+    "d_Green_std",
+    "d_Red_std",
+    "d_NIR_std",
+    "d_SWIR1_std",
+    "d_SWIR2_std",
+    "has_early_data",
+    "has_late_data"
+  ],
+  "feature_groups": {
+    "overall": [
+      "Blue_mean",
+      "Green_mean",
+      "Red_mean",
+      "NIR_mean",
+      "SWIR1_mean",
+      "SWIR2_mean",
+      "Blue_std",
+      "Green_std",
+      "Red_std",
+      "NIR_std",
+      "SWIR1_std",
+      "SWIR2_std"
+    ],
+    "indices": [
+      "NDVI_mean",
+      "NDBI_mean",
+      "UI_mean",
+      "MNDWI_mean",
+      "BSI_mean",
+      "NDVI_std",
+      "NDBI_std",
+      "UI_std",
+      "MNDWI_std",
+      "BSI_std"
+    ],
+    "early": [
+      "Blue_early_mean",
+      "Green_early_mean",
+      "Red_early_mean",
+      "NIR_early_mean",
+      "SWIR1_early_mean",
+      "SWIR2_early_mean",
+      "Blue_early_std",
+      "Green_early_std",
+      "Red_early_std",
+      "NIR_early_std",
+      "SWIR1_early_std",
+      "SWIR2_early_std"
+    ],
+    "late": [
+      "Blue_late_mean",
+      "Green_late_mean",
+      "Red_late_mean",
+      "NIR_late_mean",
+      "SWIR1_late_mean",
+      "SWIR2_late_mean",
+      "Blue_late_std",
+      "Green_late_std",
+      "Red_late_std",
+      "NIR_late_std",
+      "SWIR1_late_std",
+      "SWIR2_late_std"
+    ],
+    "yoy": [
+      "d_Blue_mean",
+      "d_Green_mean",
+      "d_Red_mean",
+      "d_NIR_mean",
+      "d_SWIR1_mean",
+      "d_SWIR2_mean",
+      "d_Blue_std",
+      "d_Green_std",
+      "d_Red_std",
+      "d_NIR_std",
+      "d_SWIR1_std",
+      "d_SWIR2_std"
+    ],
+    "indicators": [
+      "has_early_data",
+      "has_late_data"
+    ]
+  },
+  "preprocessing": {
+    "Madrid": {
+      "raw_shape": [
+        3172765,
+        49
+      ],
+      "observed_pixel_year_rows": 3137920,
+      "haze_rows_removed": 34845,
+      "gap_filled_rows": 3203046,
+      "pixels": 76263,
+      "class_distribution": {
+        "1": 13794,
+        "2": 27152,
+        "3": 18672,
+        "4": 16645
+      }
+    },
+    "Amsterdam": {
+      "raw_shape": [
+        1062877,
+        49
+      ],
+      "observed_pixel_year_rows": 1049960,
+      "haze_rows_removed": 12917,
+      "gap_filled_rows": 1091664,
+      "pixels": 25992,
+      "class_distribution": {
+        "1": 7568,
+        "2": 8802,
+        "3": 6745,
+        "4": 2877
+      }
+    },
+    "scaler_fit": "all Madrid pixels before Madrid CV; Amsterdam only transformed"
+  },
+  "model": {
+    "type": "RandomForestClassifier",
+    "parameters": {
+      "n_estimators": 500,
+      "class_weight": "balanced",
+      "random_state": 42,
+      "n_jobs": -1
+    }
+  },
+  "madrid_cv": {
+    "folds": 5,
+    "repeats": 5,
+    "scores": [
+      0.6276738151006965,
+      0.6362571572392856,
+      0.6295381941499719,
+      0.623507910460344,
+      0.6231330205318522,
+      0.6220069096180797,
+      0.6328021970076168,
+      0.6306644985806649,
+      0.6286109564284567,
+      0.6244705061912719,
+      0.6235021379113129,
+      0.6351092278290463,
+      0.6271776657301449,
+      0.6346461353117215,
+      0.6238910690884499,
+      0.6297585949476681,
+      0.6298949122189149,
+      0.6205439540396669,
+      0.6283852637999732,
+      0.6267662429774836,
+      0.6319070096011614,
+      0.6292291055794949,
+      0.6333662306061052,
+      0.6266993496047483,
+      0.6237455621722375
+    ],
+    "macro_f1_mean": 0.6281315050690548,
+    "macro_f1_std_population": 0.004265247306708275,
+    "confusion_matrix_counts": [
+      [
+        36605,
+        24924,
+        4296,
+        3145
+      ],
+      [
+        19168,
+        92573,
+        15508,
+        8511
+      ],
+      [
+        4068,
+        22632,
+        54941,
+        11719
+      ],
+      [
+        1803,
+        9810,
+        14098,
+        57514
+      ]
+    ],
+    "confusion_matrix_row_proportions": [
+      [0.5307380020298681, 0.3613745106568073, 0.062287951283166595, 0.04559953603015804],
+      [0.14119033588685917, 0.681887153800825, 0.11423099587507365, 0.06269151443724219],
+      [0.043573264781491004, 0.24241645244215937, 0.5884854327335047, 0.1255248500428449],
+      [0.02166416341243617, 0.1178732352057675, 0.16939621507960348, 0.6910663863021929]
+    ]
+  },
+  "madrid_in_sample_accuracy": 0.9999475499259143,
+  "amsterdam_zero_shot_macro_f1": 0.443273608786401,
+  "amsterdam_prototype": {
+    "5": {
+      "scores": [
+        0.5297287122285692,
+        0.5805582196580862,
+        0.5332842258577035,
+        0.6004446344450934,
+        0.5571887207771,
+        0.4903966701998713,
+        0.5161471935754111,
+        0.577830891839152,
+        0.5227540740366918,
+        0.5285313121064863
+      ],
+      "macro_f1_mean": 0.5436864654724165,
+      "macro_f1_std_population": 0.03240100566074138
+    },
+    "10": {
+      "scores": [
+        0.5428798854395204,
+        0.5849003837960369,
+        0.5216614037119085,
+        0.5638418224937891,
+        0.6065880023098542,
+        0.6145636683516539,
+        0.5242179791169739,
+        0.5404984061005162,
+        0.587439930455709,
+        0.562134729086657
+      ],
+      "macro_f1_mean": 0.5648726210862619,
+      "macro_f1_std_population": 0.03118672560026078
+    },
+    "25": {
+      "scores": [
+        0.6036165122602037,
+        0.5671912103068149,
+        0.596040354074235,
+        0.6118621881829216,
+        0.5900348942506094,
+        0.5789135050821612,
+        0.587702595983549,
+        0.617561391117714,
+        0.6294604948126787,
+        0.6035918843540811
+      ],
+      "macro_f1_mean": 0.5985975030424968,
+      "macro_f1_std_population": 0.01763692365781789
+    },
+    "50": {
+      "scores": [
+        0.6075454800631088,
+        0.6047961956255503,
+        0.6161323146646136,
+        0.6266811596407214,
+        0.5964568083871846,
+        0.5955994932990398,
+        0.5968804962498885,
+        0.6016013101299734,
+        0.6164249842062657,
+        0.6166710828297339
+      ],
+      "macro_f1_mean": 0.607878932509608,
+      "macro_f1_std_population": 0.010115419496318822
+    },
+    "100": {
+      "scores": [
+        0.6089251792073725,
+        0.625596054341533,
+        0.6197391046143633,
+        0.599156525892351,
+        0.5933120023876187,
+        0.6179994673962155,
+        0.6193585061070686,
+        0.620085437927202,
+        0.6083253390255499,
+        0.6164851169082317
+      ],
+      "macro_f1_mean": 0.6128982733807506,
+      "macro_f1_std_population": 0.00974403931972581
+    },
+    "200": {
+      "scores": [
+        0.6148696887774077,
+        0.6241790209341109,
+        0.6134932541824077,
+        0.6149320975988034,
+        0.6092610575548647,
+        0.6129330629524556,
+        0.6149758970712211,
+        0.6133798233264396,
+        0.6148072028902514,
+        0.6167173970137767
+      ],
+      "macro_f1_mean": 0.6149548502301738,
+      "macro_f1_std_population": 0.0035964674443349975
+    }
+  },
+  "elapsed_seconds": 2704.418637037277
+}

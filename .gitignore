@@ -1,0 +1,29 @@
+# Local datasets and large generated artifacts
+/Data/
+*.parquet
+*.pkl
+*.joblib
+*.npy
+*.npz
+*.zip
+
+# Python virtual environments
+.venv/
+venv/
+ENV/
+
+# Python caches and test artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter temporary files
+.ipynb_checkpoints/
+
+# IDE and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,344 @@
+{
+  "top_level_modules": [
+    "__future__",
+    "argparse",
+    "ast",
+    "json",
+    "matplotlib",
+    "numpy",
+    "pandas",
+    "pathlib",
+    "pickle",
+    "platform",
+    "pyarrow",
+    "sklearn",
+    "time"
+  ],
+  "python_files": {
+    "src\\audit_imports.py": [
+      {
+        "module": "__future__",
+        "name": "annotations",
+        "line": 3
+      },
+      {
+        "module": "ast",
+        "name": null,
+        "line": 5
+      },
+      {
+        "module": "json",
+        "name": null,
+        "line": 6
+      },
+      {
+        "module": "pathlib",
+        "name": "Path",
+        "line": 7
+      }
+    ],
+    "src\\data_audit.py": [
+      {
+        "module": "__future__",
+        "name": "annotations",
+        "line": 3
+      },
+      {
+        "module": "json",
+        "name": null,
+        "line": 5
+      },
+      {
+        "module": "pathlib",
+        "name": "Path",
+        "line": 6
+      },
+      {
+        "module": "numpy",
+        "name": null,
+        "line": 8
+      },
+      {
+        "module": "pandas",
+        "name": null,
+        "line": 9
+      },
+      {
+        "module": "pyarrow.parquet",
+        "name": null,
+        "line": 10
+      }
+    ],
+    "src\\organiser_baseline.py": [
+      {
+        "module": "__future__",
+        "name": "annotations",
+        "line": 3
+      },
+      {
+        "module": "argparse",
+        "name": null,
+        "line": 5
+      },
+      {
+        "module": "json",
+        "name": null,
+        "line": 6
+      },
+      {
+        "module": "platform",
+        "name": null,
+        "line": 7
+      },
+      {
+        "module": "time",
+        "name": null,
+        "line": 8
+      },
+      {
+        "module": "pathlib",
+        "name": "Path",
+        "line": 9
+      },
+      {
+        "module": "matplotlib",
+        "name": null,
+        "line": 11
+      },
+      {
+        "module": "numpy",
+        "name": null,
+        "line": 12
+      },
+      {
+        "module": "pandas",
+        "name": null,
+        "line": 13
+      },
+      {
+        "module": "pyarrow",
+        "name": null,
+        "line": 14
+      },
+      {
+        "module": "sklearn",
+        "name": null,
+        "line": 15
+      },
+      {
+        "module": "sklearn.ensemble",
+        "name": "RandomForestClassifier",
+        "line": 16
+      },
+      {
+        "module": "sklearn.metrics",
+        "name": "accuracy_score",
+        "line": 17
+      },
+      {
+        "module": "sklearn.metrics",
+        "name": "confusion_matrix",
+        "line": 17
+      },
+      {
+        "module": "sklearn.metrics",
+        "name": "f1_score",
+        "line": 17
+      },
+      {
+        "module": "sklearn.model_selection",
+        "name": "RepeatedStratifiedKFold",
+        "line": 18
+      },
+      {
+        "module": "sklearn.preprocessing",
+        "name": "StandardScaler",
+        "line": 19
+      }
+    ],
+    "src\\split_audit.py": [
+      {
+        "module": "__future__",
+        "name": "annotations",
+        "line": 3
+      },
+      {
+        "module": "json",
+        "name": null,
+        "line": 5
+      },
+      {
+        "module": "pathlib",
+        "name": "Path",
+        "line": 6
+      },
+      {
+        "module": "numpy",
+        "name": null,
+        "line": 8
+      },
+      {
+        "module": "pandas",
+        "name": null,
+        "line": 9
+      },
+      {
+        "module": "sklearn.model_selection",
+        "name": "StratifiedKFold",
+        "line": 10
+      }
+    ]
+  },
+  "notebooks": {
+    "Docs\\1-Introduction.ipynb": {},
+    "Docs\\2-Reading_Data.ipynb": {
+      "3": [
+        {
+          "module": "numpy",
+          "name": null,
+          "line": 1
+        },
+        {
+          "module": "pandas",
+          "name": null,
+          "line": 2
+        },
+        {
+          "module": "matplotlib.pyplot",
+          "name": null,
+          "line": 3
+        }
+      ]
+    },
+    "Docs\\3-Preprocessing.ipynb": {
+      "2": [
+        {
+          "module": "numpy",
+          "name": null,
+          "line": 1
+        },
+        {
+          "module": "pandas",
+          "name": null,
+          "line": 2
+        },
+        {
+          "module": "matplotlib.pyplot",
+          "name": null,
+          "line": 3
+        },
+        {
+          "module": "sklearn.preprocessing",
+          "name": "StandardScaler",
+          "line": 4
+        }
+      ],
+      "19": [
+        {
+          "module": "pickle",
+          "name": null,
+          "line": 1
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "line": 2
+        }
+      ]
+    },
+    "Docs\\4-Modelling.ipynb": {
+      "2": [
+        {
+          "module": "numpy",
+          "name": null,
+          "line": 1
+        },
+        {
+          "module": "pandas",
+          "name": null,
+          "line": 2
+        },
+        {
+          "module": "pickle",
+          "name": null,
+          "line": 3
+        },
+        {
+          "module": "matplotlib.pyplot",
+          "name": null,
+          "line": 4
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "line": 5
+        },
+        {
+          "module": "sklearn.ensemble",
+          "name": "RandomForestClassifier",
+          "line": 7
+        },
+        {
+          "module": "sklearn.model_selection",
+          "name": "StratifiedKFold",
+          "line": 8
+        },
+        {
+          "module": "sklearn.metrics",
+          "name": "accuracy_score",
+          "line": 9
+        },
+        {
+          "module": "sklearn.metrics",
+          "name": "f1_score",
+          "line": 9
+        },
+        {
+          "module": "sklearn.metrics",
+          "name": "classification_report",
+          "line": 9
+        },
+        {
+          "module": "sklearn.metrics",
+          "name": "confusion_matrix",
+          "line": 9
+        }
+      ],
+      "6": [
+        {
+          "module": "sklearn.model_selection",
+          "name": "RepeatedStratifiedKFold",
+          "line": 1
+        }
+      ],
+      "10": [
+        {
+          "module": "matplotlib.patches",
+          "name": null,
+          "line": 1
+        }
+      ]
+    }
+  },
+  "dependency_classification": {
+    "third_party_baseline": [
+      "matplotlib",
+      "numpy",
+      "pandas",
+      "pyarrow",
+      "sklearn"
+    ],
+    "standard_library": [
+      "argparse",
+      "ast",
+      "json",
+      "pathlib",
+      "pickle",
+      "platform",
+      "time"
+    ],
+    "optional_not_required_locally": [
+      "google.colab"
+    ]
+  }
+}

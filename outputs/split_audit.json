@@ -1,0 +1,18 @@
+{
+  "Madrid": {
+    "unique_pixels": 76263,
+    "exact_coordinate_duplicates_after_deduplication": 0,
+    "orthogonally_adjacent_pixel_pairs": 69725,
+    "adjacent_pairs_assigned_to_different_folds": 55796,
+    "adjacent_pairs_cross_fold_fraction": 0.8002294729293654,
+    "split": "StratifiedKFold(5, shuffle=True, random_state=42)"
+  },
+  "Amsterdam": {
+    "unique_pixels": 25992,
+    "exact_coordinate_duplicates_after_deduplication": 0,
+    "orthogonally_adjacent_pixel_pairs": 18325,
+    "adjacent_pairs_assigned_to_different_folds": 14611,
+    "adjacent_pairs_cross_fold_fraction": 0.7973260572987722,
+    "split": "StratifiedKFold(5, shuffle=True, random_state=42)"
+  }
+}
