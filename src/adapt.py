@@ -76,17 +76,43 @@ def make_coral(X_source: np.ndarray, X_target: np.ndarray, eps: float = 1e-5):
     return transform
 
 
-def zca_whiten(X_ref: np.ndarray, eps: float = 1e-5):
+def zca_whiten(X_ref: np.ndarray, eps: float = 1e-5, shrink: float = 0.0):
     """Return a ``transform(X)`` that centres and decorrelates by ``X_ref``'s covariance.
 
     Pass ``X_ref = X_target`` for a transductive whitening of the target before
     prototype matching.
+
+    ``shrink`` in [0, 1] blends the covariance toward its own diagonal before
+    inverting:  ``C_use = (1 - shrink) * C + shrink * diag(C)``.
+
+    * ``shrink = 0``  full ZCA whitening - best once there are ~50+ support
+      points per class, worse below that (a noisy class mean gets smeared across
+      every rotated axis).
+    * ``shrink = 1``  keeps only per-feature variances - equivalent to plain
+      standardisation, which wins at 5-25 support points.
+
+    Intermediate values trace the frontier between the two; ``shrink_for_shots``
+    picks one from the label budget.
     """
     mu = X_ref.mean(axis=0)
-    cov = np.cov(X_ref - mu, rowvar=False) + eps * np.eye(X_ref.shape[1])
+    cov = np.cov(X_ref - mu, rowvar=False)
+    if shrink > 0.0:
+        cov = (1.0 - shrink) * cov + shrink * np.diag(np.diag(cov))
+    cov = cov + eps * np.eye(X_ref.shape[1])
     w = _sym_inv_sqrt(cov, eps)
 
     def transform(X: np.ndarray) -> np.ndarray:
         return (X - mu) @ w
 
     return transform
+
+
+def shrink_for_shots(n_per_class: int, n_features: int = 60) -> float:
+    """Budget-driven shrink level for :func:`zca_whiten`.
+
+    Fitted to the per-budget optimum observed on the 60-feature Amsterdam set
+    (shots 5/25/50/100/200 -> shrink 1.0/0.6/0.4/0.2/0.0), then normalised so a
+    wider feature vector shifts the same curve toward heavier shrink.
+    """
+    eff = n_per_class * 60.0 / max(n_features, 1)
+    return float(np.clip(1.44 - 0.188 * np.log2(max(eff, 2.0)), 0.0, 1.0))

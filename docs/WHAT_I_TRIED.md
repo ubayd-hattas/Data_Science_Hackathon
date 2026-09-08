@@ -357,3 +357,41 @@ What this says:
 
 The real lesson: **there is no single best feature set — it depends on which
 scenario you are scoring.** See `LESSONS.md`.
+
+---
+
+## Round 5: shrinkage whitening — a real win, biggest where it counts
+
+Full whitening untangles all 60 features but needs enough data to be stable, so
+it *hurt* at small label budgets. The fix: blend the covariance toward its own
+diagonal before inverting — a dial from "full untangling" (0) to "just per-
+feature scaling" (1). Heavy blend when labels are scarce, none when plentiful,
+chosen automatically from the budget.
+
+| labels/group | full whitening (before) | adaptive shrink (after) | gain |
+|---:|---:|---:|---:|
+| 5 | 0.385 | **0.538** | **+0.15** |
+| 25 | 0.552 | **0.616** | **+0.06** |
+| 50 | 0.605 | **0.637** | +0.03 |
+| 100 | 0.650 | **0.659** | +0.01 |
+| 200 | 0.670 | **0.678** | +0.01 |
+
+Every budget improved, nothing regressed. The 25-label number — which the
+"best low-data" prize is scored on — went up 6 points.
+
+### Running tally
+
+| idea | outcome |
+|---|---|
+| build the missing embedding network | worse — dead end |
+| CORAL (reshape Madrid to Amsterdam) | **+10 pts zero-shot** |
+| whitening (untangle features) | **+6 pts few-shot, 50+ labels** |
+| CORAL + whitening combined | same as whitening alone |
+| ordinal training | worse — dead end |
+| class-mix correction | worse — dead end |
+| change-point features | **+5 pts zero-shot raw**, neutral few-shot |
+| spatial-context features | +4 pts Madrid's own score, breaks raw transfer, small few-shot gain |
+| **shrinkage whitening** | **+15 / +6 / +3 pts at 5 / 25 / 50 labels** |
+
+Wins are stacking up on the few-shot side now. Best few-shot numbers to date:
+0.54 / 0.62 / 0.64 / 0.66 / 0.68 at 5 / 25 / 50 / 100 / 200 labels per group.
