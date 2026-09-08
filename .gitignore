@@ -1,0 +1,20 @@
+# Data (large binaries — keep out of git), but keep the folder structure
+data/*
+!data/.gitkeep
+!data/preprocessed/
+data/preprocessed/*
+!data/preprocessed/.gitkeep
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
