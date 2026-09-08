@@ -213,3 +213,38 @@ before putting them in a presentation. The harness makes that easy:
 | `src/embedding.py` | The from-scratch network. Works, but doesn't help — kept for the record. |
 | `src/adapt.py` | The three "make Madrid look like Amsterdam" methods, including CORAL and whitening. |
 | `scripts/run_baseline.py` | Runs the whole comparison and writes results to `results/`. |
+
+---
+
+## Update: does CORAL + whitening combine?
+
+**No — for the few-shot path they are the same operation.** Tested directly:
+
+| examples/class | whiten by Amsterdam's shape | CORAL-to-Madrid then whiten by Madrid's shape |
+|---:|---:|---:|
+| 100 | 0.651 | 0.651 |
+| 200 | 0.674 | 0.674 |
+
+Identical at every budget. The reason is arithmetic: reshaping Amsterdam to
+Madrid's shape and then untangling by Madrid's shape cancels out to just
+untangling by Amsterdam's own shape. There is nothing to stack.
+
+CORAL only does real work on the **zero-labels** path, because there it has a
+Madrid-trained model to line up against. On the few-labels path there is no
+Madrid model in the loop, so CORAL has nothing to align and collapses into the
+whitening step.
+
+One side finding worth keeping: whitening by **Madrid's** shape instead of
+Amsterdam's is steadier when labels are very scarce (0.50 vs 0.38 at 5
+examples/class) but worse once you have enough (0.62 vs 0.67 at 200). Neither
+wins outright.
+
+**So the two wins stay on their own tracks:**
+
+| situation | method | score |
+|---|---|---|
+| no Amsterdam labels | CORAL + Random Forest | 0.54 |
+| 100+ Amsterdam labels/group | whitening + nearest-prototype | 0.65-0.67 |
+
+The only untested way to combine them is an *ensemble* — average the CORAL model's
+vote with the whitened-prototype vote — which may or may not beat either alone.

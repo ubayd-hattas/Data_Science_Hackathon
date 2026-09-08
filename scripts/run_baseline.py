@@ -77,10 +77,18 @@ def main() -> None:
     mu_m, sd_m = Xm.mean(0), Xm.std(0) + 1e-8       # Madrid stats (== Notebook 4)
     mu_a, sd_a = Xa.mean(0), Xa.std(0) + 1e-8       # Amsterdam stats (transductive)
 
+    coral_a2m = make_coral(Xa, Xm)          # reshape Amsterdam to Madrid's shape
+    whiten_ams = zca_whiten(Xa)             # decorrelate by Amsterdam's own cov
+    whiten_mad = zca_whiten(Xm)             # decorrelate by Madrid's cov (transfer)
+
     variants: dict[str, FewShotResult] = {}
     variants["madrid_scale"] = few_shot_curve((Xa - mu_m) / sd_m, ya, seed=SEED)
     variants["ams_scale"] = few_shot_curve((Xa - mu_a) / sd_a, ya, seed=SEED)
-    variants["zca"] = few_shot_curve(Xa, ya, transform=zca_whiten(Xa), seed=SEED)
+    variants["zca_ams"] = few_shot_curve(Xa, ya, transform=whiten_ams, seed=SEED)
+    variants["zca_mad"] = few_shot_curve(Xa, ya, transform=whiten_mad, seed=SEED)
+    variants["coral+zca"] = few_shot_curve(
+        Xa, ya, transform=lambda X: whiten_mad(coral_a2m(X)), seed=SEED
+    )
 
     if not NO_EMB:
         te = time.time()
