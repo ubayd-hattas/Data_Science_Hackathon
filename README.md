@@ -23,6 +23,7 @@ transfer a Madrid-trained model to Amsterdam with few labels.
 │   ├── PROJECT_GUIDE.md              Plain-language walkthrough of the whole project
 │   ├── MASTERCLASS.md                Deep dive + how the work maps to the grading rubric
 │   ├── RELATED_WORK.md               Published prior art, benchmark results, methods to steal
+│   ├── WHAT_I_TRIED.md               Plain-language diary of the analysis so far
 │   ├── METRIC_LEARNING_APPROACH.md   Strategy write-up
 │   └── Evaluation Rubric Overview.docx   Organisers' grading rubric
 └── requirements.txt
