@@ -339,3 +339,48 @@ def few_shot_selftrain_curve(
         out.per_shot[n] = np.asarray(scores)
 
     return out
+
+
+def few_shot_ensemble_curve(
+    X_target: np.ndarray,
+    y_target: np.ndarray,
+    prior_proba: np.ndarray,
+    make_clf,
+    shots=DEFAULT_SHOTS,
+    n_trials: int = 10,
+    transform: "Transform | None" = None,
+    seed: int = 42,
+) -> "FewShotResult":
+    """Blend a few-shot head's probabilities with a fixed source-model prior.
+
+    ``prior_proba`` is an (n_target, n_classes) array of class probabilities from
+    a Madrid-trained model (e.g. a CORAL-aligned Random Forest) evaluated on the
+    whole target once. Each trial fits ``make_clf()`` on the whitened support set
+    and combines: ``beta * head + (1 - beta) * prior``, with
+    ``beta = clip(shots / 50, 0.4, 0.95)`` so the local head takes over as labels
+    accumulate. Leakage-safe: the prior uses no target labels, the head only the
+    support set.
+    """
+    Z = transform(X_target) if transform is not None else X_target
+    y = np.asarray(y_target)
+    rng = np.random.default_rng(seed)
+    classes = np.unique(y)
+    out = FewShotResult(tuple(shots))
+
+    for n in shots:
+        beta = float(np.clip(n / 50.0, 0.4, 0.95))
+        scores = []
+        for _ in range(n_trials):
+            support = []
+            for c in classes:
+                idx = np.where(y == c)[0]
+                support.extend(rng.choice(idx, min(n, len(idx)), replace=False).tolist())
+            support = np.asarray(support)
+            query = np.where(~np.isin(np.arange(len(y)), support))[0]
+            clf = make_clf().fit(Z[support], y[support])
+            blended = beta * clf.predict_proba(Z[query]) + (1 - beta) * prior_proba[query]
+            pred = classes[blended.argmax(axis=1)]
+            scores.append(f1_score(y[query], pred, average="macro", zero_division=0))
+        out.per_shot[n] = np.asarray(scores)
+
+    return out

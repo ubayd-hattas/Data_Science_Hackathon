@@ -447,3 +447,60 @@ low-data prize) improves again. Already in the harness.
 Best few-shot line to date: **0.57 / 0.64 / 0.65 / 0.68 / 0.68** at
 5 / 25 / 50 / 100 / 200 labels per group  (from a starting 0.42 / 0.55 / 0.61 /
 0.64 / 0.67). Numbers are from quick runs — the full run will shift them a little.
+
+---
+
+## Round 7: gradient boosting (dead end), CORAL ensemble (win)
+
+**Gradient boosting** (HistGradientBoosting, LightGBM) instead of Random Forest:
+
+| head | Madrid CV | zero-shot raw | zero-shot CORAL | few-shot @25 | @200 |
+|---|---:|---:|---:|---:|---:|
+| Random Forest | 0.626 | 0.431 | 0.542 | 0.639 | 0.680 |
+| HistGB | 0.623 | **0.524** | 0.509 | 0.594 | 0.675 |
+| LightGBM | 0.618 | 0.493 | 0.549 | 0.602 | 0.679 |
+
+One real insight: boosting resists over-fitting Madrid, so *raw* zero-shot jumps
+(0.43 -> 0.52). But CORAL + Random Forest still edges it (0.542), so the pipeline
+does not change. Few-shot: boosting needs more data than a forest and collapses
+at 5 labels (0.11) — Random Forest stays the few-shot head.
+
+**CORAL ensemble** — blend the few-shot head's vote with the Madrid CORAL
+model's vote, weight `clip(shots/50, 0.4, 0.95)` toward the local head as labels
+accumulate:
+
+| budget | RF head alone | + CORAL-prior ensemble | gain |
+|---:|---:|---:|---:|
+| 5 | 0.574 | **0.614** | +0.040 |
+| 25 | 0.639 | **0.649** | +0.010 |
+| 50 | 0.649 | **0.662** | +0.013 |
+| 100 | 0.675 | **0.683** | +0.008 |
+| 200 | 0.680 | **0.685** | +0.005 |
+
+Every budget up, biggest at 5 labels (where the local head is weakest and the
+Madrid prior carries the most weight). This is the "combine the two wins" the
+CORAL+whitening test couldn't do — it works here because the zero-shot model is
+a *separate prediction*, blended at the probability level, not a feature
+transform that collapses.
+
+### Running tally
+
+| idea | outcome |
+|---|---|
+| embedding network | dead end |
+| CORAL | **+10 zero-shot** |
+| whitening | **+6 few-shot @50+** |
+| CORAL + whitening (feature-level) | same as whitening alone |
+| ordinal training | dead end |
+| class-mix correction | dead end |
+| change-point features | **+5 zero-shot raw** |
+| spatial features | +4 Madrid-CV, breaks raw transfer |
+| shrinkage whitening | **+15 / +6 / +3 at 5 / 25 / 50 labels** |
+| self-training | dead end |
+| RF head vs prototype | **+2 at every budget < 200** |
+| gradient boosting | dead end (RF ties or wins) |
+| CORAL-prior ensemble (probability-level) | **+4 / +1 / +1 / +1 / +0.5** |
+
+**Best few-shot line: 0.61 / 0.65 / 0.66 / 0.68 / 0.69** at 5 / 25 / 50 / 100 /
+200 labels per group — from a starting 0.42 / 0.55 / 0.61 / 0.64 / 0.67.
+Quick-run numbers; the full run will move them slightly.
