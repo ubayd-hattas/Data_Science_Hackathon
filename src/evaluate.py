@@ -1,0 +1,197 @@
+"""Evaluation harness: Madrid CV, zero-shot transfer, few-shot prototype curve.
+
+Mirrors the protocol in Notebook 4 but as importable, seeded functions so a new
+idea (a different feature set, an embedding, a domain-adaptation step) is a
+one-argument swap with a number attached.
+
+The few-shot functions take an optional ``transform`` callable. Pass
+``TripletEmbedding(...).fit(X_madrid, y_madrid).transform`` to run prototypes in
+a Madrid-trained embedding space; pass ``None`` to reproduce Notebook 4's
+raw-feature prototypes. Comparing the two answers the question the notebook
+leaves open: does anything trained on Madrid actually help Amsterdam?
+
+Leakage discipline (the rubric's disqualification risk):
+* the support/query split is drawn from Amsterdam labels only;
+* any ``transform`` must have been fitted on Madrid, never on Amsterdam;
+* Madrid CV folds split on pixels, and this dataset has one row per pixel, so
+  no pixel spans folds.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Callable
+
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import f1_score
+from sklearn.model_selection import RepeatedStratifiedKFold
+
+Transform = Callable[[np.ndarray], np.ndarray]
+
+DEFAULT_SHOTS = (5, 25, 50, 100, 200)
+RF_PARAMS = dict(n_estimators=300, class_weight="balanced", random_state=42, n_jobs=-1)
+
+
+# ── Madrid cross-validation ──────────────────────────────────────────────────
+
+@dataclass
+class CVResult:
+    fold_f1: np.ndarray
+    mean: float
+    std: float
+
+    def __str__(self) -> str:
+        return f"Madrid CV macro-F1: {self.mean:.4f} +/- {self.std:.4f}  (n={len(self.fold_f1)})"
+
+
+def madrid_cv(
+    X: np.ndarray,
+    y: np.ndarray,
+    n_folds: int = 5,
+    n_repeats: int = 5,
+    rf_params: dict | None = None,
+    seed: int = 42,
+) -> CVResult:
+    """Repeated stratified k-fold macro-F1 for a Random Forest on Madrid."""
+    rskf = RepeatedStratifiedKFold(n_splits=n_folds, n_repeats=n_repeats, random_state=seed)
+    scores = []
+    for tr, va in rskf.split(X, y):
+        clf = RandomForestClassifier(**(rf_params or RF_PARAMS))
+        clf.fit(X[tr], y[tr])
+        scores.append(f1_score(y[va], clf.predict(X[va]), average="macro"))
+    scores = np.asarray(scores)
+    return CVResult(scores, float(scores.mean()), float(scores.std()))
+
+
+def fit_final_rf(X: np.ndarray, y: np.ndarray, rf_params: dict | None = None):
+    """Random Forest trained on all of Madrid — the model used for zero-shot."""
+    clf = RandomForestClassifier(**(rf_params or RF_PARAMS))
+    return clf.fit(X, y)
+
+
+def zero_shot(clf, X_target: np.ndarray, y_target: np.ndarray) -> float:
+    """Macro-F1 of a Madrid-trained classifier applied straight to the target."""
+    return float(f1_score(y_target, clf.predict(X_target), average="macro"))
+
+
+# ── Few-shot prototype transfer ─────────────────────────────────────────────
+
+def prototype_predict(
+    X_support: np.ndarray, y_support: np.ndarray, X_query: np.ndarray
+) -> np.ndarray:
+    """Nearest-prototype classifier: assign each query to the closest class mean."""
+    classes = np.unique(y_support)
+    protos = np.stack([X_support[y_support == c].mean(axis=0) for c in classes])
+    d = np.linalg.norm(X_query[:, None, :] - protos[None, :, :], axis=2)
+    return classes[d.argmin(axis=1)]
+
+
+@dataclass
+class FewShotResult:
+    shots: tuple[int, ...]
+    per_shot: dict[int, np.ndarray] = field(default_factory=dict)
+
+    @property
+    def means(self) -> np.ndarray:
+        return np.array([self.per_shot[s].mean() for s in self.shots])
+
+    @property
+    def stds(self) -> np.ndarray:
+        return np.array([self.per_shot[s].std() for s in self.shots])
+
+    def table(self) -> str:
+        rows = ["  shots/class    macro-F1"]
+        for s in self.shots:
+            v = self.per_shot[s]
+            rows.append(f"  {s:>10d}    {v.mean():.4f} +/- {v.std():.4f}")
+        return "\n".join(rows)
+
+
+def few_shot_curve(
+    X_target: np.ndarray,
+    y_target: np.ndarray,
+    shots=DEFAULT_SHOTS,
+    n_trials: int = 10,
+    transform: Transform | None = None,
+    seed: int = 42,
+) -> FewShotResult:
+    """Prototype-transfer macro-F1 vs. label budget, averaged over random draws.
+
+    For each budget ``n``: sample ``n`` support pixels per class from the target,
+    predict the rest by nearest prototype, score macro-F1. Repeat ``n_trials``
+    times with fresh draws.
+
+    If ``transform`` is given it is applied once to the whole target matrix
+    before splitting — it must already be fitted (on Madrid), so this stays
+    leakage-free.
+    """
+    Z = transform(X_target) if transform is not None else X_target
+    y = np.asarray(y_target)
+    rng = np.random.default_rng(seed)
+    classes = np.unique(y)
+    out = FewShotResult(tuple(shots))
+
+    for n in shots:
+        trial_scores = []
+        for _ in range(n_trials):
+            support = []
+            for c in classes:
+                idx = np.where(y == c)[0]
+                support.extend(rng.choice(idx, min(n, len(idx)), replace=False).tolist())
+            support = np.asarray(support)
+            query = np.ones(len(y), dtype=bool)
+            query[support] = False
+            pred = prototype_predict(Z[support], y[support], Z[query])
+            trial_scores.append(
+                f1_score(y[query], pred, average="macro", zero_division=0)
+            )
+        out.per_shot[n] = np.asarray(trial_scores)
+
+    return out
+
+
+# ── Reporting ──────────────────────────────────────────────────────────────
+
+def summary_table(cv: CVResult, f1_zero: float, fs: FewShotResult) -> str:
+    lines = [
+        "| Setting | macro-F1 |",
+        "|---|---|",
+        f"| Madrid CV (5x5) | {cv.mean:.3f} +/- {cv.std:.3f} |",
+        f"| Zero-shot -> Amsterdam | {f1_zero:.3f} |",
+    ]
+    for s in fs.shots:
+        v = fs.per_shot[s]
+        lines.append(f"| Few-shot, {s}/class | {v.mean():.3f} +/- {v.std():.3f} |")
+    return "\n".join(lines)
+
+
+def plot_curve(fs: FewShotResult, f1_zero: float, cv: CVResult, path: str) -> None:
+    """Save the F1-vs-log2(label budget) plot the submission requires."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    shots = np.array(fs.shots)
+    ax.errorbar(shots, fs.means, yerr=fs.stds, fmt="o-", capsize=4,
+                color="#fd8d3c", lw=2, label="Few-shot prototype transfer")
+    for s in fs.shots:
+        ax.scatter([s] * len(fs.per_shot[s]), fs.per_shot[s],
+                   color="#fd8d3c", alpha=0.3, s=18, zorder=3)
+    ax.axhline(f1_zero, ls="--", color="steelblue", label=f"Zero-shot ({f1_zero:.3f})")
+    ax.axhline(cv.mean, ls="--", color="green",
+               label=f"Madrid CV ({cv.mean:.3f})")
+    ax.fill_between(shots, cv.mean - cv.std, cv.mean + cv.std,
+                    color="green", alpha=0.1)
+    ax.set_xscale("log", base=2)
+    ax.set_xticks(shots)
+    ax.set_xticklabels(shots)
+    ax.set_xlabel("Labelled Amsterdam pixels per class")
+    ax.set_ylabel("Macro-F1")
+    ax.set_title("Few-shot transfer: Amsterdam F1 vs. label budget")
+    ax.legend(loc="lower right", fontsize=9)
+    fig.tight_layout()
+    fig.savefig(path, dpi=120)
+    plt.close(fig)
