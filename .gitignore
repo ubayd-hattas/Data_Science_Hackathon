@@ -20,5 +20,10 @@ Thumbs.db
 .idea/
 
 # results/ artifacts and scratch logs
-results/
+results/*
 *.log
+
+
+# keep deliverable artefacts
+!results/deliverable_table.csv
+!results/transfer_curve.png
