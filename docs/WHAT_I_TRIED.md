@@ -248,3 +248,72 @@ wins outright.
 
 The only untested way to combine them is an *ensemble* — average the CORAL model's
 vote with the whitened-prototype vote — which may or may not beat either alone.
+
+---
+
+## Round 3: using the class order, and correcting the class mix — both failed
+
+Two more ideas from the plan, both tested, both do not help the graded score.
+
+### Ordinal training
+
+The four age groups are ordered (1 next to 2, far from 4). A plain classifier
+ignores that. I built the standard fix — split the 4-way problem into three
+"is it older than group k?" yes/no models and recombine (Frank & Hall).
+
+**Result: worse at every setting.**
+
+| | plain model | ordinal model |
+|---|---:|---:|
+| zero-shot (CORAL features) | 0.542 | 0.509 |
+| few-shot @ 200/group | 0.671 | 0.576 |
+
+It *does* make the near-misses closer on average (when it's wrong, it's wrong by
+less), but the competition scores macro-F1, which only counts right vs wrong, not
+by how much. So this would only matter if the grading changed.
+
+### Correcting the class mix (label-shift correction)
+
+Amsterdam has a different mix of age groups than Madrid (more old buildings,
+fewer new ones). There's a standard trick to rescale a model's outputs toward
+the target's mix without using target labels (an EM procedure).
+
+**Result: worse, sometimes badly.**
+
+| | before | after correction |
+|---|---:|---:|
+| zero-shot raw | 0.431 | 0.113 |
+| zero-shot CORAL | 0.542 | 0.442 |
+
+The trick needs the model's probabilities to be trustworthy on the target. The
+gap between the cities makes them untrustworthy, so the correction latches onto
+the wrong signal and amplifies it. The actual mix difference is real but small
+enough that trying to fix it this way costs more than it's worth.
+
+### One small positive
+
+Training a plain small Random Forest on the handful of whitened Amsterdam labels
+(instead of the nearest-prototype rule) is a touch better at small budgets and
+ties at large ones — and it gives the "how far off" number for free.
+
+| shots/group | nearest-prototype | small Random Forest |
+|---:|---:|---:|
+| 5 | 0.415 | 0.433 |
+| 25 | 0.546 | 0.562 |
+| 200 | 0.673 | 0.671 |
+
+### Running tally
+
+| idea | outcome |
+|---|---|
+| build the missing embedding network | worse — dead end |
+| CORAL (reshape Madrid to Amsterdam) | **+10 pts on zero-shot** |
+| whitening (untangle features) | **+6 pts on few-shot, 50+ labels** |
+| combine CORAL + whitening | same as whitening alone (they're one operation) |
+| ordinal training | worse — dead end |
+| class-mix correction | worse — dead end |
+| small RF head instead of prototypes | marginal, ~tie |
+
+Three dead ends, two real wins. That's a normal hit rate. The dead ends are
+worth writing up — the rubric explicitly rewards "clear insight from why a bold
+approach didn't work".

@@ -195,3 +195,53 @@ def plot_curve(fs: FewShotResult, f1_zero: float, cv: CVResult, path: str) -> No
     fig.tight_layout()
     fig.savefig(path, dpi=120)
     plt.close(fig)
+
+
+# ── Few-shot with a trained classifier head ────────────────────────────────
+
+def few_shot_classifier_curve(
+    X_target: np.ndarray,
+    y_target: np.ndarray,
+    make_clf,
+    shots=DEFAULT_SHOTS,
+    n_trials: int = 10,
+    transform: "Transform | None" = None,
+    seed: int = 42,
+    extra_metric=None,
+) -> "FewShotResult":
+    """Like ``few_shot_curve`` but fits ``make_clf()`` on the support set.
+
+    ``make_clf`` is a zero-arg factory returning an unfitted estimator with
+    ``fit`` / ``predict``. Use it to compare a small Random Forest or an
+    ``OrdinalRF`` head against the nearest-prototype rule at each label budget.
+    If ``extra_metric(y_true, y_pred)`` is given, its mean over trials is stored
+    on ``result.per_shot_extra``.
+    """
+    Z = transform(X_target) if transform is not None else X_target
+    y = np.asarray(y_target)
+    rng = np.random.default_rng(seed)
+    classes = np.unique(y)
+    out = FewShotResult(tuple(shots))
+    out.per_shot_extra = {}
+
+    for n in shots:
+        scores, extras = [], []
+        for _ in range(n_trials):
+            support = []
+            for c in classes:
+                idx = np.where(y == c)[0]
+                support.extend(rng.choice(idx, min(n, len(idx)), replace=False).tolist())
+            support = np.asarray(support)
+            query = np.ones(len(y), dtype=bool)
+            query[support] = False
+            clf = make_clf()
+            clf.fit(Z[support], y[support])
+            pred = clf.predict(Z[query])
+            scores.append(f1_score(y[query], pred, average="macro", zero_division=0))
+            if extra_metric is not None:
+                extras.append(extra_metric(y[query], pred))
+        out.per_shot[n] = np.asarray(scores)
+        if extra_metric is not None:
+            out.per_shot_extra[n] = np.asarray(extras)
+
+    return out
