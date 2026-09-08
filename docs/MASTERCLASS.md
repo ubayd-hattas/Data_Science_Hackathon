@@ -178,8 +178,29 @@ are comparable.
   peaks near 10,000). `make_flat_view()` (the helper that builds `df_flat`) removes every
   row whose best-valid Blue exceeds `BLUE_MAX`. **You must apply the identical filter in
   your own preprocessing** or a single spike will distort per-pixel means.
-- **Class imbalance** — Class 1 dominates (most of a city's fabric is old). Consequence
-  seen later: an uncorrected model over-predicts whichever class is largest.
+- **Class imbalance** — the notebook text claims Class 1 dominates. **The actual counts
+  disagree**: Class 2 is the largest in both cities, and Class 1 is the *smallest* in
+  Madrid.
+
+  | Class | Madrid | Amsterdam |
+  |:-----:|-------:|----------:|
+  | 1 | 13,794 (18.1%) | 7,568 (**29.1%**) |
+  | 2 | **27,152 (35.6%)** | **8,802 (33.9%)** |
+  | 3 | 18,672 (24.5%) | 6,745 (25.9%) |
+  | 4 | 16,645 (21.8%) | 2,877 (**11.1%**) |
+
+  This explains Notebook 4's Class 2 over-prediction exactly. **Verify this yourself and
+  say it in the presentation** — catching an error in the provided material is cheap
+  evidence of genuine understanding.
+
+- **Label shift is a second domain shift.** Beyond the *feature* distributions differing
+  between cities (covariate shift), the **class priors differ too**: Class 1 is 1.6× more
+  common in Amsterdam, Class 4 less than half as common. This is *prior shift* (a.k.a.
+  label shift), and it is a distinct problem with its own literature and its own fix
+  (prior correction / re-weighting predicted probabilities by the target prior ratio).
+  Naming it separately — and noting that a prototype classifier is implicitly
+  prior-agnostic, which is part of why few-shot transfer helps so much — is precisely the
+  "deep insight into cross-city domain shift" the rubric's top band asks for.
 - **What the plots say about features** (`BASE_BANDS = ['Blue','Green','Red','NIR','SWIR1','SWIR2']`):
   - per-pixel **mean reflectance** rises monotonically Class 1 → Class 4 in every band —
     the strongest single signal;

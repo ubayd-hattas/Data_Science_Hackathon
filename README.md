@@ -13,6 +13,8 @@ transfer a Madrid-trained model to Amsterdam with few labels.
 │   ├── 2-Reading_Data.ipynb       Load parquet, explore features/labels/time series
 │   ├── 3-Preprocessing.ipynb      Feature engineering → data/preprocessed/
 │   └── 4-Modelling.ipynb          Metric-learning model, CV, zero-/few-shot transfer
+├── src/
+│   └── data.py                    Reusable pipeline: lean loading → 60 features
 ├── data/                          Input data (git-ignored, not committed)
 │   ├── madrid_train.parquet       Stage 1 training city
 │   ├── amsterdam_data.parquet     Transfer target city

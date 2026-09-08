@@ -135,9 +135,22 @@ What it does, step by step:
    in Notebook 3.)*
 5. **Explore with plots:**
    - **Building coverage distribution** — how much of each pixel is actually building.
-   - **Age-class distribution** — reveals **class imbalance**: Class 1 (old buildings)
-     dominates because most of a city is old. This matters: a lazy model can score OK just
-     by guessing "old" a lot, so we watch for that.
+   - **Age-class distribution** — reveals **class imbalance**. Note the notebook text
+     says "Class 1 dominates"; the actual counts say otherwise. **Class 2 is the largest
+     in both cities**, and Class 1 is the *smallest* in Madrid:
+
+     | Class | Madrid | Amsterdam |
+     |:-----:|-------:|----------:|
+     | 1 | 18.1% | **29.1%** |
+     | 2 | **35.6%** | **33.9%** |
+     | 3 | 24.5% | 25.9% |
+     | 4 | 21.8% | **11.1%** |
+
+     Two things follow. A lazy model scores decently by over-guessing Class 2 — which is
+     exactly what Notebook 4 observes. And the two cities have *different* class
+     proportions (Class 1 is 1.6× more common in Amsterdam, Class 4 half as common),
+     which is a second, separate kind of domain shift — see the guide's §5 and
+     MASTERCLASS.md.
    - **Single-pixel time series** — pick a few pixels per class, plot 40 years of one band.
      Lesson: individual pixels are noisy; you can't eyeball the age. But there's a slow
      downward drift (surfaces weather/darken) and sometimes a wobble near the construction
