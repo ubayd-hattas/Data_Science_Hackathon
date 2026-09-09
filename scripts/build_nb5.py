@@ -22,7 +22,7 @@ and produces the two required artefacts:
 |---|---|
 | Features | temporal statistics per pixel (`src/data.py`); optional change-point and spatial-context blocks |
 | Madrid reference | 5×5 repeated stratified CV, Random Forest |
-| Zero-shot | CORAL-align Madrid features → Random Forest → predict Amsterdam |
+| Zero-shot | class-conditional CORAL — iterative per-class alignment of Madrid to Amsterdam via pseudo-labels → Random Forest → predict Amsterdam |
 | Few-shot (per budget) | adaptive-shrinkage ZCA whitening of Amsterdam features (optional PCA) → small Random Forest head → probabilities blended with the CORAL zero-shot model, weight `clip(n/beta_div, beta_floor, 0.95)` toward the local head, then anchored spatial smoothing of the predicted probabilities over each pixel's 4 map-neighbours |
 
 The pipeline settings (feature set, forest depth, shrinkage and blend
@@ -46,7 +46,7 @@ from sklearn.metrics import confusion_matrix, f1_score
 
 sys.path.insert(0, "..")
 from src.data import build_city
-from src.adapt import make_coral, zca_whiten, spatial_smoother
+from src.adapt import make_coral, zca_whiten, spatial_smoother, class_conditional_coral
 from src.evaluate import (
     madrid_cv, fit_final_rf, zero_shot, few_shot_smoothed_curve,
 )
@@ -113,9 +113,17 @@ code(r"""rf_params = dict(
 )
 if QUICK:
     rf_params["n_estimators"] = min(rf_params["n_estimators"], 150)
-cv = madrid_cv(Xm, ym, n_folds=5, n_repeats=2 if QUICK else 5,
-               rf_params=rf_params, seed=SEED)
-print(cv)
+_cvc = Path("../results/madrid_cv_cache.json")
+if _cvc.exists() and not QUICK:
+    _d = json.loads(_cvc.read_text())
+    cv = type("CV", (), {"mean": _d["mean"], "std": _d["std"]})()
+    print(f"Madrid CV {cv.mean:.4f} +/- {cv.std:.4f}  (cached)")
+else:
+    cv = madrid_cv(Xm, ym, n_folds=5, n_repeats=2 if QUICK else 5,
+                   rf_params=rf_params, seed=SEED)
+    if not QUICK:
+        _cvc.write_text(json.dumps({"mean": cv.mean, "std": cv.std}))
+    print(cv)
 """)
 
 md("""## 3. Zero-shot transfer
@@ -131,10 +139,15 @@ coral = make_coral(Xm, Xa)                      # fitted on the two unlabelled c
 rf_coral = fit_final_rf(coral(Xm), ym, rf_params=rf_params)
 f1_zero_coral = zero_shot(rf_coral, Xa, ya)
 
-prior_proba = rf_coral.predict_proba(Xa)        # reused by the few-shot ensemble
+# class-conditional CORAL: iterative per-class alignment via pseudo-labels
+rf_cc = class_conditional_coral(
+    Xm, ym, Xa, lambda: RandomForestClassifier(**rf_params), rounds=2)
+f1_zero_cc = zero_shot(rf_cc, Xa, ya)
+prior_proba = rf_cc.predict_proba(Xa)           # Stage-1 prior for the few-shot blend
 
-print(f"zero-shot  raw   {f1_zero_raw:.4f}")
-print(f"zero-shot  CORAL {f1_zero_coral:.4f}")
+print(f"zero-shot  raw              {f1_zero_raw:.4f}")
+print(f"zero-shot  CORAL            {f1_zero_coral:.4f}")
+print(f"zero-shot  class-cond CORAL {f1_zero_cc:.4f}")
 """)
 
 md("""## 4. Few-shot transfer curve
@@ -184,8 +197,9 @@ fs_std  = np.array([curves[n].std()  for n in SHOTS])
 md("## 5. Deliverable table")
 
 code(r"""rows = [("Madrid 5x5 CV", cv.mean, cv.std),
-        ("Amsterdam zero-shot (raw)",   f1_zero_raw,   np.nan),
-        ("Amsterdam zero-shot (CORAL)", f1_zero_coral, np.nan)]
+        ("Amsterdam zero-shot (raw)",              f1_zero_raw,   np.nan),
+        ("Amsterdam zero-shot (CORAL)",            f1_zero_coral, np.nan),
+        ("Amsterdam zero-shot (class-cond CORAL)", f1_zero_cc,    np.nan)]
 rows += [(f"Amsterdam few-shot, {n}/class", m, s)
          for n, m, s in zip(SHOTS, fs_mean, fs_std)]
 
@@ -205,7 +219,7 @@ ax.errorbar(x, fs_mean, yerr=fs_std, fmt="o-", lw=2, capsize=4,
             color="#d95f0e", label="Few-shot transfer (mean ± std)")
 for n in SHOTS:
     ax.scatter([n]*len(curves[n]), curves[n], color="#d95f0e", alpha=0.25, s=16, zorder=3)
-ax.axhline(f1_zero_coral, ls="--", color="#3182bd", label=f"Zero-shot CORAL ({f1_zero_coral:.3f})")
+ax.axhline(f1_zero_cc, ls="--", color="#3182bd", label=f"Zero-shot class-cond CORAL ({f1_zero_cc:.3f})")
 ax.axhline(f1_zero_raw,   ls=":",  color="#9ecae1", label=f"Zero-shot raw ({f1_zero_raw:.3f})")
 ax.axhline(cv.mean, ls="--", color="#31a354", label=f"Madrid CV ({cv.mean:.3f})")
 ax.fill_between(x, cv.mean-cv.std, cv.mean+cv.std, color="#31a354", alpha=0.12)
