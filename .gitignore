@@ -27,3 +27,6 @@ results/*
 # keep deliverable artefacts
 !results/deliverable_table.csv
 !results/transfer_curve.png
+
+deliverables/_preview.pptx
+deliverables/~$*
