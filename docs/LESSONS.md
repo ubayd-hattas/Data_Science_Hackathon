@@ -142,6 +142,16 @@ redundancy was invisible to one model and a 6-point handicap to another.
   loaded and never used in the transfer step. The whole approach was aspirational.
 - Preprocessing that "needs the hub" actually runs in **4 seconds on a laptop**
   once you stop loading 21 unused columns.
+- The few-shot support/query split has the same spatial-adjacency risk as the
+  Madrid CV folds, and it's just as large: across all five required budgets,
+  **78–81% of support pixels have at least one immediate spatial neighbour
+  sitting in the query set** (measured directly, `src/amsterdam_split_leakage.py` /
+  `docs/AMSTERDAM_SPATIAL_ADJACENCY_AUDIT.md`). This doesn't touch query
+  *labels* — the leakage discipline elsewhere in this pipeline still holds —
+  but it means part of every reported few-shot score may reflect "this pixel's
+  neighbour was in my support set," not genuine cross-pixel generalisation.
+  Worth stating explicitly in the F1-interpretation section rather than left
+  for a judge to find.
 
 **Lesson:** the provided material is a starting point with real errors in it.
 Checking it is not busywork — one of these (the unimplemented transfer) is a
