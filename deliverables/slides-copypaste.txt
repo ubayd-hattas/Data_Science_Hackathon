@@ -52,8 +52,8 @@ The simple fixes won; the clever ones didn't
 - Gradient boosting - collapses at 5 labels
 - Every attempt to out-model the data lost to using it more carefully
 
-FIGURE: none
-LAYOUT: single column, an x per line, generous whitespace
+FIGURE: fig_slide4_didntwork.png  (five dropped fixes, each with its one-line reason)
+LAYOUT: figure fills the slide; heading above it, generous whitespace
 
 ============================================================
 SLIDE 5   WHAT WE AUDITED

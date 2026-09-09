@@ -242,17 +242,6 @@ def curve():
     save(fig, "slide5_curve.png")
 
 
-if __name__ == "__main__":
-    import time
-    t = time.time()
-    print("figures ->", OUT)
-    extract_notebook_pngs()
-    pipeline()
-    gains()
-    curve()
-    perclass()
-    scatter()
-    print(f"done in {time.time()-t:.0f}s")
 
 
 # ---- 6 · F1 score table (slide 3) --------------------------------
@@ -302,3 +291,58 @@ def score_table():
     ax.text(0.02, -0.03, "± = 1 SD over folds / 20 resamples · baseline (provided notebook): 0.42 → 0.67",
             fontsize=8.5, color=MUT)
     save(fig, "fig_slide3_table.png")
+
+
+# ---- 7 · what didn't work (slide 4) --------------------------------
+def didnt_work():
+    rows = [
+        ("Neural-net embedding",
+         "the features were already separable — nothing left to learn"),
+        ("Ordinal training",
+         "made the mistakes smaller, not fewer; the score only counts right vs wrong"),
+        ("Self-training on its own guesses",
+         "it learns its own early mistakes and compounds them"),
+        ("Gradient boosting",
+         "matches us with plenty of labels, then collapses at 5"),
+        ("Correcting the age mix",
+         "needs confidence scores that the city gap distorts"),
+    ]
+    n = len(rows)
+    fig, ax = plt.subplots(figsize=(9.4, 5.0))
+    ax.axis("off"); ax.set_xlim(0, 1); ax.set_ylim(0, 1)
+
+    ax.text(0.02, 0.95, "The clever fixes we dropped",
+            fontsize=15, color=INK, weight="bold")
+    ax.plot([0.02, 0.98], [0.895, 0.895], color=INK, lw=1.8)
+
+    top, step = 0.80, 0.150
+    for i, (what, why) in enumerate(rows):
+        y = top - i * step
+        ax.text(0.02, y + 0.006, "✗", fontsize=16, color=MADRID,
+                va="center", weight="bold")
+        ax.text(0.075, y + 0.030, what, fontsize=13.5, color=INK,
+                va="center", weight="bold")
+        ax.text(0.075, y - 0.034, why, fontsize=11.5, color=MUT, va="center")
+        if i < n - 1:
+            ax.plot([0.075, 0.98], [y - 0.075, y - 0.075], color=RULE, lw=0.8)
+
+    base = top - (n - 1) * step - 0.075
+    ax.plot([0.02, 0.98], [base, base], color=INK, lw=1.8)
+    ax.text(0.02, base - 0.09,
+            "Every attempt to out-model the data lost to using it more carefully.",
+            fontsize=12, color=ACC, style="italic", weight="bold")
+    save(fig, "fig_slide4_didntwork.png")
+
+if __name__ == "__main__":
+    import time
+    t = time.time()
+    print("figures ->", OUT)
+    extract_notebook_pngs()
+    pipeline()
+    gains()
+    curve()
+    perclass()
+    scatter()
+    score_table()
+    didnt_work()
+    print(f"done in {time.time()-t:.0f}s")
