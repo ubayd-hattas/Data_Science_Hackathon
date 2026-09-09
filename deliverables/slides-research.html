@@ -1,0 +1,452 @@
+<title>Cross-City Building-Age Transfer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Committed light "printed page" world — a research poster. Painted explicitly. */
+  :root{
+    --paper:#FBFBF8;      /* barely-warm off-white, chosen */
+    --plate:#FFFFFF;
+    --ink:#1A1C1F;
+    --muted:#5B6470;      /* cool grey */
+    --rule:#D9DCE0;
+    --rule-strong:#9AA1AA;
+    --accent:#1F5C7A;     /* petrol blue — restrained journal accent */
+    --accent-soft:#EAF1F4;
+    --madrid:#A85D28;     /* muted sienna — ONLY in the two-city figure */
+    --ams:#2E7C8C;        /* muted teal — target city / results */
+    --maxw:1140px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+    font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;
+  }
+  .serif{font-family:Spectral,Georgia,"Times New Roman",serif}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace}
+
+  .rail{position:fixed;inset:0 0 auto 0;z-index:20;display:flex;gap:3px;
+    padding:9px 16px;background:linear-gradient(var(--paper),rgba(251,251,248,.5) 70%,transparent)}
+  .rail button{flex:1;height:2px;border:0;padding:0;background:var(--rule);cursor:pointer}
+  .rail button[aria-current="true"]{background:var(--accent)}
+  .rail button:hover{background:var(--rule-strong)}
+
+  .tools{position:fixed;right:16px;bottom:14px;z-index:20;display:flex;gap:8px}
+  .tools button{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;
+    color:var(--muted);background:var(--plate);border:1px solid var(--rule);border-radius:3px;
+    padding:7px 11px;cursor:pointer}
+  .tools button:hover{color:var(--ink);border-color:var(--rule-strong)}
+  .tools button:focus-visible,.rail button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .deck{scroll-snap-type:y mandatory;overflow-y:auto;height:100vh;padding:42px 24px 80px}
+  .slide{
+    scroll-snap-align:center;width:min(100%,var(--maxw));margin:0 auto 40px;
+    aspect-ratio:16/9;background:var(--plate);border:1px solid var(--rule);
+    padding:clamp(22px,3.4vw,46px);display:flex;flex-direction:column;position:relative;overflow:hidden;
+  }
+  /* header band */
+  .band{display:flex;justify-content:space-between;align-items:baseline;
+    border-bottom:1px solid var(--rule-strong);padding-bottom:8px;margin-bottom:clamp(10px,1.8vw,22px)}
+  .sec{font-family:Spectral,serif;font-weight:600;font-size:clamp(11px,1.35vw,15px);
+    letter-spacing:.02em;color:var(--accent)}
+  .sec i{color:var(--muted);font-style:normal}
+  .pg{font-family:"IBM Plex Mono",monospace;font-size:clamp(9px,1.05vw,11px);color:var(--muted);letter-spacing:.08em}
+
+  h1{margin:0;font-family:Spectral,serif;font-weight:700;font-size:clamp(24px,3.9vw,44px);
+    line-height:1.08;letter-spacing:-.005em;text-wrap:balance}
+  h2{margin:0 0 .2em;font-family:Spectral,serif;font-weight:600;font-size:clamp(20px,3vw,34px);
+    line-height:1.12;text-wrap:balance}
+  .lede{color:var(--muted);font-size:clamp(12px,1.4vw,17px);max-width:56ch;margin:.5em 0 0}
+  .grow{flex:1;min-height:0}
+  .foot{font-family:"IBM Plex Mono",monospace;font-size:clamp(9px,1.05vw,11.5px);
+    color:var(--muted);letter-spacing:.02em;margin-top:auto;padding-top:10px}
+  .madrid{color:var(--madrid)} .ams{color:var(--ams)} .acc{color:var(--accent)}
+
+  p.body{font-size:clamp(12px,1.5vw,17px);max-width:60ch;margin:.6em 0 0}
+  ul.pts{list-style:none;margin:.9em 0 0;padding:0;display:grid;gap:.5em;max-width:60ch}
+  ul.pts li{position:relative;padding-left:1.3em;font-size:clamp(12px,1.45vw,16.5px);line-height:1.4}
+  ul.pts li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;
+    border:1.5px solid var(--accent);border-radius:50%}
+
+  /* boxed callout — contributions / takeaways / leakage note */
+  .box{border:1px solid var(--rule-strong);background:var(--accent-soft);
+    padding:14px 16px;margin-top:1em;max-width:64ch}
+  .box .lbl{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:.5em}
+  .box ol{margin:0;padding-left:1.3em;display:grid;gap:.4em}
+  .box li{font-size:clamp(11px,1.35vw,15px);line-height:1.38}
+  .box.plain{background:transparent}
+
+  /* two-column research layout */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,40px);flex:1;min-height:0}
+  @media (max-width:760px){.two{grid-template-columns:1fr}}
+  .fig{display:flex;flex-direction:column;min-height:0}
+  .fig svg{width:100%;flex:1;min-height:0;display:block}
+  .fig figcaption{font-family:"IBM Plex Mono",monospace;font-size:clamp(9px,1.05vw,11px);
+    color:var(--muted);line-height:1.4;margin-top:8px;border-top:1px solid var(--rule);padding-top:6px}
+
+  /* booktabs-style table */
+  table.bt{width:100%;border-collapse:collapse;font-family:"IBM Plex Mono",monospace}
+  table.bt caption{caption-side:bottom;font-size:clamp(9px,1.05vw,11px);color:var(--muted);
+    text-align:left;margin-top:8px;line-height:1.4}
+  table.bt th,table.bt td{padding:5px 8px;font-size:clamp(10px,1.4vw,14px);text-align:right;
+    font-variant-numeric:tabular-nums}
+  table.bt th:first-child,table.bt td:first-child{text-align:left}
+  table.bt thead th{color:var(--muted);font-weight:500;font-size:clamp(8.5px,1.1vw,11px);
+    letter-spacing:.05em;text-transform:uppercase;
+    border-top:2px solid var(--ink);border-bottom:1px solid var(--rule-strong)}
+  table.bt tbody tr:last-child td{border-bottom:2px solid var(--ink)}
+  table.bt td .v{color:var(--ams)}
+  table.bt tr.ref td{color:var(--madrid)} table.bt tr.ref td .v{color:var(--madrid)}
+
+  /* pipeline diagram */
+  .pipe{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;margin-top:1em}
+  .pnode{flex:1;min-width:120px;border:1px solid var(--rule-strong);padding:10px 12px;
+    background:var(--plate);font-size:clamp(10px,1.25vw,13px);line-height:1.3}
+  .pnode b{display:block;font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:3px}
+  .parr{display:flex;align-items:center;color:var(--rule-strong);font-size:20px;padding:0 6px}
+  .split{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:760px){.split{grid-template-columns:1fr}}
+  .split .pnode b{color:var(--ams)}
+
+  /* three analysis columns */
+  .cols{display:grid;grid-template-columns:1.05fr 1fr 1fr;gap:clamp(14px,2.4vw,28px);flex:1;min-height:0}
+  @media (max-width:760px){.cols{grid-template-columns:1fr}}
+  .col h3{margin:0 0 .5em;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:4px}
+  .col ul{list-style:none;margin:0;padding:0;display:grid;gap:.45em}
+  .col li{font-size:clamp(10.5px,1.3vw,14px);line-height:1.34}
+  .col .d{font-family:"IBM Plex Mono",monospace;color:var(--ams)}
+  .col.neg .d{color:var(--madrid)}
+
+  ol.take{list-style:none;counter-reset:t;margin:.9em 0 0;padding:0;display:grid;gap:.55em;max-width:62ch}
+  ol.take li{counter-increment:t;position:relative;padding-left:2.1em;font-size:clamp(12px,1.5vw,18px)}
+  ol.take li::before{content:"§ " counter(t);position:absolute;left:0;top:.12em;
+    font-family:Spectral,serif;font-size:.72em;color:var(--accent)}
+  .team{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px 18px;font-family:"IBM Plex Mono",monospace;
+    font-size:clamp(9px,1.1vw,12px);color:var(--muted)}
+  .team b{color:var(--ink);font-weight:500}
+
+  .authors{font-family:"IBM Plex Mono",monospace;font-size:clamp(10px,1.3vw,14px);color:var(--ink);margin-top:.8em}
+  .venue{font-family:"IBM Plex Mono",monospace;font-size:clamp(9px,1.1vw,11px);color:var(--muted);
+    letter-spacing:.1em;text-transform:uppercase}
+  .abs{border-left:3px solid var(--accent);padding:2px 0 2px 14px;margin-top:auto;max-width:70ch}
+  .abs .lbl{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:.35em}
+  .abs p{margin:0;font-size:clamp(10px,1.25vw,13.5px);line-height:1.55;color:var(--muted)}
+
+  body.present .rail,body.present .grid-btn{display:none}
+  body.present .deck{scroll-snap-type:none;padding:0;height:100vh;overflow:hidden}
+  body.present .slide{display:none;margin:0;width:100vw;height:100vh;max-width:none;
+    aspect-ratio:auto;border:0;padding:clamp(30px,5vw,84px)}
+  body.present .slide.active{display:flex}
+
+  body.grid .deck{scroll-snap-type:none;display:grid;grid-template-columns:repeat(2,1fr);
+    gap:16px;max-width:1280px;margin:0 auto;padding:50px 24px 80px}
+  body.grid .slide{margin:0;width:100%}
+  @media (max-width:760px){body.grid .deck{grid-template-columns:1fr}}
+
+  @page{size:1280px 720px;margin:0}
+  @media print{
+    html,body{background:#fff}
+    .rail,.tools{display:none!important}
+    .deck{display:block!important;height:auto!important;overflow:visible!important;padding:0!important;scroll-snap-type:none!important}
+    .slide{width:1280px!important;height:720px!important;max-width:none!important;aspect-ratio:auto!important;
+      margin:0!important;border:0!important;padding:66px 74px!important;
+      break-after:page;page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .slide:last-child{break-after:auto;page-break-after:auto}
+  }
+  @media (prefers-reduced-motion:reduce){.deck{scroll-behavior:auto}*{transition:none!important}}
+</style>
+
+<div class="rail" id="rail" aria-label="slides"></div>
+
+<main class="deck" id="deck">
+
+  <!-- 1 · TITLE -->
+  <section class="slide" id="s1">
+    <div class="band"><span class="sec">Hack4Dev 2026 &nbsp;&mdash;&nbsp; Cross-city transfer track</span><span class="pg">1 / 8</span></div>
+    <div class="grow" style="display:flex;flex-direction:column;justify-content:center">
+      <h1>Cross-city building-age classification<br>from Landsat spectral time series</h1>
+      <p class="lede">Transferring a Madrid-trained model to Amsterdam with a small labelled budget.</p>
+      <div class="authors">&lt;Author A&gt;, &lt;Author B&gt;, &lt;Author C&gt;, &lt;Author D&gt;</div>
+      <div class="venue" style="margin-top:4px">Team &lt;name&gt;</div>
+    </div>
+    <div class="abs">
+      <div class="lbl">Abstract &nbsp;&middot;&nbsp; 149 words</div>
+      <p>Predicting building construction era from 30&nbsp;m Landsat imagery is hard, and harder
+        across cities: a model trained on Madrid must work in Amsterdam, where building materials,
+        climate and urban form all differ. We compress each pixel&rsquo;s 40-year, six-band
+        reflectance series into per-pixel temporal statistics and train a class-balanced Random
+        Forest on Madrid. Transfer rests on unsupervised, label-free alignment: class-conditional
+        CORAL reshapes Madrid to Amsterdam one age class at a time, driven by the model&rsquo;s own
+        pseudo-labels (zero-shot macro-F1 0.36&rarr;0.65). Budget-scaled ZCA whitening with a small
+        local classifier, blended with the Stage-1 model and smoothed over map-neighbours, handles
+        the few-shot regime. By 100 labelled Amsterdam pixels per class the transferred model
+        reaches Madrid&rsquo;s own in-city score (0.72 vs 0.66). Residual error concentrates on
+        pre-1984 classes, which carry no construction event in the record. Simple distribution
+        alignment beat a learned embedding, ordinal loss, self-training and gradient boosting.</p>
+    </div>
+  </section>
+
+  <!-- 2 · PROBLEM & CONTRIBUTIONS -->
+  <section class="slide" id="s2">
+    <div class="band"><span class="sec">&sect;1 &nbsp;<i>Problem &amp; contributions</i></span><span class="pg">2 / 8</span></div>
+    <h2>Cross-city domain shift breaks a spectral age model</h2>
+    <ul class="pts">
+      <li>Task: assign each 30&nbsp;m pixel to one of four construction-era classes; score = macro-F1.</li>
+      <li>Train on Madrid (labelled); adapt to Amsterdam with 5&ndash;200 labels per class.</li>
+      <li>Both <span class="acc">covariate shift</span> (materials, climate, sensor era) and
+        <span class="acc">label shift</span> (class priors differ 1.6&times; for class&nbsp;1).</li>
+    </ul>
+    <div class="box">
+      <div class="lbl">Contributions</div>
+      <ol>
+        <li><b>Class-conditional CORAL</b> &mdash; iterative per-class covariance alignment driven by pseudo-labels; no target labels.</li>
+        <li><b>Budget-adaptive few-shot pipeline</b> &mdash; whitening strength, model blend and spatial smoothing all scale with <span class="mono">n</span>.</li>
+        <li><b>Systematic ablation</b> including five reported negative results.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 3 · DATA & REPRESENTATION -->
+  <section class="slide" id="s3">
+    <div class="band"><span class="sec">&sect;2 &nbsp;<i>Data &amp; representation</i></span><span class="pg">3 / 8</span></div>
+    <h2>108 temporal statistics per pixel</h2>
+    <div class="two">
+      <div>
+        <p class="body">Each pixel carries up to <span class="mono">40</span> annual six-band
+          observations. We gap-fill, then collapse the series &mdash; one row per pixel forces the
+          model onto <span class="acc">trends</span>, not per-year snapshots.</p>
+        <ul class="pts">
+          <li>Overall / early / late / year-on-year mean &amp; SD per band</li>
+          <li>Five spectral indices (NDVI, NDBI, &hellip;)</li>
+          <li>Largest single-year jump: magnitude, direction, <span class="acc">timing</span></li>
+          <li>Eight-nearest-neighbour feature averages</li>
+        </ul>
+      </div>
+      <div class="box plain" style="align-self:center">
+        <div class="lbl">Design rationale</div>
+        <ol>
+          <li>Jump-<i>timing</i> features target classes&nbsp;3&ndash;4, whose construction event falls inside the record.</li>
+          <li>Chosen for construction physics that generalises &mdash; not to memorise Madrid.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="foot">Madrid: 76,263 pixels &nbsp;&middot;&nbsp; Amsterdam: 25,992 pixels &nbsp;&middot;&nbsp; one QA-valid observation per band-year.</div>
+  </section>
+
+  <!-- 4 · METHOD -->
+  <section class="slide" id="s4">
+    <div class="band"><span class="sec">&sect;3 &nbsp;<i>Method &mdash; model &amp; transfer strategy</i></span><span class="pg">4 / 8</span></div>
+    <h2>Align first, then adapt with a few labels</h2>
+    <div class="pipe">
+      <div class="pnode"><b>Stage 1</b>Madrid features &rarr; class-balanced Random Forest (500 trees)</div>
+      <div class="parr">&rarr;</div>
+      <div class="pnode"><b>Align</b>Class-conditional CORAL: per-class covariance match via pseudo-labels, &times;2</div>
+      <div class="parr">&rarr;</div>
+      <div class="pnode"><b>Predict</b>Zero-shot on Amsterdam &mdash; <span class="mono ams">0.36 &rarr; 0.65</span></div>
+    </div>
+    <div class="split">
+      <div class="pnode"><b>0 labels</b>Use the aligned Stage-1 model directly.</div>
+      <div class="pnode"><b>n labels</b>Whiten (shrink &prop; 1/n) &rarr; small RF on support &rarr; blend with Stage-1 &rarr; inverse-distance neighbour smoothing.</div>
+    </div>
+    <div class="box" style="margin-top:12px">
+      <div class="lbl">Leakage discipline</div>
+      <ol><li>All alignment/whitening/prior statistics from the <b>unlabelled</b> Amsterdam pool; the only labelled target data is the per-trial support set. Smoothing is prediction-only.</li></ol>
+    </div>
+  </section>
+
+  <!-- 5 · EXPERIMENTAL SETUP -->
+  <section class="slide" id="s5">
+    <div class="band"><span class="sec">&sect;4 &nbsp;<i>Experimental setup</i></span><span class="pg">5 / 8</span></div>
+    <h2>Protocol &amp; model selection</h2>
+    <div class="two">
+      <ul class="pts">
+        <li>Madrid reference: <span class="mono">5&times;5</span> repeated stratified CV, macro-F1.</li>
+        <li>Amsterdam: budgets <span class="mono">{5, 25, 50, 100, 200}</span> per class, 20 random support draws each.</li>
+        <li>Hyperparameters + feature set from a <span class="acc">500-configuration search</span> scored on one half of Amsterdam, confirmed once on the untouched other half.</li>
+      </ul>
+      <div class="box plain" style="align-self:center">
+        <div class="lbl">Caveats stated up front</div>
+        <ol>
+          <li>Repeated resampling &ne; k-fold CV; &plusmn; is dispersion, not a standard error.</li>
+          <li>~80% of support pixels have an immediate neighbour in the query set (random per-class sampling; measured).</li>
+        </ol>
+      </div>
+    </div>
+    <div class="foot">Fixed seed 42, end-to-end reproducible &mdash; <span class="mono">notebooks/5-Transfer.ipynb</span>.</div>
+  </section>
+
+  <!-- 6 · RESULTS -->
+  <section class="slide" id="s6">
+    <div class="band"><span class="sec">&sect;5 &nbsp;<i>Results</i></span><span class="pg">6 / 8</span></div>
+    <h2>By 50 labels/class the transfer reaches the in-city ceiling</h2>
+    <div class="two">
+      <table class="bt">
+        <thead><tr><th>Setting</th><th>Macro-F1</th></tr></thead>
+        <tbody>
+          <tr><td>Zero-shot, raw</td><td>0.358</td></tr>
+          <tr><td>Zero-shot, class-cond CORAL</td><td><span class="v">0.651</span></td></tr>
+          <tr><td>Few-shot, 5 / class</td><td><span class="v">0.662</span> &plusmn;.003</td></tr>
+          <tr><td>Few-shot, 25 / class</td><td><span class="v">0.677</span> &plusmn;.006</td></tr>
+          <tr><td>Few-shot, 50 / class</td><td><span class="v">0.704</span> &plusmn;.009</td></tr>
+          <tr><td>Few-shot, 100 / class</td><td><span class="v">0.721</span> &plusmn;.007</td></tr>
+          <tr><td>Few-shot, 200 / class</td><td><span class="v">0.737</span> &plusmn;.005</td></tr>
+          <tr class="ref"><td>Madrid 5&times;5 CV (ceiling)</td><td><span class="v">0.664</span> &plusmn;.004</td></tr>
+        </tbody>
+        <caption>Tab. 1&nbsp; Macro-F1 by setting; &plusmn;1 SD over folds / 20 resamples.</caption>
+      </table>
+      <figure class="fig">
+        <svg viewBox="0 0 340 220" role="img" aria-label="Macro-F1 rises with labelled pixels per class and crosses the Madrid ceiling near 50">
+          <line x1="46" y1="12" x2="46" y2="176" stroke="#9AA1AA"/>
+          <line x1="46" y1="176" x2="326" y2="176" stroke="#9AA1AA"/>
+          <text x="40" y="176" text-anchor="end" fill="#5B6470" font-family="IBM Plex Mono" font-size="10">.35</text>
+          <text x="40" y="100" text-anchor="end" fill="#5B6470" font-family="IBM Plex Mono" font-size="10">.55</text>
+          <text x="40" y="24" text-anchor="end" fill="#5B6470" font-family="IBM Plex Mono" font-size="10">.75</text>
+          <!-- ceiling 0.664 -> y = 176 - (0.664-0.35)/0.40*164 = 176 - 128.7 = 47.3 -->
+          <line x1="46" y1="47" x2="326" y2="47" stroke="#A85D28" stroke-width="1.4" stroke-dasharray="5 4"/>
+          <text x="322" y="42" text-anchor="end" fill="#A85D28" font-family="IBM Plex Mono" font-size="10">Madrid .664</text>
+          <text x="62"  y="190" text-anchor="middle" fill="#5B6470" font-family="IBM Plex Mono" font-size="10">5</text>
+          <text x="128" y="190" text-anchor="middle" fill="#5B6470" font-family="IBM Plex Mono" font-size="10">25</text>
+          <text x="194" y="190" text-anchor="middle" fill="#5B6470" font-family="IBM Plex Mono" font-size="10">50</text>
+          <text x="260" y="190" text-anchor="middle" fill="#5B6470" font-family="IBM Plex Mono" font-size="10">100</text>
+          <text x="318" y="190" text-anchor="middle" fill="#5B6470" font-family="IBM Plex Mono" font-size="10">200</text>
+          <text x="186" y="210" text-anchor="middle" fill="#5B6470" font-family="IBM Plex Mono" font-size="10">labelled pixels per class (log)</text>
+          <!-- y = 176 - (F1-0.35)/0.40*164 :  .662->48.0  .677->41.9  .704->30.7  .721->23.8  .737->17.2 -->
+          <polyline points="62,48 128,42 194,31 260,24 318,17" fill="none" stroke="#2E7C8C" stroke-width="2.6"/>
+          <g stroke="#2E7C8C" stroke-width="1.3" opacity="0.55">
+            <line x1="62"  y1="44" x2="62"  y2="52"/><line x1="128" y1="38" x2="128" y2="46"/>
+            <line x1="194" y1="27" x2="194" y2="35"/><line x1="260" y1="20" x2="260" y2="28"/>
+            <line x1="318" y1="14" x2="318" y2="21"/>
+          </g>
+          <g fill="#2E7C8C">
+            <circle cx="62" cy="48" r="3.3"/><circle cx="128" cy="42" r="3.3"/><circle cx="194" cy="31" r="3.3"/>
+            <circle cx="260" cy="24" r="3.3"/><circle cx="318" cy="17" r="3.3"/>
+          </g>
+        </svg>
+        <figcaption>Fig. 2&nbsp; Few-shot macro-F1 vs. log&#8322; labels per class; error bars &plusmn;1 SD.
+          Steep gain to 50, then a plateau at the Madrid ceiling.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 7 · ANALYSIS -->
+  <section class="slide" id="s7">
+    <div class="band"><span class="sec">&sect;6 &nbsp;<i>Analysis &mdash; ablation &amp; failure modes</i></span><span class="pg">7 / 8</span></div>
+    <h2>Which components matter, and where the ceiling is</h2>
+    <div class="cols">
+      <div class="col">
+        <h3>Ablation &Delta; macro-F1</h3>
+        <ul>
+          <li>Class-cond CORAL <span class="d">+0.07</span> zero-shot</li>
+          <li>Budget-scaled whitening <span class="d">+0.15</span> @ n=5</li>
+          <li>Stage-1 prior blend <span class="d">+0.04</span> @ n=5</li>
+          <li>Neighbour smoothing <span class="d">+0.01</span> all n</li>
+          <li>Feature/HP search <span class="d">+0.02</span></li>
+        </ul>
+      </div>
+      <div class="col neg">
+        <h3>Negative results</h3>
+        <ul>
+          <li>Triplet embedding <span class="d">&minus;</span> features already separable</li>
+          <li>Ordinal loss <span class="d">0</span> smaller errors, not fewer</li>
+          <li>Label-shift EM <span class="d">&minus;</span> priors miscalibrated across gap</li>
+          <li>Self-training <span class="d">&minus;</span> pseudo-label error compounds</li>
+          <li>Gradient boosting <span class="d">&minus;</span> collapses at n=5</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h3>Limitations</h3>
+        <ul>
+          <li>Classes 1 &amp; 2 (pre-1984): no construction event &mdash; a data limit, matches the literature.</li>
+          <li>Support/query spatial adjacency (~80%): disclosed; smoothing kept prediction-only.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot">Every attempt to out-model the data lost to distribution alignment.</div>
+  </section>
+
+  <!-- 8 · CONCLUSION -->
+  <section class="slide" id="s8">
+    <div class="band"><span class="sec">&sect;7 &nbsp;<i>Conclusion</i></span><span class="pg">8 / 8</span></div>
+    <h2>A calibration problem, not a capability one</h2>
+    <ol class="take">
+      <li>A model in a new city is <span class="acc">mis-calibrated</span>, not incapable &mdash; per-class alignment recovers most of the gap with zero labels.</li>
+      <li>~50 labelled pixels per class buy in-city accuracy; the low-data regime needs its own machinery, not a shrunk version of the full one.</li>
+      <li>On 30&nbsp;m Landsat, careful distribution use beat every learned-representation alternative we tried.</li>
+    </ol>
+    <div class="box plain">
+      <div class="lbl">Originality</div>
+      <ol><li>Iterative pseudo-label-driven per-class CORAL, and the framing that transfer is a spectrum requiring different mechanics per label budget.</li></ol>
+    </div>
+    <div class="team">
+      <span><b>&lt;A&gt;</b> features &amp; pipeline</span>
+      <span><b>&lt;B&gt;</b> domain alignment</span>
+      <span><b>&lt;C&gt;</b> evaluation harness</span>
+      <span><b>&lt;D&gt;</b> analysis &amp; write-up</span>
+    </div>
+  </section>
+
+</main>
+
+<div class="tools">
+  <button class="grid-btn" id="gridBtn" type="button">&#8862; Overview</button>
+  <button id="pdfBtn" type="button">&#8681; PDF for Canva</button>
+  <button id="presentBtn" type="button">&#9654; Present</button>
+</div>
+
+<script>
+  var deck = document.getElementById('deck');
+  var slides = [].slice.call(document.querySelectorAll('.slide'));
+  var rail = document.getElementById('rail');
+  var current = 0;
+  slides.forEach(function(sl,i){
+    var b=document.createElement('button'); b.type='button';
+    b.setAttribute('aria-label','Slide '+(i+1));
+    b.addEventListener('click',function(){go(i)}); rail.appendChild(b);
+  });
+  var dots=[].slice.call(rail.children);
+  function mark(i){
+    current=i;
+    dots.forEach(function(d,j){d.setAttribute('aria-current',j===i?'true':'false')});
+    if(document.body.classList.contains('present'))
+      slides.forEach(function(s,j){s.classList.toggle('active',j===i)});
+  }
+  function go(i){
+    i=Math.max(0,Math.min(slides.length-1,i));
+    if(document.body.classList.contains('present')){mark(i);return}
+    slides[i].scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'center'});
+    mark(i);
+  }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting)mark(slides.indexOf(e.target))});
+    },{root:deck,threshold:0.55});
+    slides.forEach(function(s){io.observe(s)});
+  }
+  document.getElementById('presentBtn').addEventListener('click',function(){
+    var on=document.body.classList.toggle('present');
+    this.innerHTML=on?'&#10005; Exit':'&#9654; Present';
+    if(on){document.body.classList.remove('grid');mark(current);
+      if(deck.requestFullscreen)deck.requestFullscreen().catch(function(){});}
+    else if(document.fullscreenElement)document.exitFullscreen();
+  });
+  document.getElementById('gridBtn').addEventListener('click',function(){
+    document.body.classList.toggle('grid');document.body.classList.remove('present');
+  });
+  document.getElementById('pdfBtn').addEventListener('click',function(){
+    document.body.classList.remove('present','grid');window.print();
+  });
+  document.addEventListener('keydown',function(e){
+    var k=e.key.toLowerCase();
+    if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();go(current+1);}
+    else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();go(current-1);}
+    else if(k==='p')document.getElementById('presentBtn').click();
+    else if(e.key==='Escape'&&document.body.classList.contains('present'))document.getElementById('presentBtn').click();
+  });
+  mark(0);
+</script>

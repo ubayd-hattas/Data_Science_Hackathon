@@ -1,0 +1,444 @@
+<title>Building Age, City to City</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  /* ---- committed single visual world: a night-imagery ground station.
+         painted explicitly so it holds on any host ground ---- */
+  :root{
+    --ground:#0E1418;      /* near-black, faint blue-green bias */
+    --surface:#141D22;     /* raised plate */
+    --surface-2:#1B262C;
+    --ink:#EAF1F2;         /* cool near-white */
+    --muted:#8DA0A6;       /* blue-grey neutral, biased to the cool accent */
+    --line:#2A373D;        /* hairline */
+    --madrid:#E7A13C;      /* sodium amber — the source city, warm */
+    --amsterdam:#54C0CE;   /* cold cyan — the target city, water / infrared */
+    --glow:rgba(84,192,206,.28);
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--ground);color:var(--ink);
+    font-family:Archivo,"Helvetica Neue",Arial,sans-serif;
+    font-size:16px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace}
+
+  /* ---- top progress rail ---- */
+  .rail{
+    position:fixed;inset:0 0 auto 0;z-index:20;
+    display:flex;gap:4px;padding:10px 16px;
+    background:linear-gradient(var(--ground),rgba(14,20,24,.6) 70%,transparent);
+  }
+  .rail button{
+    flex:1;height:3px;border:0;padding:0;border-radius:2px;
+    background:var(--line);cursor:pointer;transition:background .2s;
+  }
+  .rail button[aria-current="true"]{background:var(--amsterdam)}
+  .rail button:hover{background:var(--muted)}
+  .tools{
+    position:fixed;right:16px;bottom:14px;z-index:20;display:flex;gap:8px;
+  }
+  .tools button{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;
+    color:var(--muted);background:var(--surface);border:1px solid var(--line);
+    border-radius:4px;padding:7px 11px;cursor:pointer;
+  }
+  .tools button:hover{color:var(--ink);border-color:var(--muted)}
+  .tools button:focus-visible,.rail button:focus-visible{outline:2px solid var(--amsterdam);outline-offset:2px}
+
+  /* ---- deck ---- */
+  .deck{
+    scroll-snap-type:y mandatory;overflow-y:auto;height:100vh;
+    padding:44px 24px 80px;
+  }
+  .slide{
+    scroll-snap-align:center;
+    width:min(100%,var(--maxw));margin:0 auto 40px;
+    aspect-ratio:16/9;min-height:0;
+    background:
+      radial-gradient(120% 90% at 12% 0%, rgba(231,161,60,.06), transparent 55%),
+      radial-gradient(120% 90% at 100% 100%, rgba(84,192,206,.07), transparent 55%),
+      var(--surface);
+    border:1px solid var(--line);border-radius:6px;
+    padding:clamp(20px,3.3vw,44px);
+    display:flex;flex-direction:column;
+    position:relative;overflow:hidden;
+  }
+  .slide::after{ /* faint scan grid, instrument feel */
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px);
+    background-size:100% 46px;mask-image:linear-gradient(transparent,transparent 60%,#000);
+  }
+  .eyebrow{
+    display:flex;justify-content:space-between;align-items:baseline;
+    font-family:"IBM Plex Mono",monospace;font-size:clamp(10px,1.05vw,12px);
+    letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  }
+  .eyebrow b{color:var(--amsterdam);font-weight:600}
+  h1,h2{margin:0;text-wrap:balance;font-weight:900;letter-spacing:-.01em;line-height:1.04}
+  h1{font-size:clamp(26px,4.6vw,52px)}
+  h2{font-size:clamp(22px,3.6vw,40px)}
+  .lede{color:var(--muted);font-size:clamp(13px,1.5vw,18px);max-width:42ch;margin-top:.7em}
+  .grow{flex:1}
+  .foot{
+    font-family:"IBM Plex Mono",monospace;font-size:clamp(10px,1.05vw,12px);
+    color:var(--muted);letter-spacing:.04em;
+  }
+  .madrid{color:var(--madrid)} .ams{color:var(--amsterdam)}
+
+  /* points list — tiny, no card noise */
+  ul.pts{list-style:none;margin:1.1em 0 0;padding:0;display:grid;gap:.55em;max-width:52ch}
+  ul.pts li{position:relative;padding-left:1.4em;font-size:clamp(13px,1.55vw,18px);color:var(--ink)}
+  ul.pts li::before{content:"";position:absolute;left:0;top:.62em;width:9px;height:2px;background:var(--amsterdam)}
+
+  /* hero stat */
+  .stat{display:flex;align-items:baseline;gap:.5em;margin-top:.4em}
+  .stat .big{font-family:"IBM Plex Mono",monospace;font-weight:600;
+    font-size:clamp(38px,7vw,84px);letter-spacing:-.02em;color:var(--amsterdam);
+    text-shadow:0 0 30px var(--glow)}
+  .stat .arrow{color:var(--muted);font-size:clamp(22px,3.5vw,40px)}
+  .stat .from{color:var(--muted);font-family:"IBM Plex Mono",monospace;font-size:clamp(20px,3vw,34px)}
+  .cap{color:var(--muted);font-family:"IBM Plex Mono",monospace;font-size:clamp(10px,1.1vw,12px);
+    letter-spacing:.1em;text-transform:uppercase;margin-top:.3em}
+
+  /* two swatches (slide 2) */
+  .swatches{display:flex;gap:14px;margin-top:1.1em;flex-wrap:wrap}
+  .sw{flex:1;min-width:160px;border:1px solid var(--line);border-radius:5px;padding:14px 16px;background:var(--surface-2)}
+  .sw .name{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+  .sw .bar{height:8px;border-radius:4px;margin-top:10px}
+  .sw.m .name{color:var(--madrid)} .sw.m .bar{background:linear-gradient(90deg,#7a4a12,var(--madrid))}
+  .sw.a .name{color:var(--amsterdam)} .sw.a .bar{background:linear-gradient(90deg,#1c5a63,var(--amsterdam))}
+  .sw p{margin:.6em 0 0;font-size:13px;color:var(--muted)}
+
+  /* results: table + chart */
+  .results{display:grid;grid-template-columns:0.9fr 1.1fr;gap:26px;margin-top:1em;flex:1;min-height:0}
+  @media (max-width:720px){.results{grid-template-columns:1fr}}
+  table.f1{width:100%;border-collapse:collapse;font-family:"IBM Plex Mono",monospace}
+  table.f1 th,table.f1 td{text-align:right;padding:6px 4px;font-size:clamp(11px,1.5vw,15px);
+    border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+  table.f1 th{color:var(--muted);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:clamp(9px,1.1vw,11px)}
+  table.f1 td:first-child,table.f1 th:first-child{text-align:left;color:var(--muted)}
+  table.f1 td .v{color:var(--amsterdam)}
+  table.f1 tr.home td{color:var(--madrid)}
+  table.f1 tr.home td .v{color:var(--madrid)}
+  .chartwrap{display:flex;flex-direction:column;min-height:0}
+  svg.chart{width:100%;height:100%;display:block}
+  svg .axis{stroke:var(--line);stroke-width:1}
+  svg .home{stroke:var(--madrid);stroke-width:1.4;stroke-dasharray:5 4}
+  svg .curve{fill:none;stroke:var(--amsterdam);stroke-width:2.5}
+  svg .dot{fill:var(--amsterdam)}
+  svg .err{stroke:var(--amsterdam);stroke-width:1.4;opacity:.5}
+  svg text{fill:var(--muted);font-family:"IBM Plex Mono",monospace;font-size:11px}
+
+  /* three columns (slide 6) */
+  .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:1.1em;flex:1;min-height:0}
+  @media (max-width:720px){.cols{grid-template-columns:1fr}}
+  .col h3{margin:0 0 .5em;font-family:"IBM Plex Mono",monospace;font-size:11px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .col.win h3{color:var(--amsterdam)} .col.lose h3{color:var(--madrid)}
+  .col ul{list-style:none;margin:0;padding:0;display:grid;gap:.5em}
+  .col li{font-size:clamp(12px,1.4vw,15px);color:var(--ink);line-height:1.35}
+  .col.mute li{color:var(--muted)}
+
+  /* takeaways */
+  ol.take{list-style:none;counter-reset:t;margin:1.1em 0 0;padding:0;display:grid;gap:.7em;max-width:54ch}
+  ol.take li{counter-increment:t;position:relative;padding-left:2em;font-size:clamp(13px,1.6vw,19px)}
+  ol.take li::before{content:counter(t,decimal-leading-zero);position:absolute;left:0;top:.15em;
+    font-family:"IBM Plex Mono",monospace;font-size:.7em;color:var(--amsterdam);letter-spacing:.05em}
+  .team{margin-top:auto;display:flex;flex-wrap:wrap;gap:8px 20px;font-family:"IBM Plex Mono",monospace;
+    font-size:clamp(10px,1.15vw,13px);color:var(--muted);letter-spacing:.03em}
+  .team b{color:var(--ink);font-weight:500}
+
+  /* abstract panel on cover */
+  .abstract{border:1px solid var(--line);border-radius:5px;background:var(--surface-2);
+    padding:14px 16px;margin-top:auto;max-width:60ch}
+  .abstract .cap{margin:0 0 .4em}
+  .abstract p{margin:0;font-size:clamp(11px,1.3vw,14px);color:var(--muted);line-height:1.55}
+
+  /* present (fullscreen one-at-a-time) mode */
+  body.present .rail,body.present .tools .grid-btn{display:none}
+  body.present .deck{scroll-snap-type:none;padding:0;height:100vh;overflow:hidden}
+  body.present .slide{display:none;margin:0;width:100vw;height:100vh;max-width:none;
+    aspect-ratio:auto;border:0;border-radius:0;padding:clamp(28px,5vw,80px)}
+  body.present .slide.active{display:flex}
+
+  /* grid overview */
+  body.grid .deck{scroll-snap-type:none;display:grid;grid-template-columns:repeat(2,1fr);
+    gap:18px;max-width:1240px;margin:0 auto;padding:52px 24px 80px}
+  body.grid .slide{margin:0;width:100%}
+  @media (max-width:720px){body.grid .deck{grid-template-columns:1fr}}
+
+  @media (prefers-reduced-motion:reduce){
+    .deck{scroll-behavior:auto}
+    *{transition:none!important}
+  }
+
+  /* ---- PRINT: one slide per landscape page, exact 16:9 — import this PDF into Canva ----
+     In the browser print dialog: Landscape, margins None, "Background graphics" ON. ---- */
+  @page{size:1280px 720px;margin:0}
+  @media print{
+    html,body{background:var(--ground)}
+    .rail,.tools{display:none!important}
+    .deck{display:block!important;height:auto!important;overflow:visible!important;
+      padding:0!important;scroll-snap-type:none!important}
+    .slide{
+      width:1280px!important;height:720px!important;max-width:none!important;
+      aspect-ratio:auto!important;margin:0!important;border:0!important;border-radius:0!important;
+      padding:64px 72px!important;break-after:page;page-break-after:always;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    }
+    .slide:last-child{break-after:auto;page-break-after:auto}
+    .slide::after{opacity:.28}
+  }
+</style>
+
+<div class="rail" id="rail" role="tablist" aria-label="slides"></div>
+
+<main class="deck" id="deck">
+
+  <!-- 01 · COVER -->
+  <section class="slide" id="s1">
+    <div class="eyebrow"><span>HACK4DEV &nbsp;·&nbsp; CROSS-CITY BUILDING AGE</span><span>01 / 07</span></div>
+    <div class="grow" style="display:flex;flex-direction:column;justify-content:center;gap:.2em">
+      <h1>Guessing building age from space &mdash; in a city we&rsquo;ve never studied</h1>
+      <p class="lede">Train on <span class="madrid">Madrid</span>. Work in <span class="ams">Amsterdam</span>.
+        A few hundred checked buildings, no more.</p>
+    </div>
+    <div class="abstract">
+      <div class="cap">Abstract</div>
+      <p>A model trained in one city is mis&#8209;tuned in another, not incapable. We reshape the
+        Madrid data to match Amsterdam one age group at a time, using no Amsterdam answers, which
+        lifts the no&#8209;label score from 0.36 to 0.65. A handful of local examples closes the rest:
+        by 50 per group the transferred model matches a home&#8209;city one. Simple alignment beat a
+        neural network, ordinal training, self&#8209;training and gradient boosting.</p>
+    </div>
+    <div class="foot" style="margin-top:14px">TEAM &lt;name&gt; &nbsp;·&nbsp; &lt;member A&gt; &nbsp; &lt;member B&gt; &nbsp; &lt;member C&gt; &nbsp; &lt;member D&gt;</div>
+  </section>
+
+  <!-- 02 · THE PROBLEM -->
+  <section class="slide" id="s2">
+    <div class="eyebrow"><span><b>01</b> / the problem</span><span>02 / 07</span></div>
+    <h2>The same model doesn&rsquo;t work in a new city</h2>
+    <ul class="pts">
+      <li>We sort each 30&#8209;metre patch of city into one of four age groups.</li>
+      <li>A satellite gives us 40 years of how that patch reflects light.</li>
+      <li>Madrid&rsquo;s brick and Amsterdam&rsquo;s concrete reflect it differently &mdash; so Madrid&rsquo;s rules land in the wrong place.</li>
+    </ul>
+    <div class="swatches">
+      <div class="sw m"><div class="name">Madrid</div><div class="bar"></div><p>warm, dry, older brick</p></div>
+      <div class="sw a"><div class="name">Amsterdam</div><div class="bar"></div><p>cool, wet, more concrete</p></div>
+    </div>
+    <div class="foot grow" style="display:flex;align-items:flex-end">Same building age &mdash; different fingerprint.</div>
+  </section>
+
+  <!-- 03 · THE FIX -->
+  <section class="slide" id="s3">
+    <div class="eyebrow"><span><b>02</b> / our fix</span><span>03 / 07</span></div>
+    <h2>Reshape Madrid&rsquo;s data to look like Amsterdam &mdash; <span class="ams">before</span> predicting</h2>
+    <div class="stat">
+      <span class="from">0.36</span><span class="arrow">&rarr;</span><span class="big">0.65</span>
+    </div>
+    <div class="cap">score in Amsterdam with zero local answers</div>
+    <ul class="pts">
+      <li>We line the two cities up one age group at a time.</li>
+      <li>No Amsterdam answers used &mdash; only the model&rsquo;s own first guesses.</li>
+    </ul>
+    <div class="foot grow" style="display:flex;align-items:flex-end">This is the step that does the real work.</div>
+  </section>
+
+  <!-- 04 · FEW EXAMPLES -->
+  <section class="slide" id="s4">
+    <div class="eyebrow"><span><b>03</b> / a few local examples</span><span>04 / 07</span></div>
+    <h2>&ldquo;Few&rdquo; needs a different recipe than &ldquo;many&rdquo;</h2>
+    <ul class="pts">
+      <li><span class="mono ams">5&ndash;25</span> known buildings &rarr; mostly trust the Madrid model.</li>
+      <li><span class="mono ams">200</span> known buildings &rarr; mostly trust the local one.</li>
+      <li>The mix shifts on its own as the number grows &mdash; nothing is hand&#8209;set per case.</li>
+    </ul>
+    <div class="foot grow" style="display:flex;align-items:flex-end">
+      The low&#8209;data case isn&rsquo;t the full pipeline with less data &mdash; it&rsquo;s a deliberately different one.
+    </div>
+  </section>
+
+  <!-- 05 · RESULTS -->
+  <section class="slide" id="s5">
+    <div class="eyebrow"><span><b>04</b> / results</span><span>05 / 07</span></div>
+    <h2>With <span class="ams">50</span> examples per group, it matches a home&#8209;city model</h2>
+    <div class="results">
+      <table class="f1" aria-label="macro-F1 by label budget">
+        <tr><th>Examples / group</th><th>Score</th></tr>
+        <tr><td>5</td><td><span class="v">0.66</span> &plusmn;.00</td></tr>
+        <tr><td>25</td><td><span class="v">0.68</span> &plusmn;.01</td></tr>
+        <tr><td>50</td><td><span class="v">0.70</span> &plusmn;.01</td></tr>
+        <tr><td>100</td><td><span class="v">0.72</span> &plusmn;.01</td></tr>
+        <tr><td>200</td><td><span class="v">0.74</span> &plusmn;.01</td></tr>
+        <tr class="home"><td>Madrid, on itself</td><td><span class="v">0.66</span> &plusmn;.00</td></tr>
+      </table>
+      <div class="chartwrap">
+        <svg class="chart" viewBox="0 0 320 210" role="img" aria-label="Score rises with more examples and passes the Madrid home-city line by 50 examples per group">
+          <!-- axes -->
+          <line class="axis" x1="40" y1="14" x2="40" y2="170"/>
+          <line class="axis" x1="40" y1="170" x2="306" y2="170"/>
+          <!-- y ticks 0.35 .. 0.75 -->
+          <text x="34" y="170" text-anchor="end">.35</text>
+          <text x="34" y="96" text-anchor="end">.55</text>
+          <text x="34" y="22" text-anchor="end">.75</text>
+          <!-- home-city reference at 0.66 -> y = 170 - (0.66-0.35)/0.40*156 = 170-120.9 = 49.1 -->
+          <line class="home" x1="40" y1="49" x2="306" y2="49"/>
+          <text x="300" y="44" text-anchor="end" fill="#E7A13C">Madrid 0.66</text>
+          <!-- x labels: 5 25 50 100 200 on a log-ish even spread -->
+          <text x="56"  y="184" text-anchor="middle">5</text>
+          <text x="118" y="184" text-anchor="middle">25</text>
+          <text x="180" y="184" text-anchor="middle">50</text>
+          <text x="242" y="184" text-anchor="middle">100</text>
+          <text x="298" y="184" text-anchor="middle">200</text>
+          <text x="173" y="203" text-anchor="middle">examples per group</text>
+          <!-- curve points: y = 170 - (score-0.35)/0.40*156
+               .66->49.1  .68->41.3  .70->33.5  .72->25.7  .74->17.9 -->
+          <polyline class="curve" points="56,49 118,41 180,34 242,26 298,18"/>
+          <g>
+            <line class="err" x1="56"  y1="45" x2="56"  y2="53"/>
+            <line class="err" x1="118" y1="37" x2="118" y2="45"/>
+            <line class="err" x1="180" y1="30" x2="180" y2="38"/>
+            <line class="err" x1="242" y1="22" x2="242" y2="30"/>
+            <line class="err" x1="298" y1="15" x2="298" y2="21"/>
+          </g>
+          <g>
+            <circle class="dot" cx="56"  cy="49" r="3.4"/>
+            <circle class="dot" cx="118" cy="41" r="3.4"/>
+            <circle class="dot" cx="180" cy="34" r="3.4"/>
+            <circle class="dot" cx="242" cy="26" r="3.4"/>
+            <circle class="dot" cx="298" cy="18" r="3.4"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="foot">Steep climb to 50, then it flattens &mdash; right at the home&#8209;city line.</div>
+  </section>
+
+  <!-- 06 · WHAT WE LEARNED -->
+  <section class="slide" id="s6">
+    <div class="eyebrow"><span><b>05</b> / what we learned</span><span>06 / 07</span></div>
+    <h2>The simple fixes won. The clever ones didn&rsquo;t.</h2>
+    <div class="cols">
+      <div class="col win">
+        <h3>Worked</h3>
+        <ul>
+          <li>Line the two cities up</li>
+          <li>Blend a local model with the Madrid one</li>
+          <li>Let neighbouring patches vote</li>
+        </ul>
+      </div>
+      <div class="col lose">
+        <h3>Didn&rsquo;t</h3>
+        <ul>
+          <li>A neural network</li>
+          <li>Four other well&#8209;known tricks</li>
+          <li>&mdash; all beaten by the simpler fixes</li>
+        </ul>
+      </div>
+      <div class="col mute">
+        <h3>Won&rsquo;t claim</h3>
+        <ul>
+          <li>The two oldest groups can&rsquo;t be told apart &mdash; the signal isn&rsquo;t in the data.</li>
+          <li>Some of the score is nearby buildings looking alike. We say so.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot">Every attempt to out&#8209;think the data lost to using it more carefully.</div>
+  </section>
+
+  <!-- 07 · THE POINT -->
+  <section class="slide" id="s7">
+    <div class="eyebrow"><span><b>06</b> / the point</span><span>07 / 07</span></div>
+    <h2>It&rsquo;s a calibration problem, not a hard one</h2>
+    <ol class="take">
+      <li>A model in a new city is <span class="ams">mis&#8209;tuned</span>, not incapable.</li>
+      <li>Fifty local examples buy home&#8209;city accuracy.</li>
+      <li>Careful use of the data beat every fancier model.</li>
+    </ol>
+    <div class="team">
+      <span><b>&lt;A&gt;</b> features</span>
+      <span><b>&lt;B&gt;</b> alignment</span>
+      <span><b>&lt;C&gt;</b> evaluation</span>
+      <span><b>&lt;D&gt;</b> write&#8209;up &amp; results</span>
+    </div>
+  </section>
+
+</main>
+
+<div class="tools">
+  <button class="grid-btn" id="gridBtn" type="button">&#8862; Overview</button>
+  <button id="pdfBtn" type="button">&#8681; PDF for Canva</button>
+  <button id="presentBtn" type="button">&#9654; Present</button>
+</div>
+
+<script>
+  var deck = document.getElementById('deck');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var rail = document.getElementById('rail');
+  var current = 0;
+
+  slides.forEach(function(sl, i){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('role','tab');
+    b.setAttribute('aria-label','Slide ' + (i+1));
+    b.addEventListener('click', function(){ go(i); });
+    rail.appendChild(b);
+  });
+  var dots = Array.prototype.slice.call(rail.children);
+
+  function mark(i){
+    current = i;
+    dots.forEach(function(d,j){ d.setAttribute('aria-current', j===i ? 'true':'false'); });
+    if (document.body.classList.contains('present')){
+      slides.forEach(function(s,j){ s.classList.toggle('active', j===i); });
+    }
+  }
+  function go(i){
+    i = Math.max(0, Math.min(slides.length-1, i));
+    if (document.body.classList.contains('present')){ mark(i); return; }
+    slides[i].scrollIntoView({behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto':'smooth', block:'center'});
+    mark(i);
+  }
+
+  // track which slide is centred while scrolling
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ mark(slides.indexOf(e.target)); }
+      });
+    }, {root: deck, threshold: 0.55});
+    slides.forEach(function(s){ io.observe(s); });
+  }
+
+  document.getElementById('presentBtn').addEventListener('click', function(){
+    var on = document.body.classList.toggle('present');
+    this.innerHTML = on ? '&#10005; Exit' : '&#9654; Present';
+    if (on){ document.body.classList.remove('grid'); mark(current);
+      if (deck.requestFullscreen) deck.requestFullscreen().catch(function(){}); }
+    else if (document.fullscreenElement){ document.exitFullscreen(); }
+  });
+  document.getElementById('gridBtn').addEventListener('click', function(){
+    document.body.classList.toggle('grid');
+    document.body.classList.remove('present');
+  });
+  document.getElementById('pdfBtn').addEventListener('click', function(){
+    document.body.classList.remove('present','grid');
+    window.print();  // choose "Save as PDF", Landscape, margins None, Background graphics ON
+  });
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' '){ e.preventDefault(); go(current+1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp'){ e.preventDefault(); go(current-1); }
+    else if (e.key.toLowerCase() === 'p'){ document.getElementById('presentBtn').click(); }
+    else if (e.key === 'Escape' && document.body.classList.contains('present')){ document.getElementById('presentBtn').click(); }
+  });
+
+  mark(0);
+</script>
