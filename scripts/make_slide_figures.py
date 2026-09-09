@@ -142,10 +142,10 @@ def scatter():
 def gains():
     steps = [
         ("Baseline\n(provided)", 0.42, MUT),
-        ("Line up\ncities", 0.42 + 0.07, ACC),
-        ("Untangle\nfeatures", 0.42 + 0.07 + 0.09, ACC),
-        ("Two models\nvote", 0.42 + 0.07 + 0.09 + 0.03, ACC),
-        ("Neighbours\nvote", 0.42 + 0.07 + 0.09 + 0.03 + 0.01, ACC),
+        ("Line up\ncities", 0.49, ACC),
+        ("Untangle\nfeatures", 0.62, ACC),
+        ("Two models\nvote", 0.65, ACC),
+        ("Neighbours\nvote", 0.66, ACC),
         ("500-setup\nsearch", 0.662, AMS),
     ]
     fig, ax = plt.subplots(figsize=(8.4, 4.3))
@@ -154,13 +154,13 @@ def gains():
     cols = [c for _, _, c in steps]
     ax.bar(xs, vals, width=.62, color=cols, edgecolor="none")
     for x, v in zip(xs, vals):
-        ax.text(x, v + .006, f"{v:.2f}", ha="center", fontsize=10, color=INK)
+        ax.text(x, v + .008, f"{v:.2f}", ha="center", fontsize=10, color=INK)
     ax.set_xticks(xs)
     ax.set_xticklabels([s for s, _, _ in steps], fontsize=9.5)
     ax.set_ylim(0.38, 0.72)
     ax.set_ylabel("macro-F1  (5 labels / class)")
     ax.axhline(0.664, color=MADRID, ls="--", lw=1.3)
-    ax.text(len(steps) - 1, 0.668, "Madrid in-city 0.66", ha="right", fontsize=9, color=MADRID)
+    ax.text(0.05, 0.672, "Madrid in-city  0.66", ha="left", fontsize=9, color=MADRID)
     ax.spines["top"].set_visible(False); ax.spines["right"].set_visible(False)
     ax.set_title("Each step's contribution", fontsize=12, color=INK, pad=10)
     save(fig, "slide3_gains.png")
@@ -186,23 +186,30 @@ def perclass():
     n = 100
     Z = zca_whiten(a.X, shrink=0.2)(a.X)
     rng = np.random.default_rng(42)
-    sup = np.concatenate([rng.choice(np.where(a.y == c)[0], n, replace=False) for c in cls])
-    q = np.setdiff1d(np.arange(len(a.y)), sup)
-    head = RandomForestClassifier(n_estimators=200, class_weight="balanced",
-                                  random_state=42, n_jobs=-1).fit(Z[sup], a.y[sup])
-    field = 0.9 * head.predict_proba(Z) + 0.1 * prior
-    pred = cls[sm(field)[q].argmax(1)]
-    per = f1_score(a.y[q], pred, average=None, labels=cls)
+    runs = []
+    for _ in range(15):                       # average per-class F1 over draws
+        sup = np.concatenate([rng.choice(np.where(a.y == c)[0], n, replace=False) for c in cls])
+        q = np.setdiff1d(np.arange(len(a.y)), sup)
+        head = RandomForestClassifier(n_estimators=200, class_weight="balanced",
+                                      random_state=42, n_jobs=-1).fit(Z[sup], a.y[sup])
+        field = 0.9 * head.predict_proba(Z) + 0.1 * prior
+        pred = cls[sm(field)[q].argmax(1)]
+        runs.append(f1_score(a.y[q], pred, average=None, labels=cls))
+    per = np.mean(runs, axis=0)
+    err = np.std(runs, axis=0)
 
-    fig, ax = plt.subplots(figsize=(6.4, 4.0))
+    fig, ax = plt.subplots(figsize=(6.6, 4.0))
     names = ["1\npre-1945", "2\n1945-84", "3\n1984-04", "4\n2004-24"]
-    bars = ax.bar(names, per, width=.6,
-                  color=[MADRID, MADRID, AMS, AMS])
+    lo = float(min(per))
+    cols = [MADRID if abs(v - lo) < 1e-9 else AMS for v in per]
+    bars = ax.bar(names, per, yerr=err, width=.6, color=cols,
+                  error_kw=dict(ecolor=MUT, capsize=4, lw=1.2))
     for b, v in zip(bars, per):
-        ax.text(b.get_x() + b.get_width() / 2, v + .01, f"{v:.2f}", ha="center", fontsize=11, color=INK)
-    ax.set_ylim(0, .9); ax.set_ylabel("F1  (100 labels / class)")
+        ax.text(b.get_x() + b.get_width() / 2, v + .04, f"{v:.2f}", ha="center", fontsize=11, color=INK)
+    ax.set_ylim(0, .95); ax.set_ylabel("F1  (100 labels/class, 15 draws)")
     ax.spines["top"].set_visible(False); ax.spines["right"].set_visible(False)
-    ax.set_title("Score per age class — the two oldest are the hard ones",
+    ax.set_title("Class 1 (pre-1945) is the strongest; the others cluster\n"
+                 "near 0.7 — no single unsolvable pair",
                  fontsize=11.5, color=INK, pad=10)
     save(fig, "slide4_perclass.png")
 
