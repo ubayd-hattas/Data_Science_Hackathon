@@ -97,10 +97,12 @@ fancier model.
 | rank | what we did | plain explanation | effect |
 |:---:|---|---|---|
 | 1 | **Dialling the feature-untangling by label count** | Untangling redundant features needs data. With only 5 labels it backfires, so we turn it down when labels are scarce and up when they're plentiful. | **+0.15 / +0.06 / +0.03** at 5 / 25 / 50 labels |
-| 2 | **CORAL alignment** | Madrid's numbers and Amsterdam's sit in different ranges. Reshape Madrid's to match Amsterdam's overall shape *before* training, so the model's rules land in the right place. | zero-shot **0.36 → 0.58** |
-| 3 | **Feature "untangling" (whitening)** | Lots of our features secretly say the same thing (brightness in blue ≈ green ≈ red). That triple-counts one idea. Untangling makes each idea count once. | few-shot **+0.06** at mid budgets |
-| 4 | **Two models voting together** | Blend the local Amsterdam model's guess with the Madrid model's — lean on Madrid when labels are few, lean local as they grow. | **+0.04** at 5 labels, smaller elsewhere |
-| 5 | **New features + retuning** | See §5. An overnight search over 500 setting-combinations found these help once the forest is grown to use them. | **+0.02–0.03** across the curve |
+| 2 | **Class-conditional CORAL** | Instead of reshaping the whole Madrid cloud to Amsterdam once, reshape it *age-class by age-class*, using the model's own first guesses on the unlabelled Amsterdam data. Repeat twice. | zero-shot **0.58 → 0.65**; also **+0.02** at the 5-label point, which nothing else moved |
+| 3 | **CORAL alignment** (the base version) | Madrid's numbers and Amsterdam's sit in different ranges. Reshape Madrid's to match Amsterdam's overall shape *before* training, so the model's rules land in the right place. | zero-shot **0.36 → 0.58** |
+| 4 | **Feature "untangling" (whitening)** | Lots of our features secretly say the same thing (brightness in blue ≈ green ≈ red). That triple-counts one idea. Untangling makes each idea count once. | few-shot **+0.06** at mid budgets |
+| 5 | **Two models voting together** | Blend the local Amsterdam model's guess with the Madrid model's — lean on Madrid when labels are few, lean local as they grow. | **+0.04** at 5 labels, smaller elsewhere |
+| 6 | **New features + an overnight 500-setting search** | Adding "when did construction happen" + "what's nearby", plus a bigger forest to use them. A search over one half of Amsterdam, checked once on the other half. | **+0.02–0.03** across the curve |
+| 7 | **Neighbourhood smoothing of the predictions** | After the model predicts, average each patch's probabilities with its 8 map-neighbours. City blocks share a build era, so a lone odd prediction is usually a mistake. | **+0.008** across the curve |
 
 ### Things we tried that did NOT work
 
@@ -114,6 +116,9 @@ idea failed.
 | Correcting for Amsterdam having more old buildings | the imbalance is real and measured | the trick needs the model's confidence to be trustworthy across cities — it isn't, so it amplified the error |
 | "Self-training" — let the model label the unlabelled data and learn from that | standard semi-supervised idea | at low label counts the model is ~35 % wrong, so it just teaches itself its own mistakes |
 | Gradient boosting instead of Random Forest | usually a bit better on tables | tied in-city, and fell apart with only 5 labels |
+| Richer neighbourhood features (several map scales + spread) | more context should help | +0.001 — the single 8-neighbour average already captures it |
+| Synthetic support examples ("mixup") | helps neural nets in low-data settings | slightly negative — random forests don't gain from blended points |
+| Anchoring the smoothing to known labels | known labels *are* ours to use | it worked (+0.006 more) but the gain was "same building next door", not skill — a teammate's audit caught it, so we dropped it (see §7a) |
 
 **One-liner for the slide:** *every attempt to be cleverer than the data lost;
 every attempt to use the data more carefully won.*
@@ -188,6 +193,21 @@ classes 1↔2.
 Saying this out loud is worth marks. It shows we know where the ceiling is
 instead of over-claiming.
 
+### 7a. The spatial-adjacency caveat (also lead with this)
+
+A teammate audited the few-shot setup and found that **~80 % of the support
+pixels we draw sit right next to a query pixel** on the map (a 30 m pixel and
+its neighbour are often the same building or block). This is true at every label
+budget and it's a property of the organiser's random-sampling rule, not a bug in
+our code — we never touch query labels. But it means part of every few-shot
+score reflects "my neighbour was in my training set" rather than the model
+generalising to genuinely new locations.
+
+We handle it two ways: (1) the neighbourhood smoothing uses **predictions only**
+— no known label ever leaks into a neighbour's answer; (2) we **state the number
+in the write-up** rather than let a judge discover it. Full detail in
+`docs/AMSTERDAM_SPATIAL_ADJACENCY_AUDIT.md`.
+
 ---
 
 ## 8. Who presents what (suggestion — adjust freely)
@@ -212,16 +232,15 @@ what** — so split it and say so out loud.
 
 ## 9. What we need from each of you
 
-1. **Make at least one real commit** to the branch. Anything genuine — fix a
-   typo here, add your name to the slides, adjust a plot colour. The judges look
-   at `git log`, and right now it has one author. This is the cheapest points on
-   the whole rubric.
+1. **Make at least one real commit** to the branch. `0geder` has done this
+   (the spatial-adjacency audit). Everyone else still needs one — fix a typo
+   here, add your name to the slides, adjust a plot colour. The judges look at
+   `git log`. This is the cheapest points on the whole rubric.
 2. **Fill in your name** on slides 1 and 12, and what you owned.
 3. **Rehearse your slides out loud** at least once, together.
-4. Someone should **ask the organisers** two things: is the written
-   justification capped at 300 or 500 words (Notebook 1 and the rubric
-   disagree), and do they want four or five Amsterdam F1 scores (Notebook 1
-   contradicts itself). Both are point deductions if we guess wrong.
+4. Someone should **ask the organisers**: do they want four or five Amsterdam F1
+   scores? (Notebook 1 says "four" but lists five sample sizes.) The word cap is
+   settled at 500 (rubric). A wrong guess on the F1 count is a point deduction.
 
 ---
 
