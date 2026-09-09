@@ -3,8 +3,8 @@ Madrid 5x5 CV,0.6638,0.004
 Amsterdam zero-shot (raw),0.3577,
 Amsterdam zero-shot (CORAL),0.5776,
 Amsterdam zero-shot (class-cond CORAL),0.6513,
-"Amsterdam few-shot, 5/class",0.6514,0.0033
-"Amsterdam few-shot, 25/class",0.6656,0.0056
-"Amsterdam few-shot, 50/class",0.6927,0.0084
-"Amsterdam few-shot, 100/class",0.7094,0.0069
-"Amsterdam few-shot, 200/class",0.7259,0.0049
+"Amsterdam few-shot, 5/class",0.6622,0.0028
+"Amsterdam few-shot, 25/class",0.6769,0.0055
+"Amsterdam few-shot, 50/class",0.7035,0.0089
+"Amsterdam few-shot, 100/class",0.7207,0.0074
+"Amsterdam few-shot, 200/class",0.7373,0.0053

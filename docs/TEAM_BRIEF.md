@@ -102,7 +102,7 @@ fancier model.
 | 4 | **Feature "untangling" (whitening)** | Lots of our features secretly say the same thing (brightness in blue ≈ green ≈ red). That triple-counts one idea. Untangling makes each idea count once. | few-shot **+0.06** at mid budgets |
 | 5 | **Two models voting together** | Blend the local Amsterdam model's guess with the Madrid model's — lean on Madrid when labels are few, lean local as they grow. | **+0.04** at 5 labels, smaller elsewhere |
 | 6 | **New features + an overnight 500-setting search** | Adding "when did construction happen" + "what's nearby", plus a bigger forest to use them. A search over one half of Amsterdam, checked once on the other half. | **+0.02–0.03** across the curve |
-| 7 | **Neighbourhood smoothing of the predictions** | After the model predicts, average each patch's probabilities with its 8 map-neighbours. City blocks share a build era, so a lone odd prediction is usually a mistake. | **+0.008** across the curve |
+| 7 | **Neighbourhood smoothing of the predictions** | After the model predicts, blend each patch's probabilities with its 8 map-neighbours (closer neighbours weighted more). City blocks share a build era, so a lone odd prediction is usually a mistake. | **+0.02** across the curve |
 
 ### Things we tried that did NOT work
 
@@ -162,16 +162,16 @@ local labels are in place.
 | Amsterdam labels per age class | our macro-F1 | starting baseline |
 |---:|---:|---:|
 | 0 — zero-shot, class-conditional CORAL | **0.65** | 0.43 |
-| 5 per class | **0.65** ± 0.003 | 0.42 |
-| 25 per class | **0.67** ± 0.006 | 0.55 |
-| 50 per class | **0.69** ± 0.008 | 0.61 |
-| 100 per class | **0.71** ± 0.007 | 0.64 |
-| 200 per class | **0.73** ± 0.005 | 0.67 |
+| 5 per class | **0.66** ± 0.003 | 0.42 |
+| 25 per class | **0.68** ± 0.006 | 0.55 |
+| 50 per class | **0.70** ± 0.009 | 0.61 |
+| 100 per class | **0.72** ± 0.007 | 0.64 |
+| 200 per class | **0.74** ± 0.005 | 0.67 |
 | *Madrid, tested on itself* (the ceiling) | *0.66 ± 0.004* | — |
 
 **The headline:** by about **100 labelled buildings per age class**, our
 Madrid-trained model does **as well on Amsterdam as a model does on its own home
-city** — 0.71 vs 0.66, it passes it. The curve climbs fast to ~50 labels, then
+city** — 0.72 vs 0.66, it passes it comfortably. The curve climbs fast to ~50 labels, then
 flattens. And the **zero-labels** number jumped from 0.58 to 0.65 once the
 alignment was done one age class at a time instead of all at once.
 

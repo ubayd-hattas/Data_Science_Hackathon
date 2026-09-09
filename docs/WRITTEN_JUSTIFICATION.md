@@ -31,7 +31,8 @@ predictions are used. Few-shot: ZCA-whiten the Amsterdam features with shrinkage
 scaled to the label budget (near-full at 5 labels/class, none at 200); fit a
 small Random Forest on the whitened support; blend its probabilities with the
 Stage-1 prior, weight clip(n/50, 0.3, 0.95) toward the local head; finally
-average each pixel's probabilities over its eight map-neighbours. Leakage
+blend each pixel's probabilities with its eight map-neighbours,
+weighted by inverse distance. Leakage
 discipline: CORAL covariances, pseudo-labels, whitening covariance and
 neighbourhood terms all come from the unlabelled Amsterdam pool; the only
 labelled target data is the per-trial support set, and the smoothing is
@@ -40,7 +41,7 @@ prediction-only — no support label enters the smoothed field.
 **F1 interpretation.** Madrid 5×5 CV: 0.664 ± 0.004, the in-city ceiling.
 Zero-shot: 0.358 raw, 0.578 with pooled CORAL, **0.651 with class-conditional
 CORAL** — iterative per-class alignment recovers most of the domain gap with no
-labels. Few-shot macro-F1: 0.65 / 0.67 / 0.69 / 0.71 / 0.73 at 5 / 25 / 50 / 100
+labels. Few-shot macro-F1: 0.66 / 0.68 / 0.70 / 0.72 / 0.74 at 5 / 25 / 50 / 100
 / 200 labels per class. The curve rises steeply to about 50 labels then flattens;
 by 100 labels/class it reaches and slightly passes the Madrid ceiling. Residual
 error concentrates on classes 1 and 2, both pre-1984 — no construction event to
@@ -52,4 +53,4 @@ generalisation.
 
 ---
 
-*Justification body: 437 words.*
+*Justification body: 441 words.*
