@@ -234,12 +234,14 @@ def curve():
     ax.set_xticklabels(shots)
     ax.set_xlabel("labelled pixels per class")
     ax.set_ylabel("macro-F1")
-    ax.set_ylim(0.34, 0.78)
+    ax.set_ylim(0.60, 0.78)
     ax.spines["top"].set_visible(False); ax.spines["right"].set_visible(False)
-    ax.legend(frameon=False, fontsize=9, loc="lower right")
-    ax.set_title("Fig.  Transfer reaches the in-city ceiling by ~50 labels",
+    h, l = ax.get_legend_handles_labels()
+    ax.legend([h[2], h[0], h[1]], [l[2], l[0], l[1]],
+              frameon=False, fontsize=9, loc="upper left")
+    ax.set_title("Amsterdam transfer — macro-F1 vs label budget",
                  fontsize=11.5, color=INK, pad=10)
-    save(fig, "slide5_curve.png")
+    save(fig, "fig_slide3_curve.png")
 
 
 
