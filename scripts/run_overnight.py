@@ -153,10 +153,17 @@ def main():
               f"zs raw {cache[name]['f1_zero_raw']:.3f}  "
               f"zs CORAL {cache[name]['f1_zero_coral']:.3f}")
 
-    # Madrid CV once on base (reference, config-independent)
-    cv = madrid_cv(cache["base"]["Xm"], cache["base"]["ym"],
-                   n_repeats=2 if QUICK else 5, seed=SEED)
-    print(f"Madrid CV {cv.mean:.4f} +/- {cv.std:.4f}\n")
+    # Madrid CV once on base (reference, config-independent) — cached across restarts
+    CV_CACHE = ROOT / "results" / "overnight_madrid_cv.json"
+    if CV_CACHE.exists():
+        _c = json.loads(CV_CACHE.read_text())
+        cv = type("CV", (), {"mean": _c["mean"], "std": _c["std"]})()
+        print(f"Madrid CV {cv.mean:.4f} +/- {cv.std:.4f}  (cached)\n")
+    else:
+        cv = madrid_cv(cache["base"]["Xm"], cache["base"]["ym"],
+                       n_repeats=2 if QUICK else 5, seed=SEED)
+        CV_CACHE.write_text(json.dumps({"mean": cv.mean, "std": cv.std}))
+        print(f"Madrid CV {cv.mean:.4f} +/- {cv.std:.4f}\n")
 
     rng = np.random.default_rng(SEED)
     seen, results = set(), []
