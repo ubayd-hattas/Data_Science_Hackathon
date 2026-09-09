@@ -23,7 +23,7 @@ and produces the two required artefacts:
 | Features | temporal statistics per pixel (`src/data.py`); optional change-point and spatial-context blocks |
 | Madrid reference | 5×5 repeated stratified CV, Random Forest |
 | Zero-shot | class-conditional CORAL — iterative per-class alignment of Madrid to Amsterdam via pseudo-labels → Random Forest → predict Amsterdam |
-| Few-shot (per budget) | adaptive-shrinkage ZCA whitening of Amsterdam features (optional PCA) → small Random Forest head → probabilities blended with the CORAL zero-shot model, weight `clip(n/beta_div, beta_floor, 0.95)` toward the local head, then spatial smoothing of the predicted probabilities over each pixel's 8 map-neighbours (no support-label anchoring) |
+| Few-shot (per budget) | adaptive-shrinkage ZCA whitening of Amsterdam features (optional PCA) → small Random Forest head → probabilities blended with the CORAL zero-shot model, weight `clip(n/beta_div, beta_floor, 0.95)` toward the local head, then distance-weighted spatial smoothing of the predicted probabilities over each pixel's 8 map-neighbours (weight 1/(1+dist), no support-label anchoring) |
 
 The pipeline settings (feature set, forest depth, shrinkage and blend
 coefficients, PCA) come from `results/overnight_best.json` when the overnight
