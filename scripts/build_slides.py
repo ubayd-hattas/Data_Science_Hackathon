@@ -133,57 +133,98 @@ def notes(s, text):
     s.notes_slide.notes_text_frame.text = text
 
 
-# ══ 1 — title ══════════════════════════════════════════════════════════
+# ══ 1 — cover ═════════════════════════════════════════════════════════
 ABSTRACT = (
     "Predicting building construction era from 30 m Landsat imagery is hard, and "
     "harder across cities: a model trained on Madrid must work in Amsterdam, where "
     "building materials, climate and urban form all differ. We compress each "
-    "pixel's 40-year, six-band reflectance series into 60 temporal statistics and "
-    "train a class-balanced Random Forest on Madrid. Transfer rests on two "
-    "unsupervised, label-free alignments: CORAL matches Madrid's feature "
-    "covariance to Amsterdam's before training (zero-shot macro-F1 0.45 to 0.55), "
-    "and budget-scaled ZCA whitening with a small local classifier, blended with "
-    "the CORAL model, handles the few-shot regime. With 100 labelled Amsterdam "
-    "pixels per class the transferred model matches Madrid's own in-city score "
-    "(0.68 vs 0.63). Residual error concentrates on pre-1984 classes, which carry "
-    "no construction event in the satellite record. Simple distribution alignment "
-    "beat a learned embedding, ordinal loss, self-training and label-shift "
-    "correction."
+    "pixel's 40-year, six-band reflectance series into per-pixel temporal "
+    "statistics and train a class-balanced Random Forest on Madrid. Transfer "
+    "rests on two unsupervised, label-free alignments: CORAL matches Madrid's "
+    "feature covariance to Amsterdam's before training (zero-shot macro-F1 0.36 "
+    "to 0.58), and budget-scaled ZCA whitening with a small local classifier, "
+    "blended with the CORAL model, handles the few-shot regime. With 100 "
+    "labelled Amsterdam pixels per class the transferred model reaches Madrid's "
+    "own in-city score (0.70 vs 0.66). Residual error concentrates on pre-1984 "
+    "classes, which carry no construction event in the satellite record. Simple "
+    "distribution alignment beat a learned embedding, ordinal loss, "
+    "self-training and gradient boosting."
 )
 s = slide()
 band = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, 0, 0, Inches(0.28), SH)
 _fill(band, ACC)
 _no_line(band)
 band.shadow.inherit = False
-kb = s.shapes.add_textbox(MARGIN, Inches(1.5), SW - 2 * MARGIN, Inches(0.4))
+kb = s.shapes.add_textbox(MARGIN, Inches(1.15), SW - 2 * MARGIN, Inches(0.4))
 kp = kb.text_frame.paragraphs[0]
-kp.text = "HACKATHON SUBMISSION"
+kp.text = "DATA SCIENCE HACKATHON  ·  CROSS-CITY BUILDING-AGE TRANSFER"
 kp.font.size = Pt(12)
 kp.font.bold = True
 kp.font.color.rgb = ACC
-tb = s.shapes.add_textbox(MARGIN, Inches(2.0), SW - 2 * MARGIN, Inches(1.7))
+tb = s.shapes.add_textbox(MARGIN, Inches(1.7), SW - 2 * MARGIN, Inches(1.9))
 tp = tb.text_frame.paragraphs[0]
 tp.text = "A city-portable building-age classifier"
-tp.font.size = Pt(40)
+tp.font.size = Pt(44)
 tp.font.bold = True
 tp.font.color.rgb = INK
 sp = tb.text_frame.add_paragraph()
-sp.text = "from 40 years of Landsat  ·  Madrid → Amsterdam transfer"
-sp.font.size = Pt(18)
+sp.text = "from 40 years of Landsat  ·  Madrid → Amsterdam"
+sp.font.size = Pt(19)
 sp.font.color.rgb = MUT
-ab = s.shapes.add_textbox(MARGIN, Inches(3.9), SW - 2 * MARGIN, Inches(2.7))
-ap = ab.text_frame
-ap.word_wrap = True
-ap.paragraphs[0].text = ABSTRACT
-ap.paragraphs[0].font.size = Pt(13)
-ap.paragraphs[0].font.color.rgb = INK
-ap.paragraphs[0].line_spacing = 1.2
-tm = s.shapes.add_textbox(MARGIN, SH - Inches(0.95), SW - 2 * MARGIN, Inches(0.4))
-tm.text_frame.paragraphs[0].text = "Team <name>  ·  <member A>, <member B>, <member C>, <member D>"
+tm = s.shapes.add_textbox(MARGIN, Inches(3.5), SW - 2 * MARGIN, Inches(0.4))
+tm.text_frame.paragraphs[0].text = ("Team <name>   ·   <member A>, <member B>, "
+                                    "<member C>, <member D>   ·   <date>")
 tm.text_frame.paragraphs[0].font.size = Pt(12)
 tm.text_frame.paragraphs[0].font.color.rgb = MUT
+# abstract panel (kept on slide 1 per the brief's requirement)
+pan = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN, Inches(4.15),
+                         SW - 2 * MARGIN, Inches(2.6))
+_fill(pan, PANEL)
+_no_line(pan)
+pan.shadow.inherit = False
+al = s.shapes.add_textbox(MARGIN + Inches(0.25), Inches(4.25),
+                          SW - 2 * MARGIN - Inches(0.5), Inches(0.3))
+al.text_frame.paragraphs[0].text = "ABSTRACT"
+al.text_frame.paragraphs[0].font.size = Pt(10)
+al.text_frame.paragraphs[0].font.bold = True
+al.text_frame.paragraphs[0].font.color.rgb = ACC
+ab = s.shapes.add_textbox(MARGIN + Inches(0.25), Inches(4.6),
+                          SW - 2 * MARGIN - Inches(0.5), Inches(2.05))
+ab.text_frame.word_wrap = True
+ab.text_frame.paragraphs[0].text = ABSTRACT
+ab.text_frame.paragraphs[0].font.size = Pt(11.5)
+ab.text_frame.paragraphs[0].font.color.rgb = INK
+ab.text_frame.paragraphs[0].line_spacing = 1.16
 notes(s, "One line: a building-age classifier that ports to a new city on a few "
          "hundred labels. Don't read the abstract aloud.")
+
+# ══ 2 — contents ══════════════════════════════════════════════════════
+s = slide()
+y = heading(s, "Contents")
+items = [
+    ("1", "The problem & the data", "why cross-city age estimation is hard"),
+    ("2", "Our approach", "train on Madrid, two routes into Amsterdam"),
+    ("3", "Zero-shot transfer — CORAL", "aligning the feature space, no labels"),
+    ("4", "Few-shot transfer", "whitening, budget-scaled, two models voting"),
+    ("5", "Results", "the F1 table and the label-budget curve"),
+    ("6", "What did not work", "five dead ends and why"),
+    ("7", "Limitations & team", "the pre-1984 data limit; who did what"),
+]
+_tb = s.shapes.add_textbox(MARGIN, y, SW - 2 * MARGIN, SH - y - Inches(0.8))
+tf = _tb.text_frame
+tf.word_wrap = True
+for i, (n, t, d) in enumerate(items):
+    p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
+    r1 = p.add_run(); r1.text = f"{n}   "
+    r1.font.color.rgb = ACC; r1.font.bold = True; r1.font.size = Pt(20)
+    r2 = p.add_run(); r2.text = t
+    r2.font.color.rgb = INK; r2.font.size = Pt(20)
+    r3 = p.add_run(); r3.text = f"   —  {d}"
+    r3.font.color.rgb = MUT; r3.font.size = Pt(14)
+    p.space_after = Pt(14)
+    pPr = p._pPr if p._pPr is not None else p._p.get_or_add_pPr()
+    pPr.append(pPr.makeelement(qn("a:buNone"), {}))
+notes(s, "10 seconds — name the seven beats so the audience can follow the arc.")
 
 # ══ 2 — problem ══════════════════════════════════════════════════════
 s = slide("Problem")
@@ -282,16 +323,17 @@ notes(s, "The leakage point here pre-empts the biggest deduction on the rubric."
 s = slide("Results")
 y = heading(s, "Zero-shot: CORAL alignment", "no Amsterdam labels used")
 bullets(s, [
-    "Plain Madrid model on Amsterdam: macro-F1 0.45. The rules are right; the "
+    "Plain Madrid model on Amsterdam: macro-F1 0.36. The rules are right; the "
     "coordinates are Madrid's.",
     "CORAL: whiten Madrid's feature covariance, re-colour it with Amsterdam's, "
     "before training — boundaries are learned in the target's coordinates.",
-    "Result:  0.45  →  0.55.  About 15 lines of linear algebra, zero labels.",
-    "Recovers roughly half the Madrid–Amsterdam domain gap on its own.",
+    "Result:  0.36  →  0.58.  About 15 lines of linear algebra, zero labels.",
+    "Closes most of the Madrid–Amsterdam domain gap on its own; essential once "
+    "spatial features are in the mix.",
 ], top=y)
 big = s.shapes.add_textbox(SW - Inches(4.4), Inches(2.4), Inches(3.6), Inches(2.4))
 bp = big.text_frame.paragraphs[0]
-bp.text = "0.45 → 0.55"
+bp.text = "0.36 → 0.58"
 bp.font.size = Pt(40)
 bp.font.bold = True
 bp.font.color.rgb = ACC
@@ -360,11 +402,11 @@ y = heading(s, "F1 vs. labels per class")
 if CURVE.exists():
     s.shapes.add_picture(str(CURVE), MARGIN, y, height=Inches(4.5))
 bullets(s, [
-    "Steep rise to ~50 labels, then a plateau.",
-    "The plateau sits at the Madrid in-city score — by 100 labels/class the "
-    "transferred model is as good on Amsterdam as any model is at home.",
-    "Error bars widest at n = 5 (±0.02): tiny support, unstable class means.",
-    "Low-data point (25/class) is only ~0.04 below the plateau.",
+    "Steep rise to ~50 labels, then it flattens.",
+    "By 100 labels/class (0.70) the transferred model matches — and edges past — "
+    "Madrid's own in-city score (0.66).",
+    "Error bars widest at n = 5 (±0.01–0.02): tiny support, unstable class means.",
+    "Low-data point (25/class = 0.66) is only ~0.05 below the plateau.",
 ], left=Inches(7.6), top=y, width=Inches(5.0), size=Pt(14))
 notes(s, "Lead the whole talk with THIS story: few labels close the gap. "
          "Everything else is how.")
