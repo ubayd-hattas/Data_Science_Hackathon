@@ -1,7 +1,10 @@
 # Slide 5 — We stress-tested our own few-shot result
 
-**Speaker:** D · **Time:** 1:30 · **Figure:** `fig_slide5_spatial.png`
-(per-class bars and the confusion matrix are **backup only** — pull them up if asked)
+**Speaker:** D · **Time:** 1:30 · **Figure:** `fig_slide5_bars.png` — grouped bars,
+"what the labels add" on a normal test (tall blue) vs with labels held a map-tile away
+(near-zero orange), at 50 / 100 / 200 labels per class.
+(`fig_slide5_spatial.png` is the line-chart version; per-class bars + confusion matrix
+are backup — pull them up only if asked.)
 
 ---
 
@@ -37,15 +40,16 @@ the labels forced to be **far away** — a full map-tile from anything we score.
   Our final pipeline separates them fine — **class 1 is actually our best class
   (~0.78)**, and classes 2, 3, 4 sit together near 0.70.
 
-## 3. The picture
+## 3. The picture (`fig_slide5_bars.png`)
 
-- **Blue line** — the gain the labels give on the organiser's normal (random)
-  test. Rises from +0.03 at 25 labels to +0.09 at 200.
-- **Orange line** — the gain when the labels are held a map-tile away. Flat, near
-  zero, with a wide shaded band.
-- **The gap between the two lines is the neighbour effect.**
-- The shaded band is because scoring one small tile at a time is noisy
-  (±0.07–0.09). The direction is solid; the exact points are soft.
+- Three pairs of bars — one pair for each label budget (50, 100, 200 per class).
+- **Tall blue bar** — how much the labels add on the organiser's normal test
+  (+0.05, +0.07, +0.09).
+- **Short orange bar** — how much they add when the labels are held a map-tile
+  away (about 0 every time; a hair negative at 50, within noise).
+- **The blue bar towering over the orange one is the neighbour effect.**
+- Per-tile scoring is noisy, so read the *pattern* (blue big, orange near zero at
+  every budget), not the exact orange values.
 
 ## 4. What to actually say (~40 s)
 

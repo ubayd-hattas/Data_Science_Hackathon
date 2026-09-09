@@ -85,17 +85,18 @@ LAYOUT: figure fills the slide; heading above it, generous whitespace
 ============================================================
 SLIDE 5   WHAT WE AUDITED
 ============================================================
-We stress-tested our own few-shot result
+We checked how much of the few-shot gain is real
 
-- ~80% of support pixels touch a test patch - measured twice
-- We re-ran few-shot with the labels held a full map-tile from the scored area
-- About half the few-shot gain was proximity, not the labels
-- Zero-shot transfer (0.36 -> 0.65) uses no labels, so it is unaffected - that is the solid result
-- No rule broken: the organiser's split is random; we just measured what it costs
+(three points that WALK THROUGH the chart - not three separate topics)
+01 · The few labelled patches are picked at random - 80% land next to a patch we're graded on
+02 · We re-ran it with the labels held a full map-tile away  (the shorter bars)
+03 · Half the gain vanished - it was proximity; zero-shot (no labels) is untouched - the solid result
 
-FIGURE: fig_slide5_spatial.png  (gain over zero-shot: random split vs labels held a tile away)
-LAYOUT: left text / right chart
-ALT figures if asked: fig_slide5_perclass.png (per-class F1) · alt_slide5_confusion_from_notebook.png
+footer (small): we also corrected an earlier claim - class 1 is our strongest class, not our weakest; no single unsolvable pair
+
+FIGURE: fig_slide5_bars.png  (what the labels add: normal test vs labels held a map-tile away, at 50/100/200)
+LAYOUT: chart left / 01-03 stacked on the right / one-line footer under both
+ALT figures: fig_slide5_spatial.png (line-chart version) · fig_slide5_perclass.png · alt_slide5_confusion_from_notebook.png
 
 ============================================================
 SLIDE 6   SUMMARY

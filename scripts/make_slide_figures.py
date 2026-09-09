@@ -351,6 +351,7 @@ if __name__ == "__main__":
     score_table()
     didnt_work()
     spatial_audit()
+    spatial_audit_bars()
     print(f"done in {time.time()-t:.0f}s")
 
 
@@ -563,3 +564,46 @@ def scatter_after():
             "same features as slide 1, where the two clouds sat apart · X = centre of each city",
             transform=ax.transAxes, ha="center", fontsize=8.8, color=MUT)
     save(fig, "fig_slide2_scatter.png")
+
+
+# ---- 8b · slide 5, the simple 2-bar version ------------------------
+def spatial_audit_bars():
+    """fig_slide5_bars.png - grouped bars: what the local labels actually add,
+    normal test vs labels held a map-tile away. Simpler read than the line
+    chart; three budgets so it can't look cherry-picked."""
+    import csv
+    import json
+    budgets = [50, 100, 200]
+    zs = 0.6513
+    tbl = {r[0]: float(r[1]) for r in
+           csv.reader((ROOT / "results" / "deliverable_table.csv").open())
+           if r and r[0].startswith("Amsterdam few-shot")}
+    std = [tbl[f"Amsterdam few-shot, {n}/class"] - zs for n in budgets]
+    g2 = json.loads((ROOT / "results" / "spatial_block_eval_gap2.json").read_text())["per_budget"]
+    far = [g2[str(n)]["vs_zero_shot"] for n in budgets]
+
+    x = np.arange(len(budgets))
+    w = 0.36
+    fig, ax = plt.subplots(figsize=(8.0, 4.8))
+    b1 = ax.bar(x - w / 2, std, w, color=ACC, label="normal test")
+    b2 = ax.bar(x + w / 2, far, w, color=MADRID, label="labels held a map-tile away")
+    ax.axhline(0, color=MUT, lw=1)
+    for b, v in list(zip(b1, std)) + list(zip(b2, far)):
+        off = 6 if v >= 0 else -14
+        ax.annotate(f"{v:+.02f}".replace("+0.", "+.").replace("-0.", "−."),
+                    (b.get_x() + b.get_width() / 2, v), textcoords="offset points",
+                    xytext=(0, off), ha="center", fontsize=11, weight="bold",
+                    color=ACC if b in b1 else MADRID)
+
+    ax.set_xticks(x); ax.set_xticklabels([f"{n} labels\nper class" for n in budgets])
+    ax.set_ylabel("macro-F1 the labels add\n(over the zero-label score)")
+    ax.set_title("What do the local labels actually add?", fontsize=13, color=INK, pad=12)
+    ax.set_ylim(-0.03, 0.11)
+    ax.legend(frameon=False, fontsize=10, loc="upper left")
+    ax.spines["top"].set_visible(False); ax.spines["right"].set_visible(False)
+    ax.text(0, -0.235,
+            "“held away” = the labelled patches are drawn a full map-tile from "
+            "anything we score,\nso none sit next to it. Per-tile score is noisy; the "
+            "pattern is what matters.",
+            transform=ax.get_xaxis_transform(), fontsize=8.5, color=MUT)
+    save(fig, "fig_slide5_bars.png")
