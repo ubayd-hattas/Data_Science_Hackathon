@@ -1,7 +1,8 @@
 # Slide 2 — Line the cities up first, the model does the rest
 
-**Speaker:** B · **Time:** 2:00 · **Figure:** `fig_slide2_pipeline.png`
-(if the before/after scatter is ready, it can sit next to the pipeline)
+**Speaker:** B · **Time:** 2:00 · **Figures:** `fig_slide2_pipeline.png` (top, full width)
++ `fig_slide2_scatter.png` (right half) — before: the two cities' clouds sit apart;
+after the line-up: Madrid's cloud has moved onto Amsterdam's, centres on top of each other
 
 ---
 
