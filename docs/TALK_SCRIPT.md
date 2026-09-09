@@ -1,201 +1,166 @@
-# Talk script — 8 slides, ~10 minutes
+# Talk script — 7 slides, ~9:40
 
-Spoken word, not bullet points. Say it roughly like this; don't read it verbatim.
-Times are targets. `[→]` = advance slide. `[hand to X]` = speaker change.
-
-Total ≈ 9:50, leaving ~10 s slack before the 5-minute Q&A.
+Spoken word, not bullet points. Say it roughly like this; don't read it out.
+`[→]` = advance slide. `[hand to X]` = speaker change. Times are targets.
 
 ---
 
-## Slide 1 · Title  — 0:30  — *Speaker A*
+## Slide 1 · Building age from orbit, built to travel — 0:30 — *Speaker A*
 
-> "We looked at estimating the *age* of buildings from satellite imagery — which
-> band of years they were built in — and specifically at making that work in a
-> city the model has never seen. We trained on Madrid and transferred to
-> Amsterdam. The abstract is on the slide; the short version is that a model
-> which fails in a new city isn't broken, it's mis-tuned, and you can fix most of
-> that without any local labels."
-
-`[hand to A stays]`
+> "We estimated the *age* of buildings from satellite imagery — which band of
+> years they were built in — and built the method to work in a city it's never
+> seen. We trained on Madrid and moved it to Amsterdam. The abstract's on the
+> slide; the short version is that a model which fails in a new city isn't
+> broken, it's mis-tuned, and you can fix most of that with no local labels."
 
 ---
 
-## Slide 2 · §1 Problem & contributions  — 1:15  — *Speaker A*
+## Slide 2 · A new-city model is mis-tuned, not incapable — 1:15 — *Speaker A*
 
 `[→]`
 
-> "The task: every 30-metre Landsat pixel gets sorted into one of four
-> construction-era classes, and we're scored on macro-F1 — so all four classes
-> count equally, including the rare ones.
+> "The task: every 30-metre satellite patch goes into one of four
+> construction-era groups, and we're scored on macro-F1 — so all four count
+> equally, including the rare ones.
 >
-> We train on Madrid, where we have labels, and adapt to Amsterdam using between
-> 5 and 200 labelled pixels per class.
+> We train on Madrid, where we have labels, and adapt to Amsterdam with somewhere
+> between 5 and 200 labelled patches per group.
 >
-> Why is that hard? Two kinds of shift. The obvious one is that Amsterdam
-> buildings *look* different to the satellite — different materials, wetter
-> climate, different mix of Landsat sensors over the years. The subtler one is
-> that the *proportions* of the age classes differ between the cities — class 1
-> is about 1.6 times more common in Amsterdam. Both have to be handled.
->
-> Our three contributions are on the slide. The one to remember is the first:
-> **class-conditional CORAL** — we align the two cities' feature distributions
-> one age class at a time, and we do it using only the model's own predictions,
-> never Amsterdam labels."
+> Why does it break? Two reasons. The buildings physically *look* different to
+> the satellite — brick versus concrete, a wetter climate, different satellites
+> over the forty years. And the *mix* of ages is different — the oldest group is
+> about one-and-a-half times more common in Amsterdam. Both have to be handled,
+> and neither is fixed by just retraining."
 
 `[hand to B]`
 
 ---
 
-## Slide 3 · §2 Data & representation  — 1:00  — *Speaker B*
+## Slide 3 · Line the cities up first — the model does the rest — 2:15 — *Speaker B*
 
 `[→]`
 
-> "Each pixel has up to 40 years of annual observations in six spectral bands. We
-> gap-fill the series and then collapse it into 108 summary numbers per pixel.
+> "First, the data. Each patch has up to forty years of readings in six colours.
+> We turn that into about a hundred numbers per patch. The important ones are
+> about *when* the biggest year-to-year change happened — that's the construction
+> event, and it looks the same in any city because it's physics.
 >
-> Collapsing to one row per pixel is deliberate — if you feed the model one row
-> per year it just learns 'this looks like a finished building' and never sees
-> the *trend*. The summaries force it to reason about change over time.
+> One row per patch, not one per year — otherwise the model just learns 'this is
+> a finished building' and never sees the change over time.
 >
-> The features that matter most for the recent classes are about the *timing* of
-> the biggest single-year jump — that's the construction event, and it looks
-> similar in any city because it's physics, not a Madrid quirk. That's the whole
-> design principle: pick features that transfer because of how construction
-> works, not features that happen to separate Madrid."
-
----
-
-## Slide 4 · §3 Method  — 1:45  — *Speaker B*
-
-`[→]`
-
-> "Here's the pipeline. Stage 1 is a class-balanced Random Forest on the Madrid
-> features — 500 trees, nothing exotic.
+> Now the method. We train a plain model on Madrid — a Random Forest. Before we
+> use it on Amsterdam, we line the two cities up: we predict Amsterdam once, then
+> for each age group we reshape Madrid's examples of that group to match the
+> Amsterdam patches the model *thinks* are that group, and retrain. We do that
+> twice. No Amsterdam answers — just the model's own guesses.
 >
-> Before we use it on Amsterdam, we align. Plain CORAL reshapes Madrid's whole
-> feature cloud to match Amsterdam's. **Class-conditional** CORAL goes further:
-> we predict Amsterdam once, then for each class we reshape Madrid's examples of
-> that class to match the Amsterdam pixels the model *thinks* are that class, and
-> refit. Two rounds. That single step takes the zero-label score from 0.36 to
-> 0.65.
->
-> Then the two regimes. With zero labels you just use that aligned model. With
-> *n* labels, we whiten the Amsterdam features — strength scaled to how many
-> labels we have, because whitening needs data — train a small forest on the
-> support set, blend its vote with the Stage-1 model, and finally smooth the
-> predictions over each pixel's map-neighbours, weighting closer ones more.
->
-> The box at the bottom is the important disclaimer: every statistic we compute —
-> the alignment, the whitening, the prior — comes from *unlabelled* Amsterdam.
-> The only labelled target data that touches the model is the support set itself."
+> That one step takes the no-label score from 0.36 to 0.65. And the only labelled
+> Amsterdam data that ever touches the model is the handful of examples we're
+> given."
 
 `[hand to C]`
 
 ---
 
-## Slide 5 · §4 Experimental setup  — 1:15  — *Speaker C*
+## Slide 4 · Few examples borrow from Madrid; many trust the local data — 1:15 — *Speaker C*
 
 `[→]`
 
-> "Madrid reference is a 5-by-5 repeated stratified cross-validation. Amsterdam is
-> evaluated at the five required budgets, 20 random support draws at each, so we
-> get an error bar.
+> "Then the local examples. With five to twenty-five, a model trained only on
+> those is shaky, so we mostly trust the aligned Madrid model and let the local
+> one nudge it. With two hundred, we mostly trust the local model.
 >
-> Model selection: we ran a 500-configuration search over the feature set and
-> hyperparameters, but we scored it on *one half* of Amsterdam and confirmed the
-> winner *once* on the untouched other half — so the tuned numbers aren't
-> inflated by fitting to the data we report.
+> The balance shifts automatically as the number grows — nothing is hand-set per
+> case. We also untangle the features more gently when there's little data,
+> because that step needs enough examples to be stable.
 >
-> Two honesty notes. Repeated resampling isn't k-fold CV — the ± is spread, not a
-> confidence interval. And we measured that about 80% of our support pixels have
-> an immediate neighbour in the query set, because the sampling is random. We
-> don't change the protocol — that's what we're asked to run — but we say the
-> number."
+> The point: the low-data case isn't the full pipeline with less data. It's a
+> deliberately different recipe."
 
 ---
 
-## Slide 6 · §5 Results  — 2:00  — *Speaker C*
+## Slide 5 · Fifty local examples = home-city accuracy — 2:00 — *Speaker C*
 
 `[→]`
 
-> "Table 1, top to bottom. Zero-shot on raw features is 0.36. With
-> class-conditional alignment, 0.65 — that jump is the headline of the method.
+> "Here are the numbers. No labels: 0.36 raw, 0.65 after the line-up — that jump
+> is the headline.
 >
-> Then the few-shot curve — Figure 2. Five labels per class: 0.66. Twenty-five:
-> 0.68. Fifty: 0.70. A hundred: 0.72. Two hundred: 0.74.
+> Then the curve. Five examples per group: 0.66. Twenty-five: 0.68. Fifty: 0.70.
+> A hundred: 0.72. Two hundred: 0.74.
 >
-> The dashed line is Madrid scored on *itself* — 0.66 — the in-city ceiling. The
-> transfer curve crosses it at about 50 labels per class and keeps climbing. So
-> with roughly 200 checked buildings total, the model does as well on Amsterdam
-> as any model does on its home city.
+> The dashed line is Madrid scored on *itself* — 0.66 — the best you could hope
+> for with unlimited home data. Our transfer curve crosses it at about fifty
+> examples per group and keeps climbing. So with roughly two hundred checked
+> buildings total, the model does as well on Amsterdam as any model does on its
+> home city.
 >
-> The shape matters too: steep to 50, then it flattens. The alignment does the
-> heavy lifting; the labels mostly buy you the last few points. And the error
-> bars are tight — a few thousandths — so the ordering is real."
+> The shape matters: steep to fifty, then flat. The line-up does the heavy
+> lifting; the examples buy the last few points. And the error bars are a few
+> thousandths, so the ordering is real."
 
 `[hand to D]`
 
 ---
 
-## Slide 7 · §6 Analysis  — 1:30  — *Speaker D*
+## Slide 6 · Simple alignment beat every clever alternative — 1:45 — *Speaker D*
 
 `[→]`
 
-> "Left column — what each piece is worth. Class-conditional CORAL, plus 0.07 at
-> zero labels. Budget-scaled whitening, plus 0.15 at five labels — that's the
-> biggest single lever in the low-data regime. The prior blend and the smoothing
-> add a bit more.
+> "What each piece is worth is on the left. The city line-up: plus 0.07 at zero
+> labels. Gentler untangling at low data: plus 0.15 at five examples — the
+> biggest single lever down there. The blend and the neighbour smoothing add a
+> bit more.
 >
-> Middle column — what didn't work, and this is deliberate. We built the triplet
-> embedding the challenge notes suggest; it lost, because the features are
-> already linearly separable. Ordinal loss made our mistakes *smaller* but not
-> fewer, and the metric only counts right versus wrong. Label-shift correction,
-> self-training, gradient boosting — all worse, each for a specific reason on the
-> slide. The pattern: every attempt to out-*model* the data lost to better
-> *use* of it.
+> The middle column is what didn't work, and we show it on purpose. We built the
+> neural network the challenge notes suggest — it lost, because the data was
+> already easy to separate, so it had nothing to learn. Ordinal training made our
+> mistakes smaller but not fewer, and the score only counts right versus wrong.
+> Correcting the age mix, self-training, gradient boosting — all worse, each for
+> a specific reason. The pattern: every attempt to out-think the data lost to
+> using it more carefully.
 >
-> Right column — the ceiling. Classes 1 and 2 are both pre-1984, before the
-> satellite record starts, so there's no construction event to separate them.
-> That's a data limit, and the building-age literature reports the same thing.
-> Most of our remaining error is right there."
+> On the right, the ceiling. The two oldest groups are both from before the
+> satellite record starts, so there's no construction event to tell them apart.
+> That's a data limit — the research on old buildings says the same — and it's
+> where most of our remaining error is. We also checked that about eighty percent
+> of our examples sit right next to a test patch, and we say so."
 
 `[hand to D stays]`
 
 ---
 
-## Slide 8 · §7 Conclusion  — 0:35  — *Speaker D*
+## Slide 7 · Cross-city transfer is a calibration problem — 0:40 — *Speaker D*
 
 `[→]`
 
-> "Three things to take away. A model in a new city is mis-calibrated, not
-> incapable — per-class alignment recovers most of the gap with zero labels.
-> About 50 labelled pixels per class buys in-city accuracy, and the low-data
-> regime needs its own recipe, not a shrunk version of the full one. And on
-> 30-metre Landsat, careful use of the distribution beat every
-> learned-representation method we tried.
+> "Three things to take away. A model in a new city is mis-tuned, not incapable —
+> lining the cities up recovers most of the gap with zero labels. About fifty
+> local examples buy home-city accuracy, and the low-data case needs its own
+> recipe. And on this kind of satellite data, careful use of the distribution
+> beat every fancier model we tried.
 >
-> Our originality claim is the iterative per-class alignment, and the framing
-> that transfer is a spectrum — different machinery at different label budgets.
+> Our original bit is doing the line-up group by group, using the model's own
+> guesses, and the framing that few and many examples need different machinery.
 >
-> Contributions are on the slide. Happy to take questions."
+> Roles are on the slide. Happy to take questions."
 
 `[all — Q&A]`
 
 ---
 
-## If asked in Q&A — quick answers
+## If asked — quick plain answers
 
-- **"Why Random Forest not deep learning?"** 30-metre Landsat, ~100k pixels,
-  features that are already linearly separable — a forest plus alignment is the
-  right capacity. We tried an embedding; it added variance without gain.
-- **"Is the spatial adjacency a leak?"** No rule is broken — query labels are
-  never used, and the protocol *is* random sampling. But we disclose that part
-  of the score is same-block proximity, and we kept the smoothing
-  prediction-only so it can't compound it.
-- **"Four or five F1 scores?"** Notebook 1 lists five budgets but says "four" in
-  the deliverables. We report all five; the plot shows all five.
-- **"What's class-conditional CORAL in one line?"** Align each Madrid age class
-  to the covariance of the Amsterdam pixels the model assigned to that class,
-  then refit — twice, no target labels.
-- **"How long to run?"** End-to-end from the notebook, one fixed seed, a few
-  minutes plus the cross-validation.
+- **Why not deep learning?** The data's small and already easy to separate — a
+  forest plus the line-up is the right size. We tried a neural net; it added
+  noise, no gain.
+- **Is the neighbour thing cheating?** No — we never use test answers, and the
+  organisers' rule *is* random sampling. But part of the score is nearby
+  buildings looking alike, so we disclose the number and kept the smoothing to
+  predictions only.
+- **Four or five scores?** The instructions say five sizes but "four" in one
+  place. We report all five; the plot shows all five.
+- **The line-up in one sentence?** Reshape each Madrid age group to match the
+  Amsterdam patches the model thinks are that group, then retrain — twice, no
+  answers used.
+- **How long to run?** From the notebook, one fixed seed, about fifteen minutes.
