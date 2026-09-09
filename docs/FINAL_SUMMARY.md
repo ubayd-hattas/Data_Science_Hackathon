@@ -62,9 +62,12 @@ Full 5×5 CV, 20 support draws, seed 42 (`results/deliverable_table.csv`):
 **From the provided-notebook baseline** (0.43 zero-shot; 0.42 / 0.55 / 0.61 /
 0.64 / 0.67 few-shot): zero-shot **+0.22**, few-shot **+0.07 to +0.23**.
 
-**Headline:** the few-shot curve crosses the Madrid in-city score at ~50 labels
-per class — roughly 200 checked buildings — and keeps climbing. Transferring to a
-new city, past that point, costs nothing.
+**Headline:** the zero-shot class-conditional CORAL result — **0.36 → 0.65 with
+no local labels** — is the solid transferable number. On the organisers' random
+split the few-shot curve then crosses the Madrid in-city score at ~50 labels per
+class and keeps climbing, but a spatial-block re-run (§6) shows roughly half of
+that few-shot lift is support/query proximity, not the labels — so treat the
+few-shot curve as an upper bound.
 
 ---
 
@@ -100,15 +103,23 @@ new city, past that point, costs nothing.
 
 ## 6. Honest limitations (stated in the deck and write-up)
 
-- **Age classes 1 and 2** (both pre-1984) can't be cleanly separated — no
-  construction event in the satellite record. A data limit; matches the
-  building-age literature. Most residual error is here (class-2 recall ≈ 0.52).
-- **Spatial adjacency:** under the organisers' random per-class sampling, ~80 %
-  of support pixels have an immediate map-neighbour in the query set (measured
-  independently by two teammates). No rule is broken and query labels are never
-  used, but part of every few-shot score is same-block proximity, not pure
-  cross-location generalisation. Disclosed; smoothing kept prediction-only so it
-  can't compound it.
+- **Most of the few-shot gain is spatial proximity — measured.** Under the
+  organisers' random per-class sampling, ~80 % of support pixels have an
+  immediate map-neighbour in the query set (measured independently by two
+  teammates). `scripts/run_spatial_block.py` re-runs the identical pipeline with
+  support drawn only from map tiles a full tile from the scored area: the gain
+  from 50–200 labels drops from **+0.05–0.09 to ~+0.01** — roughly half the
+  few-shot lift on the standard split is proximity, not the labels. The
+  **zero-shot** result (0.36 → 0.65) uses no labels, has no adjacency, and is
+  unaffected — it is the transferable number; the few-shot curve is an upper
+  bound. Per-tile F1 is noisy (±0.07–0.09); direction firm, deltas soft.
+  Numbers: `results/spatial_block_eval_gap{1,2}.json`. Smoothing kept
+  prediction-only so it can't compound the adjacency.
+- **Per-class picture (corrected).** The *raw baseline* collapses classes 1 and
+  2 (both pre-1984, no construction event to see) — matching the building-age
+  literature. The *final aligned pipeline* separates them: class 1 ≈ 0.78 (the
+  strongest class), classes 2–4 near 0.70. No single unsolvable pair; an earlier
+  assumption we corrected.
 - **± values are dispersion**, not confidence intervals — repeated resampling,
   not k-fold CV.
 

@@ -1,5 +1,12 @@
 # Presentation — Abstract + Slide Outline
 
+> **SUPERSEDED — early 11-slide outline with pre-final numbers.** The live deck
+> is 6 slides in `deliverables/slides-copypaste.txt`; current spoken text in
+> `docs/TALK_SCRIPT.md`; final numbers in `docs/FINAL_SUMMARY.md`. Numbers below
+> (zero-shot 0.45→0.55, 100-label 0.68 vs 0.63) are stale — final is zero-shot
+> **0.36 → 0.65**, few-shot **0.66 / 0.68 / 0.70 / 0.72 / 0.74**, Madrid CV
+> **0.664**. Kept for the slide-by-slide skeleton only.
+
 Rubric expectations for this section: abstract (≤150 words) on slide 1; key
 design decisions and what worked / didn't; the F1 table with error bars; the
 F1-vs-log₂(sample size) plot. Judged on storytelling, interpretation of the
@@ -105,11 +112,14 @@ Two transfer routes out:
 Theme: **every attempt to be cleverer than the data lost; every accounting fix won.**
 
 ### 10 — Limitations & honesty
-- Classes 1 vs 2 (both pre-1984) are the main residual error — no construction
-  event to separate them. Data limit, matches the literature on pre-war stock.
-- Spatial-context features help in-city (+0.04) but break raw transfer — kept out
-  of the final pipeline.
-- Numbers from a full 5×5 CV, seed-fixed; quick-run estimates during development
+- **Most of the few-shot gain is spatial proximity.** Re-running with support
+  labels held a map-tile from the scored area drops the 50–200-label lift from
+  +0.05–0.09 to ~+0.01. Zero-shot (0.36→0.65) uses no labels and is unaffected.
+- **Per-class (corrected):** the raw baseline collapses classes 1–2; the final
+  pipeline separates them — class 1 ≈ 0.78 (strongest), 2–4 near 0.70.
+- Spatial-context features help in-city but break raw transfer — folded in only
+  behind the alignment step.
+- Numbers from a full 5×5 CV, seed-fixed; ± is resampling dispersion.
   agreed to ±0.01.
 - Next: hyper-parameter tuning, per-decade features, a class-1/2 specialist.
 

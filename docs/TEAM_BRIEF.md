@@ -169,45 +169,68 @@ local labels are in place.
 | 200 per class | **0.74** ± 0.005 | 0.67 |
 | *Madrid, tested on itself* (the ceiling) | *0.66 ± 0.004* | — |
 
-**The headline:** by about **100 labelled buildings per age class**, our
-Madrid-trained model does **as well on Amsterdam as a model does on its own home
-city** — 0.72 vs 0.66, it passes it comfortably. The curve climbs fast to ~50 labels, then
-flattens. And the **zero-labels** number jumped from 0.58 to 0.65 once the
-alignment was done one age class at a time instead of all at once.
+**The headline (on the organiser's random split):** by about **100 labelled
+buildings per age class**, the reshaped Madrid model matches a home-city model —
+0.72 vs 0.66. The curve climbs fast to ~50 labels, then flattens. And the
+**zero-labels** number jumped from 0.58 to 0.65 once the alignment was done one
+age class at a time instead of all at once.
 
-*How we know it's real:* the tuning used a **50/50 split of Amsterdam** — settings
-were chosen on one half and scored once on the other half, which the search never
-saw. The improvement survived that test before we ran the final numbers.
+**The caveat (§7a):** most of that few-shot climb is the random support labels
+sitting next to what we score. Hold the labels a map-tile away and the gain from
+50–200 labels drops to ~+0.01. The **zero-shot 0.65** carries no such caveat —
+it uses no labels — so treat *that* as the transferable number and the few-shot
+curve as an upper bound.
+
+*How we know the tuning is real:* it used a **50/50 split of Amsterdam** —
+settings chosen on one half, scored once on the other half the search never saw.
+The improvement survived that test before we ran the final numbers.
 
 ---
 
-## 7. The honest limitation to lead with
+## 7. The honest limitations to lead with
 
-**Age classes 1 and 2 are the hardest, and always will be with this data.** Both
-are buildings from *before 1984*, which is when the satellite record starts. For
-newer buildings we can literally watch the construction happen. For pre-1984
-buildings there's no such event — just a settled surface — so telling "old" from
-"slightly less old" is close to impossible here. Published research on pre-war
-building stock reports exactly the same problem. Most of our remaining errors are
-classes 1↔2.
+### 7a. Most of the few-shot gain is spatial proximity — we measured it
 
-Saying this out loud is worth marks. It shows we know where the ceiling is
-instead of over-claiming.
+The few-shot support set is drawn at random, and a teammate's audit found that
+**~80 % of the support pixels we draw sit right next to a query pixel** on the
+map (a 30 m pixel and its neighbour are often the same building or block). This
+is a property of the organiser's random-sampling rule, not a bug — we never
+touch query labels. But because satellite pixels close together look alike, it
+flatters the few-shot curve.
 
-### 7a. The spatial-adjacency caveat (also lead with this)
+**We then re-ran the whole pipeline to see how much.** `scripts/run_spatial_block.py`
+draws the support labels only from map tiles a full tile away from whatever is
+being scored — no support pixel anywhere near a query pixel — and scores the
+identical model. Result:
 
-A teammate audited the few-shot setup and found that **~80 % of the support
-pixels we draw sit right next to a query pixel** on the map (a 30 m pixel and
-its neighbour are often the same building or block). This is true at every label
-budget and it's a property of the organiser's random-sampling rule, not a bug in
-our code — we never touch query labels. But it means part of every few-shot
-score reflects "my neighbour was in my training set" rather than the model
-generalising to genuinely new locations.
+| labels per class | gain from the labels, random split | gain, labels held a tile away |
+|---:|---:|---:|
+| 25  | +0.03 | +0.01 |
+| 50  | +0.05 | ≈ 0   |
+| 100 | +0.07 | +0.01 |
+| 200 | +0.09 | +0.01 |
 
-We handle it two ways: (1) the neighbourhood smoothing uses **predictions only**
-— no known label ever leaks into a neighbour's answer; (2) we **state the number
-in the write-up** rather than let a judge discover it. Full detail in
-`docs/AMSTERDAM_SPATIAL_ADJACENCY_AUDIT.md`.
+So **roughly half the few-shot improvement on the organiser's split is the
+labels sitting next to what we score**, not the model generalising to new
+ground. The **zero-shot** number (0.36 → 0.65) uses *no* labels, so it has no
+support/query adjacency and is completely unaffected — **that is our solid,
+transferable result.** (Per-tile F1 is noisy, ±0.07–0.09, so the direction is
+firm but the exact deltas are soft. Detail:
+`docs/AMSTERDAM_SPATIAL_ADJACENCY_AUDIT.md`,
+`results/spatial_block_eval_gap{1,2}.json`.)
+
+We also keep the neighbourhood smoothing on **predictions only** — no known
+label ever leaks into a neighbour's answer.
+
+### 7b. The two oldest age classes
+
+Both classes 1 and 2 are buildings from *before 1984*, when the satellite record
+starts, so there is no construction event to see — only a settled surface. The
+*raw baseline* can't tell them apart, which is where the "pre-war stock is
+hardest to date" literature applies. **Our final pipeline does separate them**,
+though: per-class F1 is **class 1 ≈ 0.78 (our strongest class)**, with classes 2,
+3 and 4 all near **0.70** — no single unsolvable pair. We corrected an earlier
+assumption here; say the corrected version.
 
 ---
 
@@ -223,7 +246,7 @@ in the write-up** rather than let a judge discover it. Full detail in
 | 7 few-shot mechanism | member C | untangling features, dialling it by budget, two models voting |
 | 8–9 results table + curve | member C or D | read the numbers **with their error bars**; the "meets the home-city score" point |
 | 10 what didn't work | member D | the five dead ends, one line each; the "simple beat clever" theme |
-| 11 limitations | member D | classes 1↔2 are a data limit, not a bug |
+| 11 what we audited | member D | ~half the few-shot gain is spatial proximity (we measured it); zero-shot is unaffected; class 1 is actually our strongest |
 | 12 team | all | who did what |
 
 The rubric checks that **every member speaks** and that it's **clear who did
@@ -255,5 +278,7 @@ what** — so split it and say so out loud.
 3. Every win came from **using the data more carefully** — aligning number
    ranges, removing double-counted features, blending two models. Every attempt
    at a fancier model lost.
-4. The oldest two age classes can't be cleanly separated from 30 m satellite
-   data — there's no construction event to see — and that's where our errors sit.
+4. We **stress-tested our own few-shot result**: with the local labels held a
+   map-tile away from what we score, about half the few-shot gain disappears —
+   it was spatial proximity. The zero-shot reshape (0.36 → 0.65) uses no labels
+   and stands unaffected. That's the honest headline.

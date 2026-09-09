@@ -132,14 +132,17 @@ real.
 | Blend two models | Ordinal training |
 | Smooth over neighbours | Self-training · boosting · mix-fix |
 
-**Visual — optional but strong:** a 4-bar chart, score per age group. Groups 3
-& 4 tall, groups 1 & 2 short. Caption: *classes 1 & 2 (pre-1984) can't be
-separated — a data limit.* I can generate this PNG.
+**Visual — strong:** `fig_slide5_spatial.png` — few-shot gain over zero-shot,
+random split vs support labels held a map-tile away. The two lines diverge; the
+gap is spatial proximity.
 
-**One-line footer:** ~80% of examples sit next to a test patch — we disclose it.
+**One-line footer:** hold the labels a tile away and ~half the few-shot gain
+disappears — zero-shot (0.36 → 0.65) is unaffected.
 
 **Spoken:** one reason per failed idea (neural net: nothing to learn — already
-separable); the data limit and why; the adjacency caveat.
+separable); then the audit — we re-ran few-shot with labels held away, ~half the
+gain was proximity; and the correction — class 1 is actually our strongest
+(~0.78), 2–4 near 0.70, no unsolvable pair.
 
 ---
 
@@ -161,14 +164,15 @@ needs different machinery); "questions?"
 
 ---
 
-## Figures to make (I can generate all three as PNGs)
+## Figures (built — in `deliverables/figures/`, see that README for the slide map)
 
-| for slide | figure | source |
-|---|---|---|
-| 2 | Madrid vs Amsterdam image panels (false-colour crops) | feature arrays / raw tiles |
-| 3 | before / after scatter — clouds apart, then overlapping | PCA of the 108 features |
-| 5 | the F1-vs-examples curve | already have `results/transfer_curve.png`; can restyle to match the deck |
-| 6 | per-group score bars | one evaluation run |
+| for slide | figure |
+|---|---|
+| 1 | `fig_slide1_scatter.png` — Madrid vs Amsterdam feature clouds |
+| 2 | `fig_slide2_pipeline.png` — Madrid RF → line-up ×2 → predict |
+| 3 | `fig_slide3_curve.png` + `fig_slide3_table.png` |
+| 4 | `fig_slide4_didntwork.png` — the dropped fixes |
+| 5 | `fig_slide5_spatial.png` — spatial-block audit (random vs labels-held-away) |
 
 ## Timing & speakers
 

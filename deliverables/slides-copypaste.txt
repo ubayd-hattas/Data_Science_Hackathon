@@ -11,7 +11,23 @@ Predict a building's age group from 40 years of satellite light
 - Features chosen for construction physics that transfers, not to fit Madrid
 
 FIGURE: fig_slide1_scatter.png  (Madrid vs Amsterdam feature clouds - apart)
-LAYOUT: left text / right image; abstract (149 words) in a small box across the bottom
+LAYOUT: left text / right image; abstract (below, ~150 words) in a small box across the bottom
+
+ABSTRACT (paste into the small box - rubric requires it on slide 1):
+Predicting building construction era from 30 m Landsat imagery is hard, and
+harder across cities: a model trained on Madrid must work in Amsterdam, where
+building materials, climate and urban form all differ. We compress each pixel's
+40-year, six-band reflectance series into per-pixel temporal statistics and train
+a class-balanced Random Forest on Madrid. Transfer rests on unsupervised,
+label-free alignment: class-conditional CORAL reshapes Madrid to Amsterdam one
+age class at a time, driven by the model's own pseudo-labels (zero-shot macro-F1
+0.36 -> 0.65). Budget-scaled ZCA whitening with a small local classifier, blended
+with the Stage-1 model and smoothed over map-neighbours, lifts the few-shot curve
+to 0.66-0.74 at 5-200 labels per class. Auditing our own evaluation, we find
+roughly half that few-shot gain reflects support pixels lying next to scored
+pixels; the label-free zero-shot result is unaffected. Simple distribution
+alignment beat a learned embedding, ordinal loss, self-training and gradient
+boosting.
 
 ============================================================
 SLIDE 2   WHAT WE DID  -  AND WHY

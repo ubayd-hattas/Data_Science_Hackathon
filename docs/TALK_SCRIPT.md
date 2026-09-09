@@ -1,7 +1,13 @@
-# Talk script — 7 slides, ~9:40
+# Talk script — ~9:40
 
 Spoken word, not bullet points. Say it roughly like this; don't read it out.
 `[→]` = advance slide. `[hand to X]` = speaker change. Times are targets.
+
+> **Note:** the locked deck is now **6 slides** (`deliverables/slides-copypaste.txt`) —
+> Problem & data / What we did & why / Results / What didn't work / What we
+> audited / Summary. This script still runs long-form over 7; the content maps,
+> but re-sync the slide numbers before rehearsing. Facts here are current
+> (spatial-block audit + corrected per-class picture).
 
 ---
 
@@ -90,10 +96,9 @@ Spoken word, not bullet points. Say it roughly like this; don't read it out.
 > A hundred: 0.72. Two hundred: 0.74.
 >
 > The dashed line is Madrid scored on *itself* — 0.66 — the best you could hope
-> for with unlimited home data. Our transfer curve crosses it at about fifty
-> examples per group and keeps climbing. So with roughly two hundred checked
-> buildings total, the model does as well on Amsterdam as any model does on its
-> home city.
+> for with unlimited home data. On this split, our transfer curve crosses it at
+> about fifty examples per group and keeps climbing — though slide 6 shows how
+> much of that last stretch is the labels sitting near what we score.
 >
 > The shape matters: steep to fifty, then flat. The line-up does the heavy
 > lifting; the examples buy the last few points. And the error bars are a few
@@ -120,11 +125,14 @@ Spoken word, not bullet points. Say it roughly like this; don't read it out.
 > a specific reason. The pattern: every attempt to out-think the data lost to
 > using it more carefully.
 >
-> On the right, the ceiling. The two oldest groups are both from before the
-> satellite record starts, so there's no construction event to tell them apart.
-> That's a data limit — the research on old buildings says the same — and it's
-> where most of our remaining error is. We also checked that about eighty percent
-> of our examples sit right next to a test patch, and we say so."
+> On the right, what we audited. We re-ran the whole few-shot pipeline with the
+> local labels held a full map-tile away from whatever we were scoring — so no
+> labelled patch sits next to a test patch. About half the few-shot gain
+> vanished: it was the labels being *next to* what we scored, not the model
+> generalising to new ground. The zero-shot line-up uses no labels, so it's
+> untouched — that's the solid result. And we corrected an earlier assumption:
+> the two oldest groups aren't our weak spot. Group one is actually our
+> *strongest* class; two, three and four sit together near 0.70."
 
 `[hand to D stays]`
 
@@ -155,9 +163,10 @@ Spoken word, not bullet points. Say it roughly like this; don't read it out.
   forest plus the line-up is the right size. We tried a neural net; it added
   noise, no gain.
 - **Is the neighbour thing cheating?** No — we never use test answers, and the
-  organisers' rule *is* random sampling. But part of the score is nearby
-  buildings looking alike, so we disclose the number and kept the smoothing to
-  predictions only.
+  organisers' rule *is* random sampling. But part of the few-shot score is nearby
+  buildings looking alike: we re-ran the pipeline with labels held a map-tile
+  away and about half the few-shot gain went away. Zero-shot is unaffected. The
+  smoothing is predictions-only.
 - **Four or five scores?** The instructions say five sizes but "four" in one
   place. We report all five; the plot shows all five.
 - **The line-up in one sentence?** Reshape each Madrid age group to match the

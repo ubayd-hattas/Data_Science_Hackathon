@@ -22,13 +22,19 @@ These need *different kinds of evidence*:
 - **Groups 1 & 2** are a *"what does old look like?"* problem. No event to find —
   only slow weathering, grime, how settled the surface looks. Much subtler.
 
-This is why **groups 1 and 2 are the ones the model confuses**. There's no
-construction event to separate them, and "pre-1945 brick" vs "1945–1984 brick"
-is a genuinely faint spectral difference. The published literature says the same
-thing — pre-war building stock is the hardest to date anywhere, in every study.
+The two need *different features*, and our change-point block was built for
+exactly this split (jump size and timing for 3 & 4; slow-drift and year-to-year
+wobble for 1 & 2). **It worked better than we first assumed.** On the raw
+logistic-regression baseline, groups 1 and 2 *did* collapse together — that is
+what the early audit found, and it is where the "pre-war stock is hardest"
+literature applies. But the final aligned pipeline, with the change-point and
+neighbourhood features, separates them: per-class F1 is **group 1 ≈ 0.78 — our
+strongest class — and groups 2, 3, 4 all clustered near 0.70**. There is no
+single unsolvable pair.
 
-**Implication:** most of the winnable signal is in groups 3 & 4. Effort spent
-trying to crack 1-vs-2 with this data has a low ceiling.
+**Implication:** the change-point features earn their place. We corrected an
+early assumption here — the pre-1984 classes are not a dead end for this
+pipeline.
 
 ---
 
@@ -152,6 +158,16 @@ redundancy was invisible to one model and a 6-point handicap to another.
   neighbour was in my support set," not genuine cross-pixel generalisation.
   Worth stating explicitly in the F1-interpretation section rather than left
   for a judge to find.
+- **We then measured how much it costs.** `scripts/run_spatial_block.py` re-runs
+  the identical few-shot pipeline but draws the support set only from map tiles a
+  full tile away from whatever is being scored, so no support pixel is adjacent
+  to a query pixel. The lift the labels add collapses from **+0.05–0.09** (random
+  split) to about **+0.01** — roughly half the few-shot gain on the organiser's
+  split is spatial proximity. The **zero-shot** transfer (0.36 → 0.65) uses no
+  labels at all, so it has no support/query adjacency and is unaffected — that is
+  the robust result. Per-tile macro-F1 is noisy (±0.07–0.09), so the direction is
+  solid but the exact deltas are soft. Numbers in
+  `results/spatial_block_eval_gap{1,2}.json`.
 
 **Lesson:** the provided material is a starting point with real errors in it.
 Checking it is not busywork — one of these (the unimplemented transfer) is a
@@ -170,6 +186,7 @@ disqualification risk under the rubric.
    feature at home, the more the alignment step is doing to keep it usable abroad.
 4. **Stop reaching for bigger models.** The wins here are all cheap linear-algebra
    steps on well-chosen features.
-5. **The 1-vs-2 confusion is close to a hard limit** with 30 m Landsat. Say so in
-   the write-up rather than fighting it — the rubric rewards that kind of honest
-   diagnosis.
+5. **Don't over-claim the 1-vs-2 limit.** The *raw baseline* collapses groups 1
+   and 2; the *final aligned pipeline* separates them (group 1 ≈ 0.78, the
+   strongest class; 2/3/4 near 0.70). Report the corrected picture — and the
+   spatial-block finding (§7) — as the honest diagnosis the rubric rewards.

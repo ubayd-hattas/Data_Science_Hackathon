@@ -37,18 +37,21 @@ Only what goes on the slides. Spoken lines: `docs/TALK_SCRIPT.md`.
 ## 4 · What didn't work, what we won't claim
 
 - Neural net, ordinal, self-training, boosting -- all lost to simpler fixes
-- Classes 1 & 2 (pre-1984) can't be split -- a data limit
-- ~80% of examples sit next to a test patch -- we disclose it
+- We stress-tested our few-shot result: ~half the gain is support/query
+  proximity (labels held a map-tile away → +0.05-0.09 drops to ~+0.01)
+- Zero-shot (0.36 → 0.65) uses no labels, so it's unaffected -- the solid result
+- Corrected an earlier assumption: class 1 is our *strongest* (~0.78); 2-4 near 0.70
 
-**> Chart:** 4 bars, score per age class -- 3 & 4 tall, 1 & 2 short.
+**> Chart:** `fig_slide5_spatial.png` -- few-shot gain over zero-shot,
+random split vs labels held a map-tile away (two lines).
 
 ---
 
-## 5 · Result: ~50 labels reach the in-city ceiling
+## 5 · Result: ~50 labels reach the in-city ceiling (on the standard split)
 
 - Amsterdam: **0.66 / 0.68 / 0.70 / 0.72 / 0.74** at 5 / 25 / 50 / 100 / 200 per class
 - Madrid on itself: 0.66 · baseline: 0.42 -> 0.67
-- Steep to 50, then flat
+- Steep to 50, then flat -- but see slide 4: much of the climb is spatial proximity
 
 **> Table + plot (both required):** curve with error bars + dashed Madrid line (large);
 Madrid + 5 Amsterdam scores, mean +/- SD (small, beside it).
@@ -57,10 +60,12 @@ Madrid + 5 Amsterdam scores, mean +/- SD (small, beside it).
 
 ## 6 · Conclusion -- it's a calibration problem, not a hard one
 
-- Mis-tuned, not incapable
-- ~50 labels buy home-city accuracy
+- Mis-tuned, not incapable -- the zero-shot line-up recovers most of the gap
+- Local labels help most when they're near the target; ~50 buy home-city
+  accuracy on the standard split
 - Careful data use beat every fancier model
-- New: group-by-group alignment · few vs many need different recipes
+- New: group-by-group alignment · few vs many need different recipes · and we
+  measured how much of the few-shot gain is spatial proximity
 
 **> Add, small:** <A> features · <B> alignment · <C> evaluation · <D> analysis.
 
@@ -77,7 +82,7 @@ Madrid + 5 Amsterdam scores, mean +/- SD (small, beside it).
 
 Slow on 2 and 5.
 
-## Figures to make (PNGs from the project data, on request)
+## Figures (in deliverables/figures/, see that README for the slide map)
 
-slide 2 before/after scatter · slide 3 gains step-chart · slide 4 per-class bars ·
-slide 5 restyled curve (base: results/transfer_curve.png).
+slide 1 scatter · slide 2 pipeline · slide 3 curve + table ·
+slide 4 didn't-work list · slide 5 spatial-block audit (`fig_slide5_spatial.png`).

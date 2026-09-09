@@ -148,6 +148,13 @@ targets the *Methodological Innovation* line of the rubric. Notebook 4's own "id
 improvement" gestures at "changepoint detection features: year of largest single-year
 jump" without noting that this is an entire published subfield.
 
+> **What actually happened:** we built the change-point block *alongside* the
+> spectral features (not a routed hybrid), and it was enough — the final pipeline
+> separates classes 1 and 2, with class 1 our *strongest* at ≈ 0.78 and 2–4 near
+> 0.70. The "structurally incapable" limit above is real for *change-detection
+> alone*; combined with weathering-signature features and cross-city alignment,
+> the pre-1984 split is not a dead end. See `docs/FINAL_SUMMARY.md` §6.
+
 - [BATSCCD (Int. J. Digital Earth)](https://www.tandfonline.com/doi/full/10.1080/17538947.2024.2358859)
 - [Mapping Building Construction Year from Landsat in Data-Scarce, Cloud-Prone Regions](https://doi.org/10.3390/rs18132135)
 - [Time-Series Landsat Data for 3D Reconstruction of Urban History](https://www.mdpi.com/2072-4292/13/21/4339)
