@@ -395,3 +395,53 @@ def spatial_audit():
             "Per-tile macro-F1 is noisy (band = SE).",
             transform=ax.get_xaxis_transform(), fontsize=8.5, color=MUT)
     save(fig, "fig_slide5_spatial.png")
+
+# ---- 1b · single-panel domain-shift scatter (slide 1) ---------------
+
+def scatter_single():
+    """Overwrite fig_slide1_scatter.png with a single, standardized panel that
+    actually shows the domain shift: z-scored features, PCA to 2-D, per-city
+    density contours + centroids so the offset reads even where dots overlap."""
+    from sklearn.decomposition import PCA
+    from sklearn.preprocessing import StandardScaler
+    from scipy.stats import gaussian_kde
+    from src.data import build_city
+
+    fb = dict(changepoint=True, spatial=True)
+    m = build_city(str(ROOT / "data" / "madrid_train.parquet"), **fb)
+    a = build_city(str(ROOT / "data" / "amsterdam_data.parquet"), **fb)
+    rng = np.random.default_rng(0)
+    mi = rng.choice(len(m.X), 3500, replace=False)
+    ai = rng.choice(len(a.X), 3500, replace=False)
+
+    sc = StandardScaler().fit(np.vstack([m.X[mi], a.X[ai]]))
+    p = PCA(n_components=2, random_state=0).fit(sc.transform(np.vstack([m.X[mi], a.X[ai]])))
+    pm = p.transform(sc.transform(m.X[mi]))
+    pa = p.transform(sc.transform(a.X[ai]))
+
+    fig, ax = plt.subplots(figsize=(7.2, 5.6))
+    lo = np.percentile(np.vstack([pm, pa]), 1, axis=0)
+    hi = np.percentile(np.vstack([pm, pa]), 99, axis=0)
+    ax.set_xlim(lo[0], hi[0]); ax.set_ylim(lo[1], hi[1])
+    xx, yy = np.mgrid[lo[0]:hi[0]:120j, lo[1]:hi[1]:120j]
+    grid = np.vstack([xx.ravel(), yy.ravel()])
+
+    for pts, col, lab in ((pm, MADRID, "Madrid"), (pa, AMS, "Amsterdam")):
+        ax.scatter(pts[:, 0], pts[:, 1], s=6, c=col, alpha=0.12, linewidths=0)
+        d = gaussian_kde(pts.T)(grid).reshape(xx.shape)
+        ax.contour(xx, yy, d, levels=4, colors=col, linewidths=1.4, alpha=0.9)
+        c = pts.mean(axis=0)
+        ax.plot(c[0], c[1], "X", ms=15, mfc=col, mec="white", mew=2, label=lab)
+
+    leg = ax.legend(loc="upper right", frameon=False, fontsize=11, handletextpad=0.3)
+    for t, col in zip(leg.get_texts(), (MADRID, AMS)):
+        t.set_color(col); t.set_fontweight("bold")
+    ax.set_xticks([]); ax.set_yticks([])
+    for s in ax.spines.values():
+        s.set_edgecolor(RULE)
+    ax.set_title("Same features, two cities — the distributions are offset",
+                 fontsize=12.5, color=INK, pad=12)
+    ax.text(0.5, -0.05,
+            "108 standardized features → 2-D · contours = density, X = centre of each city",
+            transform=ax.transAxes, ha="center", fontsize=8.8, color=MUT)
+    save(fig, "fig_slide1_scatter.png")

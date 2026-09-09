@@ -2,7 +2,7 @@
 
 | slide | figure | shows |
 |---|---|---|
-| 1 · Problem & data | `fig_slide1_scatter.png` | Madrid vs Amsterdam feature clouds: apart, then overlapping after the line-up |
+| 1 · Problem & data | `fig_slide1_scatter.png` | single panel: 108 standardized features → 2-D, Madrid vs Amsterdam density contours + centroids sit offset (the domain shift) |
 | 2 · What we did | `fig_slide2_pipeline.png` | Madrid RF -> line-up x2 -> predict (0.36 -> 0.65) |
 | 3 · Results | `fig_slide3_curve.png` + `fig_slide3_table.png` | the curve (large) and the F1 table (booktabs) side by side |
 | 4 · What did not work | `fig_slide4_didntwork.png` | five clever fixes we dropped, each with its one-line reason |
