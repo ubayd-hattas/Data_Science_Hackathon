@@ -10,7 +10,7 @@ Predict a building's age group from 40 years of satellite light
 - Same model: 0.66 in Madrid, 0.43 in Amsterdam
 - Features chosen for construction physics that transfers, not to fit Madrid
 
-FIGURE: slide2_scatter.png  (Madrid vs Amsterdam feature clouds - apart)
+FIGURE: fig_slide1_scatter.png  (Madrid vs Amsterdam feature clouds - apart)
 LAYOUT: left text / right image; abstract (149 words) in a small box across the bottom
 
 ============================================================
@@ -24,7 +24,7 @@ Line the cities up first - the model does the rest
 - Neighbouring patches vote; a 500-setup search picked the features and settings
 - Only the labels we're given ever touch the model; few-shot is a different recipe, not a smaller one
 
-FIGURE: slide2_pipeline.png  (Madrid RF -> line-up x2 -> predict, 0.36 -> 0.65)
+FIGURE: fig_slide2_pipeline.png  (Madrid RF -> line-up x2 -> predict, 0.36 -> 0.65)
 LAYOUT: centred pipeline graphic, bullets in a column on the left
 
 ============================================================
@@ -37,7 +37,7 @@ About 50 labels per class reach the in-city ceiling
 - Madrid tested on itself: 0.66; provided-notebook baseline: 0.42 -> 0.67
 - Steep to ~50, then flat - the line-up does the work, labels buy the last points
 
-FIGURE: slide5_curve.png  (F1 vs labels/class, error bars, dashed Madrid line) - LARGE
+FIGURE: fig_slide3_curve.png  (F1 vs labels/class, error bars, dashed Madrid line) - LARGE
 plus a 3-row table beside it (both are required deliverables, both with error bars)
 LAYOUT: chart two-thirds left, table one-third right
 
@@ -65,7 +65,7 @@ We checked our own evaluation and our error pattern
 - Error analysis: class 1 (pre-1945) is our strongest class (~0.78); classes 2-4 cluster near 0.7
 - We corrected an earlier assumption - there is no single unsolvable class pair
 
-FIGURE: slide4_perclass.png  (per-class F1, 15 draws, error bars)  or  nb5_confusion.png
+FIGURE: fig_slide5_perclass.png  (per-class F1, 15 draws, error bars)  or  alt_slide5_confusion_from_notebook.png
 LAYOUT: left text / right chart
 
 ============================================================
