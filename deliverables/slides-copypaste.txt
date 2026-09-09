@@ -1,66 +1,102 @@
-SLIDE 1
-A model trained in Madrid, moved to Amsterdam
+6-SLIDE DECK  —  copy one block per slide
 
-- Four building-age classes per 30 m satellite patch; scored on macro-F1
-- The same Madrid model: 0.66 on Madrid, 0.43 on Amsterdam
-- Amsterdam looks different, and its mix of building ages is different
-- (abstract, 149 words, in a box) + team names
+============================================================
+SLIDE 1   PROBLEM & DATA
+============================================================
+Predict a building's age group from 40 years of satellite light
 
-------------------------------------------------------------
+- Four construction-era classes per 30 m Landsat pixel; scored on macro-F1
+- Train in Madrid, use in Amsterdam with a few local labels
+- Same model: 0.66 in Madrid, 0.43 in Amsterdam
+- Features chosen for construction physics that transfers, not to fit Madrid
 
-SLIDE 2
-The fix: line the cities up first
+FIGURE: slide2_scatter.png  (Madrid vs Amsterdam feature clouds - apart)
+LAYOUT: left text / right image; abstract (149 words) in a small box across the bottom
 
-- Reshape Madrid's data to match Amsterdam, one age class at a time
-- Uses the model's own first guesses; no Amsterdam labels; repeat twice
-- With zero labels: 0.36 to 0.65
-- Only the labels we're given ever touch the model
+============================================================
+SLIDE 2   WHAT WE DID  -  AND WHY
+============================================================
+Line the cities up first - the model does the rest
 
-(picture: pipeline diagram + before/after scatter - two clouds apart, then overlapping)
+- Line the two cities up, one age class at a time  ->  it was mis-tuned, not wrong
+- Untangle the features, gently when data is thin  ->  few labels can't support a full one
+- Blend a local model with the Madrid one  ->  trust Madrid while local data is thin
+- Neighbouring patches vote; a 500-setup search picked the features and settings
+- Only the labels we're given ever touch the model; few-shot is a different recipe, not a smaller one
 
-------------------------------------------------------------
+FIGURE: slide2_pipeline.png  (Madrid RF -> line-up x2 -> predict, 0.36 -> 0.65)
+LAYOUT: centred pipeline graphic, bullets in a column on the left
 
-SLIDE 3
-Then small, measured gains
+============================================================
+SLIDE 3   RESULTS
+============================================================
+About 50 labels per class reach the in-city ceiling
 
-- Untangle the features, gently when data is thin: +0.15 at 5 labels per class
-- A local model and the Madrid model vote together
-- Neighbouring patches vote; a 500-setup search on a held-out half
-- A few labels is not the full pipeline with less data - it is a different recipe
+- Zero labels: 0.36 -> 0.65 (the line-up alone)
+- 5 / 25 / 50 / 100 / 200 labels  ->  0.66 / 0.68 / 0.70 / 0.72 / 0.74
+- Madrid tested on itself: 0.66; provided-notebook baseline: 0.42 -> 0.67
+- Steep to ~50, then flat - the line-up does the work, labels buy the last points
 
-(chart: ascending step-chart - baseline, each gain stacked, final score)
+FIGURE: slide5_curve.png  (F1 vs labels/class, error bars, dashed Madrid line) - LARGE
+plus a 3-row table beside it (both are required deliverables, both with error bars)
+LAYOUT: chart two-thirds left, table one-third right
 
-------------------------------------------------------------
+============================================================
+SLIDE 4   WHAT DIDN'T WORK
+============================================================
+The simple fixes won; the clever ones didn't
 
-SLIDE 4
-What did not work, and what we will not claim
+- Neural network - nothing to learn, the data was already separable
+- Ordinal training - smaller mistakes, not fewer; the score only counts right vs wrong
+- Self-training - it learns its own early mistakes
+- Gradient boosting - collapses at 5 labels
+- Every attempt to out-model the data lost to using it more carefully
 
-- A neural network, ordinal training, self-training, gradient boosting - all lost to simpler fixes
-- Classes 1 and 2 (both pre-1984) cannot be separated - a limit of the data
-- About 80% of our examples sit next to a test patch - we state it openly
+FIGURE: none
+LAYOUT: single column, an x per line, generous whitespace
 
-(chart: four bars, score per age class - classes 3 and 4 tall, classes 1 and 2 short)
+============================================================
+SLIDE 5   WHAT WE AUDITED
+============================================================
+We checked our own evaluation and our error pattern
 
-------------------------------------------------------------
+- ~80% of our labelled examples sit next to a test patch - measured twice; we disclose it
+- No rule broken (test answers never used); the neighbour smoothing is prediction-only so it can't compound it
+- Error analysis: class 1 (pre-1945) is our strongest class (~0.78); classes 2-4 cluster near 0.7
+- We corrected an earlier assumption - there is no single unsolvable class pair
 
-SLIDE 5
-Result: about 50 labels reach the in-city ceiling
+FIGURE: slide4_perclass.png  (per-class F1, 15 draws, error bars)  or  nb5_confusion.png
+LAYOUT: left text / right chart
 
-- Amsterdam: 0.66 / 0.68 / 0.70 / 0.72 / 0.74 at 5 / 25 / 50 / 100 / 200 labels per class
-- Madrid tested on itself: 0.66; provided-notebook baseline: 0.42 to 0.67
-- Steep improvement to about 50 labels, then it flattens - right at the Madrid line
-
-(table + plot, both required: F1-vs-labels curve with error bars and a dashed Madrid
-line, large; the table of Madrid + five Amsterdam scores with mean and SD, small beside it)
-
-------------------------------------------------------------
-
-SLIDE 6
-Conclusion: it is a calibration problem, not a hard one
+============================================================
+SLIDE 6   SUMMARY
+============================================================
+Cross-city transfer is a calibration problem, not a hard one
 
 - A new-city model is mis-tuned, not incapable
 - About 50 labels per class buy home-city accuracy
 - Careful use of the data beat every fancier model
 - New here: group-by-group alignment, and that few vs many labels need different pipelines
+- Next: spatial-block-disjoint evaluation; a third city
 
-(small, at the bottom: <A> features - <B> alignment - <C> evaluation - <D> analysis)
+TEAM (small, at the bottom): <A> features - <B> alignment - <C> evaluation - <D> analysis
+FIGURE: none
+LAYOUT: three large centred lines; the "New here" line in the accent colour
+
+============================================================
+TIMING  (~9:30, hard stop 10:00)
+------------------------------------------------------------
+1 Problem & data ......... 1:30   speaker A
+2 What we did / why ...... 2:15   speaker B
+3 Results ................ 2:00   speaker C
+4 What didn't work ....... 1:15   speaker D
+5 What we audited ........ 1:30   speaker D
+6 Summary ................ 0:40   all -> Q&A
+Slow down on 2 and 3.
+
+RUBRIC CHECK (all present):
+abstract on slide 1 · design decisions + worked/didn't (2, 4) · F1 table + log2(n)
+plot, both with error bars (3) · Model Design + Transfer Strategy (2) · F1
+interpretation, trend not just numbers (3) · domain shift addressed (2) · features
+that generalise (1) · low-data mechanics (2) · originality stated (6) · insightful
+failure (4, 5) · leakage disclosed (2, 5) · team roles (6).
