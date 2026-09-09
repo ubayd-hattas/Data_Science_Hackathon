@@ -11,47 +11,45 @@ design, transfer strategy, F1 interpretation. Word count noted at the end.*
 reflectance. We gap-fill each series (linear interpolation inside, edge-hold
 outside) and collapse it to 108 per-pixel statistics: overall, early-period
 (1984–2003), late-period (2004+) and year-on-year mean and standard deviation per
-band; five spectral indices; the magnitude, direction and **timing** of each
-band's largest single-year jump; and neighbourhood averages over the eight
-nearest pixels. Reducing to one row per pixel is deliberate — feeding raw
-per-year rows would treat each year as an independent sample and leak temporal
-structure, whereas summaries force the model to reason about trends. The
-early/late split and the jump-timing features target classes 3–4, whose
-construction event falls inside the record; the neighbourhood block exploits the
-fact that city blocks share a construction era. Stage 1 is a class-balanced
-Random Forest (500 trees, unrestricted depth). Feature set and hyperparameters
-were chosen by a 500-configuration random search scored on one half of Amsterdam
-and confirmed once on the untouched other half. We tested and rejected gradient
-boosting (matched in-city, weaker at small budgets), a triplet-loss embedding
-(added variance without gain — the features are already linearly separable),
-ordinal decomposition, and label-shift correction.
+band; five spectral indices; the magnitude, direction and timing of each band's
+largest single-year jump; and neighbourhood averages over the eight nearest
+pixels. One row per pixel forces the model to reason about trends rather than
+treating each year as an independent sample. The jump-timing and early/late
+features target classes 3–4, whose construction event falls inside the record;
+the neighbourhood block exploits blocks sharing a construction era. Stage 1 is a
+class-balanced Random Forest (500 trees, unrestricted depth); feature set and
+hyperparameters came from a 500-configuration random search scored on one half of
+Amsterdam and confirmed once on the untouched other half. We tested and rejected
+gradient boosting, a triplet-loss embedding, ordinal decomposition, label-shift
+correction, and self-training.
 
-**Transfer strategy.** Two unsupervised, label-free alignments. Zero-shot: CORAL
-— whiten Madrid's feature covariance and recolour it with Amsterdam's — applied
-before training, so decision boundaries are learned directly in the target's
-coordinate system. Few-shot: ZCA-whiten the Amsterdam features, with shrinkage
-toward the diagonal scaled to the label budget (near-full at 5 labels/class, none
-at 200), because a whitening rotation applied to a noisy class mean hurts when
-support is thin. A small Random Forest is fitted on the whitened support set and
-its class probabilities blended with the CORAL Stage-1 model, weight
-clip(n/50, 0.3, 0.95) shifting toward the local head as labels accumulate.
-Leakage discipline: every target statistic — CORAL covariance, whitening
-covariance, neighbourhood averages, Stage-1 prior — is computed from the
-unlabelled Amsterdam pool; the only labelled target data entering the pipeline is
-the per-trial support set, and Madrid CV folds split on pixels with one row each.
+**Transfer strategy.** Zero-shot alignment is **class-conditional CORAL**: fit
+the Stage-1 forest on globally CORAL-aligned Madrid, predict unlabelled
+Amsterdam, then re-align each Madrid class to the covariance of the Amsterdam
+pixels the model assigned to it, and refit; two rounds. Only the model's own
+predictions are used. Few-shot: ZCA-whiten the Amsterdam features with shrinkage
+scaled to the label budget (near-full at 5 labels/class, none at 200); fit a
+small Random Forest on the whitened support; blend its probabilities with the
+Stage-1 prior, weight clip(n/50, 0.3, 0.95) toward the local head; finally
+average each pixel's probabilities over its eight map-neighbours. Leakage
+discipline: CORAL covariances, pseudo-labels, whitening covariance and
+neighbourhood terms all come from the unlabelled Amsterdam pool; the only
+labelled target data is the per-trial support set, and the smoothing is
+prediction-only — no support label enters the smoothed field.
 
 **F1 interpretation.** Madrid 5×5 CV: 0.664 ± 0.004, the in-city ceiling.
-Zero-shot: 0.358 raw, 0.578 with CORAL — one covariance alignment recovers most
-of the domain gap with no labels, and is essential once neighbourhood features
-are present, since those encode Madrid-specific urban form. Few-shot macro-F1:
-0.62 / 0.66 / 0.68 / 0.70 / 0.72 at 5 / 25 / 50 / 100 / 200 labels per class. The
-curve rises steeply to about 50 labels, then flattens *at* the Madrid ceiling —
-by 100 labels/class the transferred model matches and slightly exceeds a
-home-city model. Residual error concentrates on classes 1 and 2, both pre-1984:
-with no construction event in the record to separate them, this is a data limit
-rather than a modelling shortfall, consistent with the building-age literature on
-pre-war stock.
+Zero-shot: 0.358 raw, 0.578 with pooled CORAL, **0.651 with class-conditional
+CORAL** — iterative per-class alignment recovers most of the domain gap with no
+labels. Few-shot macro-F1: 0.65 / 0.67 / 0.69 / 0.71 / 0.73 at 5 / 25 / 50 / 100
+/ 200 labels per class. The curve rises steeply to about 50 labels then flattens;
+by 100 labels/class it reaches and slightly passes the Madrid ceiling. Residual
+error concentrates on classes 1 and 2, both pre-1984 — no construction event to
+separate them, a data limit matching the pre-war building-age literature. One
+disclosed caveat: under the organiser's random per-class sampling, ~80% of
+support pixels have an immediate map-neighbour in the query set, so part of every
+few-shot score reflects same-block proximity rather than pure cross-location
+generalisation.
 
 ---
 
-*Justification body: 479 words.*
+*Justification body: 437 words.*

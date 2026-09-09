@@ -161,18 +161,19 @@ local labels are in place.
 
 | Amsterdam labels per age class | our macro-F1 | starting baseline |
 |---:|---:|---:|
-| 0 — zero-shot, with alignment | **0.58** | 0.43 |
-| 5 per class | **0.62** ± 0.01 | 0.42 |
-| 25 per class | **0.66** ± 0.01 | 0.55 |
-| 50 per class | **0.68** ± 0.01 | 0.61 |
-| 100 per class | **0.70** ± 0.01 | 0.64 |
-| 200 per class | **0.72** ± 0.01 | 0.67 |
+| 0 — zero-shot, class-conditional CORAL | **0.65** | 0.43 |
+| 5 per class | **0.65** ± 0.003 | 0.42 |
+| 25 per class | **0.67** ± 0.006 | 0.55 |
+| 50 per class | **0.69** ± 0.008 | 0.61 |
+| 100 per class | **0.71** ± 0.007 | 0.64 |
+| 200 per class | **0.73** ± 0.005 | 0.67 |
 | *Madrid, tested on itself* (the ceiling) | *0.66 ± 0.004* | — |
 
 **The headline:** by about **100 labelled buildings per age class**, our
 Madrid-trained model does **as well on Amsterdam as a model does on its own home
-city** — 0.70 vs 0.66, it actually edges ahead. The curve climbs fast to ~50
-labels, then flattens.
+city** — 0.71 vs 0.66, it passes it. The curve climbs fast to ~50 labels, then
+flattens. And the **zero-labels** number jumped from 0.58 to 0.65 once the
+alignment was done one age class at a time instead of all at once.
 
 *How we know it's real:* the tuning used a **50/50 split of Amsterdam** — settings
 were chosen on one half and scored once on the other half, which the search never
