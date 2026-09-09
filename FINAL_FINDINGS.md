@@ -1,5 +1,7 @@
 # Final findings
 
+> Historical modelling summary. The [final critical audit](Docs/FINAL_CRITICAL_AUDIT.md) supersedes the submission recommendation below: all-60 logistic is a benchmark, not the primary transfer submission. The pulled two-tier RF pipeline is the provisional primary pending reproduction and packaging. Use the [team handoff](Docs/TEAM_HANDOFF.md) for current explanations and [verified tables](Docs/VERIFIED_RESULT_TABLES.md) for comparisons.
+
 ## Challenge in plain English
 
 Use Madrid-labelled 30 m Landsat pixel histories to support building-age classification in Amsterdam, where only 5, 25, 50, 100, or 200 labelled pixels per class are available. There are four city-specific age classes, and the official metric is macro F1. The evaluation must keep Amsterdam support pixels separate from query pixels and must not learn from query labels or unavailable test-set statistics.

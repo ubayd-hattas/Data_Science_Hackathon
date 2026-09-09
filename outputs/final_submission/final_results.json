@@ -1,0 +1,6053 @@
+{
+  "scope": "authoritative reproduced final-submission results; Amsterdam values are internal development results, not organiser held-out scores",
+  "method": "frozen two-tier Madrid Random Forest transfer",
+  "primary_submission": {
+    "amsterdam": {
+      "5": {
+        "branch": "score_product",
+        "mean": 0.5475224753695379,
+        "population_sd": 0.03709713925874763,
+        "scores": [
+          0.53537038575871,
+          0.5645798944676153,
+          0.5366049843712215,
+          0.6087917570746924,
+          0.5231720305720249,
+          0.47099690697866364,
+          0.5884408375566937,
+          0.5774276647254191,
+          0.5424982458937833,
+          0.5273420462965551
+        ],
+        "historical_reported_mean": 0.5592,
+        "historical_reported_population_sd": 0.0316,
+        "difference_from_historical_mean": -0.011677524630462122,
+        "trials": [
+          {
+            "trial": 0,
+            "macro_f1": 0.53537038575871,
+            "confusion_counts": [
+              [
+                6672,
+                467,
+                122,
+                302
+              ],
+              [
+                5184,
+                2345,
+                245,
+                1023
+              ],
+              [
+                1205,
+                1223,
+                3153,
+                1159
+              ],
+              [
+                237,
+                261,
+                347,
+                2027
+              ]
+            ],
+            "per_class_f1": [
+              0.6396625281626,
+              0.3582066753226915,
+              0.5945130574149147,
+              0.5490992821346337
+            ],
+            "support_array_keys": [
+              "support_indices_5_0",
+              "support_pixel_ids_5_0"
+            ],
+            "query_array_keys": [
+              "query_indices_5_0",
+              "query_pixel_ids_5_0"
+            ],
+            "prediction_array_key": "predictions_5_0"
+          },
+          {
+            "trial": 1,
+            "macro_f1": 0.5645798944676153,
+            "confusion_counts": [
+              [
+                6650,
+                610,
+                186,
+                117
+              ],
+              [
+                4807,
+                3180,
+                471,
+                339
+              ],
+              [
+                1146,
+                1280,
+                3794,
+                520
+              ],
+              [
+                258,
+                553,
+                684,
+                1377
+              ]
+            ],
+            "per_class_f1": [
+              0.6511946729338034,
+              0.44105409153952846,
+              0.6389894736842106,
+              0.5270813397129187
+            ],
+            "support_array_keys": [
+              "support_indices_5_1",
+              "support_pixel_ids_5_1"
+            ],
+            "query_array_keys": [
+              "query_indices_5_1",
+              "query_pixel_ids_5_1"
+            ],
+            "prediction_array_key": "predictions_5_1"
+          },
+          {
+            "trial": 2,
+            "macro_f1": 0.5366049843712215,
+            "confusion_counts": [
+              [
+                5955,
+                1315,
+                209,
+                84
+              ],
+              [
+                3940,
+                4101,
+                478,
+                278
+              ],
+              [
+                1179,
+                2197,
+                2509,
+                855
+              ],
+              [
+                315,
+                583,
+                420,
+                1554
+              ]
+            ],
+            "per_class_f1": [
+              0.6284297171802449,
+              0.48266933443182486,
+              0.4845500193124759,
+              0.5507708665603402
+            ],
+            "support_array_keys": [
+              "support_indices_5_2",
+              "support_pixel_ids_5_2"
+            ],
+            "query_array_keys": [
+              "query_indices_5_2",
+              "query_pixel_ids_5_2"
+            ],
+            "prediction_array_key": "predictions_5_2"
+          },
+          {
+            "trial": 3,
+            "macro_f1": 0.6087917570746924,
+            "confusion_counts": [
+              [
+                5751,
+                1425,
+                150,
+                237
+              ],
+              [
+                2926,
+                4765,
+                389,
+                717
+              ],
+              [
+                948,
+                1398,
+                3612,
+                782
+              ],
+              [
+                218,
+                321,
+                498,
+                1835
+              ]
+            ],
+            "per_class_f1": [
+              0.6608066184074457,
+              0.5704537291990901,
+              0.6342962507682852,
+              0.5696104299239485
+            ],
+            "support_array_keys": [
+              "support_indices_5_3",
+              "support_pixel_ids_5_3"
+            ],
+            "query_array_keys": [
+              "query_indices_5_3",
+              "query_pixel_ids_5_3"
+            ],
+            "prediction_array_key": "predictions_5_3"
+          },
+          {
+            "trial": 4,
+            "macro_f1": 0.5231720305720249,
+            "confusion_counts": [
+              [
+                6827,
+                383,
+                181,
+                172
+              ],
+              [
+                5850,
+                1967,
+                346,
+                634
+              ],
+              [
+                1247,
+                1226,
+                3141,
+                1126
+              ],
+              [
+                310,
+                357,
+                290,
+                1915
+              ]
+            ],
+            "per_class_f1": [
+              0.6264164793320182,
+              0.30903377847604085,
+              0.5872125630959057,
+              0.5700253013841345
+            ],
+            "support_array_keys": [
+              "support_indices_5_4",
+              "support_pixel_ids_5_4"
+            ],
+            "query_array_keys": [
+              "query_indices_5_4",
+              "query_pixel_ids_5_4"
+            ],
+            "prediction_array_key": "predictions_5_4"
+          },
+          {
+            "trial": 5,
+            "macro_f1": 0.47099690697866364,
+            "confusion_counts": [
+              [
+                7073,
+                224,
+                104,
+                162
+              ],
+              [
+                6984,
+                918,
+                409,
+                486
+              ],
+              [
+                1561,
+                1203,
+                3225,
+                751
+              ],
+              [
+                503,
+                156,
+                621,
+                1592
+              ]
+            ],
+            "per_class_f1": [
+              0.5972808647187975,
+              0.16250663834306958,
+              0.5811334354446347,
+              0.5430666894081528
+            ],
+            "support_array_keys": [
+              "support_indices_5_5",
+              "support_pixel_ids_5_5"
+            ],
+            "query_array_keys": [
+              "query_indices_5_5",
+              "query_pixel_ids_5_5"
+            ],
+            "prediction_array_key": "predictions_5_5"
+          },
+          {
+            "trial": 6,
+            "macro_f1": 0.5884408375566937,
+            "confusion_counts": [
+              [
+                5668,
+                1520,
+                191,
+                184
+              ],
+              [
+                3161,
+                4573,
+                545,
+                518
+              ],
+              [
+                1136,
+                1057,
+                4108,
+                439
+              ],
+              [
+                216,
+                513,
+                817,
+                1326
+              ]
+            ],
+            "per_class_f1": [
+              0.6388638412984671,
+              0.5556500607533414,
+              0.6625272155471333,
+              0.49672223262783294
+            ],
+            "support_array_keys": [
+              "support_indices_5_6",
+              "support_pixel_ids_5_6"
+            ],
+            "query_array_keys": [
+              "query_indices_5_6",
+              "query_pixel_ids_5_6"
+            ],
+            "prediction_array_key": "predictions_5_6"
+          },
+          {
+            "trial": 7,
+            "macro_f1": 0.5774276647254191,
+            "confusion_counts": [
+              [
+                5845,
+                1371,
+                76,
+                271
+              ],
+              [
+                3488,
+                4268,
+                195,
+                846
+              ],
+              [
+                856,
+                1695,
+                3066,
+                1123
+              ],
+              [
+                209,
+                340,
+                367,
+                1956
+              ]
+            ],
+            "per_class_f1": [
+              0.6508546294749735,
+              0.5182441867524741,
+              0.5871313672922251,
+              0.5534804753820034
+            ],
+            "support_array_keys": [
+              "support_indices_5_7",
+              "support_pixel_ids_5_7"
+            ],
+            "query_array_keys": [
+              "query_indices_5_7",
+              "query_pixel_ids_5_7"
+            ],
+            "prediction_array_key": "predictions_5_7"
+          },
+          {
+            "trial": 8,
+            "macro_f1": 0.5424982458937833,
+            "confusion_counts": [
+              [
+                6352,
+                836,
+                117,
+                258
+              ],
+              [
+                4615,
+                3071,
+                256,
+                855
+              ],
+              [
+                912,
+                1873,
+                2589,
+                1366
+              ],
+              [
+                214,
+                331,
+                118,
+                2209
+              ]
+            ],
+            "per_class_f1": [
+              0.6463166463166463,
+              0.41199356050442715,
+              0.5272912423625254,
+              0.5843915343915344
+            ],
+            "support_array_keys": [
+              "support_indices_5_8",
+              "support_pixel_ids_5_8"
+            ],
+            "query_array_keys": [
+              "query_indices_5_8",
+              "query_pixel_ids_5_8"
+            ],
+            "prediction_array_key": "predictions_5_8"
+          },
+          {
+            "trial": 9,
+            "macro_f1": 0.5273420462965551,
+            "confusion_counts": [
+              [
+                6757,
+                501,
+                134,
+                171
+              ],
+              [
+                5377,
+                2537,
+                330,
+                553
+              ],
+              [
+                1407,
+                1208,
+                2993,
+                1132
+              ],
+              [
+                420,
+                292,
+                423,
+                1737
+              ]
+            ],
+            "per_class_f1": [
+              0.627857275599331,
+              0.3805024371953506,
+              0.5636534839924671,
+              0.5373549883990719
+            ],
+            "support_array_keys": [
+              "support_indices_5_9",
+              "support_pixel_ids_5_9"
+            ],
+            "query_array_keys": [
+              "query_indices_5_9",
+              "query_pixel_ids_5_9"
+            ],
+            "prediction_array_key": "predictions_5_9"
+          }
+        ]
+      },
+      "25": {
+        "branch": "score_product",
+        "mean": 0.5871648532309527,
+        "population_sd": 0.031016336879882513,
+        "scores": [
+          0.5571575589301837,
+          0.6233811401427222,
+          0.5678062014931686,
+          0.6151286265048357,
+          0.6079555703399907,
+          0.5798099110955869,
+          0.589003928000367,
+          0.6128573272803592,
+          0.6013795107165638,
+          0.5171687578057484
+        ],
+        "historical_reported_mean": 0.5976,
+        "historical_reported_population_sd": 0.0235,
+        "difference_from_historical_mean": -0.010435146769047332,
+        "trials": [
+          {
+            "trial": 0,
+            "macro_f1": 0.5571575589301837,
+            "confusion_counts": [
+              [
+                6723,
+                489,
+                154,
+                177
+              ],
+              [
+                5284,
+                2545,
+                338,
+                610
+              ],
+              [
+                1116,
+                1122,
+                3324,
+                1158
+              ],
+              [
+                303,
+                355,
+                208,
+                1986
+              ]
+            ],
+            "per_class_f1": [
+              0.6412322952930517,
+              0.38305237808549064,
+              0.6187639612807149,
+              0.5855816010614773
+            ],
+            "support_array_keys": [
+              "support_indices_25_0",
+              "support_pixel_ids_25_0"
+            ],
+            "query_array_keys": [
+              "query_indices_25_0",
+              "query_pixel_ids_25_0"
+            ],
+            "prediction_array_key": "predictions_25_0"
+          },
+          {
+            "trial": 1,
+            "macro_f1": 0.6233811401427222,
+            "confusion_counts": [
+              [
+                6026,
+                1123,
+                209,
+                185
+              ],
+              [
+                3231,
+                4414,
+                540,
+                592
+              ],
+              [
+                957,
+                849,
+                3915,
+                999
+              ],
+              [
+                215,
+                350,
+                363,
+                1924
+              ]
+            ],
+            "per_class_f1": [
+              0.6705987091030492,
+              0.5690711016566751,
+              0.666553162509577,
+              0.5873015873015873
+            ],
+            "support_array_keys": [
+              "support_indices_25_1",
+              "support_pixel_ids_25_1"
+            ],
+            "query_array_keys": [
+              "query_indices_25_1",
+              "query_pixel_ids_25_1"
+            ],
+            "prediction_array_key": "predictions_25_1"
+          },
+          {
+            "trial": 2,
+            "macro_f1": 0.5678062014931686,
+            "confusion_counts": [
+              [
+                6610,
+                633,
+                116,
+                184
+              ],
+              [
+                4739,
+                3181,
+                264,
+                593
+              ],
+              [
+                1363,
+                1155,
+                3346,
+                856
+              ],
+              [
+                370,
+                389,
+                348,
+                1745
+              ]
+            ],
+            "per_class_f1": [
+              0.640969696969697,
+              0.4500884329678104,
+              0.6199740596627756,
+              0.5601926163723917
+            ],
+            "support_array_keys": [
+              "support_indices_25_2",
+              "support_pixel_ids_25_2"
+            ],
+            "query_array_keys": [
+              "query_indices_25_2",
+              "query_pixel_ids_25_2"
+            ],
+            "prediction_array_key": "predictions_25_2"
+          },
+          {
+            "trial": 3,
+            "macro_f1": 0.6151286265048357,
+            "confusion_counts": [
+              [
+                6042,
+                1151,
+                182,
+                168
+              ],
+              [
+                3134,
+                4601,
+                523,
+                519
+              ],
+              [
+                945,
+                1143,
+                3685,
+                947
+              ],
+              [
+                191,
+                491,
+                371,
+                1799
+              ]
+            ],
+            "per_class_f1": [
+              0.676785214225707,
+              0.5693250015467426,
+              0.6419301454577128,
+              0.5724741447891806
+            ],
+            "support_array_keys": [
+              "support_indices_25_3",
+              "support_pixel_ids_25_3"
+            ],
+            "query_array_keys": [
+              "query_indices_25_3",
+              "query_pixel_ids_25_3"
+            ],
+            "prediction_array_key": "predictions_25_3"
+          },
+          {
+            "trial": 4,
+            "macro_f1": 0.6079555703399907,
+            "confusion_counts": [
+              [
+                5920,
+                1268,
+                184,
+                171
+              ],
+              [
+                3433,
+                4295,
+                504,
+                545
+              ],
+              [
+                1155,
+                1035,
+                3587,
+                943
+              ],
+              [
+                316,
+                230,
+                352,
+                1954
+              ]
+            ],
+            "per_class_f1": [
+              0.6446343986497522,
+              0.5504645946811919,
+              0.6322375958403103,
+              0.6044856921887084
+            ],
+            "support_array_keys": [
+              "support_indices_25_4",
+              "support_pixel_ids_25_4"
+            ],
+            "query_array_keys": [
+              "query_indices_25_4",
+              "query_pixel_ids_25_4"
+            ],
+            "prediction_array_key": "predictions_25_4"
+          },
+          {
+            "trial": 5,
+            "macro_f1": 0.5798099110955869,
+            "confusion_counts": [
+              [
+                6439,
+                800,
+                160,
+                144
+              ],
+              [
+                4287,
+                3653,
+                338,
+                499
+              ],
+              [
+                989,
+                1456,
+                3295,
+                980
+              ],
+              [
+                202,
+                592,
+                280,
+                1778
+              ]
+            ],
+            "per_class_f1": [
+              0.6617677286742035,
+              0.47820395339704147,
+              0.610580932085611,
+              0.5686870302254917
+            ],
+            "support_array_keys": [
+              "support_indices_25_5",
+              "support_pixel_ids_25_5"
+            ],
+            "query_array_keys": [
+              "query_indices_25_5",
+              "query_pixel_ids_25_5"
+            ],
+            "prediction_array_key": "predictions_25_5"
+          },
+          {
+            "trial": 6,
+            "macro_f1": 0.589003928000367,
+            "confusion_counts": [
+              [
+                6328,
+                946,
+                128,
+                141
+              ],
+              [
+                4029,
+                3994,
+                319,
+                435
+              ],
+              [
+                1270,
+                1519,
+                3282,
+                649
+              ],
+              [
+                375,
+                415,
+                354,
+                1708
+              ]
+            ],
+            "per_class_f1": [
+              0.6475313379380916,
+              0.5103827231486806,
+              0.6076089975006943,
+              0.5904926534140017
+            ],
+            "support_array_keys": [
+              "support_indices_25_6",
+              "support_pixel_ids_25_6"
+            ],
+            "query_array_keys": [
+              "query_indices_25_6",
+              "query_pixel_ids_25_6"
+            ],
+            "prediction_array_key": "predictions_25_6"
+          },
+          {
+            "trial": 7,
+            "macro_f1": 0.6128573272803592,
+            "confusion_counts": [
+              [
+                6186,
+                1018,
+                197,
+                142
+              ],
+              [
+                3675,
+                4139,
+                502,
+                461
+              ],
+              [
+                1207,
+                1210,
+                3660,
+                643
+              ],
+              [
+                350,
+                242,
+                404,
+                1856
+              ]
+            ],
+            "per_class_f1": [
+              0.6524972311586942,
+              0.5380215780579748,
+              0.6374640773317077,
+              0.6234464225730602
+            ],
+            "support_array_keys": [
+              "support_indices_25_7",
+              "support_pixel_ids_25_7"
+            ],
+            "query_array_keys": [
+              "query_indices_25_7",
+              "query_pixel_ids_25_7"
+            ],
+            "prediction_array_key": "predictions_25_7"
+          },
+          {
+            "trial": 8,
+            "macro_f1": 0.6013795107165638,
+            "confusion_counts": [
+              [
+                6199,
+                983,
+                166,
+                195
+              ],
+              [
+                3740,
+                4038,
+                376,
+                623
+              ],
+              [
+                1111,
+                1128,
+                3336,
+                1145
+              ],
+              [
+                267,
+                308,
+                210,
+                2067
+              ]
+            ],
+            "per_class_f1": [
+              0.6573700954400848,
+              0.5301299724300906,
+              0.6173205033308661,
+              0.6006974716652136
+            ],
+            "support_array_keys": [
+              "support_indices_25_8",
+              "support_pixel_ids_25_8"
+            ],
+            "query_array_keys": [
+              "query_indices_25_8",
+              "query_pixel_ids_25_8"
+            ],
+            "prediction_array_key": "predictions_25_8"
+          },
+          {
+            "trial": 9,
+            "macro_f1": 0.5171687578057484,
+            "confusion_counts": [
+              [
+                6913,
+                271,
+                159,
+                200
+              ],
+              [
+                6173,
+                1426,
+                559,
+                619
+              ],
+              [
+                1306,
+                822,
+                3379,
+                1213
+              ],
+              [
+                265,
+                319,
+                231,
+                2037
+              ]
+            ],
+            "per_class_f1": [
+              0.6227927927927928,
+              0.24554455445544554,
+              0.6116944243301955,
+              0.58864325964456
+            ],
+            "support_array_keys": [
+              "support_indices_25_9",
+              "support_pixel_ids_25_9"
+            ],
+            "query_array_keys": [
+              "query_indices_25_9",
+              "query_pixel_ids_25_9"
+            ],
+            "prediction_array_key": "predictions_25_9"
+          }
+        ]
+      },
+      "50": {
+        "branch": "score_product",
+        "mean": 0.5943454566668345,
+        "population_sd": 0.01338333227842946,
+        "scores": [
+          0.6050130672895484,
+          0.6034547246276671,
+          0.5779310232722137,
+          0.6068460364040942,
+          0.5945034952298454,
+          0.5909833533016416,
+          0.6148636837828546,
+          0.5940652369309406,
+          0.5680189439023624,
+          0.5877750019271777
+        ],
+        "historical_reported_mean": 0.6086,
+        "historical_reported_population_sd": 0.0095,
+        "difference_from_historical_mean": -0.014254543333165559,
+        "trials": [
+          {
+            "trial": 0,
+            "macro_f1": 0.6050130672895484,
+            "confusion_counts": [
+              [
+                5966,
+                1190,
+                203,
+                159
+              ],
+              [
+                3145,
+                4574,
+                483,
+                550
+              ],
+              [
+                869,
+                1184,
+                3490,
+                1152
+              ],
+              [
+                174,
+                504,
+                337,
+                1812
+              ]
+            ],
+            "per_class_f1": [
+              0.6751923947487551,
+              0.5645519624784004,
+              0.6227694503925767,
+              0.5575384615384615
+            ],
+            "support_array_keys": [
+              "support_indices_50_0",
+              "support_pixel_ids_50_0"
+            ],
+            "query_array_keys": [
+              "query_indices_50_0",
+              "query_pixel_ids_50_0"
+            ],
+            "prediction_array_key": "predictions_50_0"
+          },
+          {
+            "trial": 1,
+            "macro_f1": 0.6034547246276671,
+            "confusion_counts": [
+              [
+                6365,
+                752,
+                200,
+                201
+              ],
+              [
+                3851,
+                3758,
+                484,
+                659
+              ],
+              [
+                926,
+                1120,
+                3536,
+                1113
+              ],
+              [
+                208,
+                348,
+                239,
+                2032
+              ]
+            ],
+            "per_class_f1": [
+              0.674687301250795,
+              0.5102511880515954,
+              0.634032634032634,
+              0.594847775175644
+            ],
+            "support_array_keys": [
+              "support_indices_50_1",
+              "support_pixel_ids_50_1"
+            ],
+            "query_array_keys": [
+              "query_indices_50_1",
+              "query_pixel_ids_50_1"
+            ],
+            "prediction_array_key": "predictions_50_1"
+          },
+          {
+            "trial": 2,
+            "macro_f1": 0.5779310232722137,
+            "confusion_counts": [
+              [
+                6593,
+                598,
+                149,
+                178
+              ],
+              [
+                4785,
+                3048,
+                330,
+                589
+              ],
+              [
+                1191,
+                1040,
+                3512,
+                952
+              ],
+              [
+                265,
+                400,
+                290,
+                1872
+              ]
+            ],
+            "per_class_f1": [
+              0.6478970125786163,
+              0.44052608758491113,
+              0.6399416909620991,
+              0.5833593019632284
+            ],
+            "support_array_keys": [
+              "support_indices_50_2",
+              "support_pixel_ids_50_2"
+            ],
+            "query_array_keys": [
+              "query_indices_50_2",
+              "query_pixel_ids_50_2"
+            ],
+            "prediction_array_key": "predictions_50_2"
+          },
+          {
+            "trial": 3,
+            "macro_f1": 0.6068460364040942,
+            "confusion_counts": [
+              [
+                6295,
+                860,
+                168,
+                195
+              ],
+              [
+                3769,
+                3911,
+                392,
+                680
+              ],
+              [
+                1173,
+                828,
+                3586,
+                1108
+              ],
+              [
+                311,
+                267,
+                257,
+                1992
+              ]
+            ],
+            "per_class_f1": [
+              0.6603377740480436,
+              0.5350937200711452,
+              0.6462425662281492,
+              0.5857100852690386
+            ],
+            "support_array_keys": [
+              "support_indices_50_3",
+              "support_pixel_ids_50_3"
+            ],
+            "query_array_keys": [
+              "query_indices_50_3",
+              "query_pixel_ids_50_3"
+            ],
+            "prediction_array_key": "predictions_50_3"
+          },
+          {
+            "trial": 4,
+            "macro_f1": 0.5945034952298454,
+            "confusion_counts": [
+              [
+                6481,
+                686,
+                164,
+                187
+              ],
+              [
+                4337,
+                3399,
+                386,
+                630
+              ],
+              [
+                1042,
+                980,
+                3609,
+                1064
+              ],
+              [
+                234,
+                379,
+                252,
+                1962
+              ]
+            ],
+            "per_class_f1": [
+              0.6609218845604732,
+              0.47886728655959426,
+              0.6499189627228525,
+              0.5883058470764617
+            ],
+            "support_array_keys": [
+              "support_indices_50_4",
+              "support_pixel_ids_50_4"
+            ],
+            "query_array_keys": [
+              "query_indices_50_4",
+              "query_pixel_ids_50_4"
+            ],
+            "prediction_array_key": "predictions_50_4"
+          },
+          {
+            "trial": 5,
+            "macro_f1": 0.5909833533016416,
+            "confusion_counts": [
+              [
+                6310,
+                872,
+                174,
+                162
+              ],
+              [
+                4180,
+                3621,
+                431,
+                520
+              ],
+              [
+                1075,
+                1110,
+                3558,
+                952
+              ],
+              [
+                204,
+                496,
+                289,
+                1838
+              ]
+            ],
+            "per_class_f1": [
+              0.6543267485871312,
+              0.4876439297017036,
+              0.6383780389342424,
+              0.5835846959834894
+            ],
+            "support_array_keys": [
+              "support_indices_50_5",
+              "support_pixel_ids_50_5"
+            ],
+            "query_array_keys": [
+              "query_indices_50_5",
+              "query_pixel_ids_50_5"
+            ],
+            "prediction_array_key": "predictions_50_5"
+          },
+          {
+            "trial": 6,
+            "macro_f1": 0.6148636837828546,
+            "confusion_counts": [
+              [
+                6114,
+                1038,
+                159,
+                207
+              ],
+              [
+                3451,
+                4210,
+                373,
+                718
+              ],
+              [
+                1118,
+                976,
+                3605,
+                996
+              ],
+              [
+                284,
+                242,
+                285,
+                2016
+              ]
+            ],
+            "per_class_f1": [
+              0.6615093318907223,
+              0.5532921540281246,
+              0.6485562651794549,
+              0.5960969840331165
+            ],
+            "support_array_keys": [
+              "support_indices_50_6",
+              "support_pixel_ids_50_6"
+            ],
+            "query_array_keys": [
+              "query_indices_50_6",
+              "query_pixel_ids_50_6"
+            ],
+            "prediction_array_key": "predictions_50_6"
+          },
+          {
+            "trial": 7,
+            "macro_f1": 0.5940652369309406,
+            "confusion_counts": [
+              [
+                6221,
+                941,
+                180,
+                176
+              ],
+              [
+                3707,
+                4090,
+                355,
+                600
+              ],
+              [
+                1032,
+                1065,
+                3300,
+                1298
+              ],
+              [
+                229,
+                425,
+                251,
+                1922
+              ]
+            ],
+            "per_class_f1": [
+              0.6650986261827123,
+              0.5355856740653441,
+              0.6121881087097671,
+              0.5633885387659388
+            ],
+            "support_array_keys": [
+              "support_indices_50_7",
+              "support_pixel_ids_50_7"
+            ],
+            "query_array_keys": [
+              "query_indices_50_7",
+              "query_pixel_ids_50_7"
+            ],
+            "prediction_array_key": "predictions_50_7"
+          },
+          {
+            "trial": 8,
+            "macro_f1": 0.5680189439023624,
+            "confusion_counts": [
+              [
+                6673,
+                449,
+                189,
+                207
+              ],
+              [
+                4982,
+                2384,
+                710,
+                676
+              ],
+              [
+                1052,
+                806,
+                3793,
+                1044
+              ],
+              [
+                223,
+                318,
+                278,
+                2008
+              ]
+            ],
+            "per_class_f1": [
+              0.6526799687010955,
+              0.3751672043433787,
+              0.6503214744963566,
+              0.5939071280686188
+            ],
+            "support_array_keys": [
+              "support_indices_50_8",
+              "support_pixel_ids_50_8"
+            ],
+            "query_array_keys": [
+              "query_indices_50_8",
+              "query_pixel_ids_50_8"
+            ],
+            "prediction_array_key": "predictions_50_8"
+          },
+          {
+            "trial": 9,
+            "macro_f1": 0.5877750019271777,
+            "confusion_counts": [
+              [
+                5976,
+                1186,
+                182,
+                174
+              ],
+              [
+                3406,
+                4320,
+                473,
+                553
+              ],
+              [
+                1102,
+                1032,
+                3172,
+                1389
+              ],
+              [
+                237,
+                352,
+                323,
+                1915
+              ]
+            ],
+            "per_class_f1": [
+              0.655299084379626,
+              0.5523590333716916,
+              0.5849700322729369,
+              0.5584718576844561
+            ],
+            "support_array_keys": [
+              "support_indices_50_9",
+              "support_pixel_ids_50_9"
+            ],
+            "query_array_keys": [
+              "query_indices_50_9",
+              "query_pixel_ids_50_9"
+            ],
+            "prediction_array_key": "predictions_50_9"
+          }
+        ]
+      },
+      "100": {
+        "branch": "modal_leaf_agreement",
+        "mean": 0.6145046153186325,
+        "population_sd": 0.007474603930275258,
+        "scores": [
+          0.6140218872043813,
+          0.6170653759477733,
+          0.6085705391212679,
+          0.6102462250516505,
+          0.602879506548806,
+          0.6226885489234568,
+          0.6168017618891557,
+          0.6266178536799305,
+          0.6046999621006607,
+          0.621454492719243
+        ],
+        "historical_reported_mean": 0.62,
+        "historical_reported_population_sd": 0.0064,
+        "difference_from_historical_mean": -0.0054953846813674545,
+        "trials": [
+          {
+            "trial": 0,
+            "macro_f1": 0.6140218872043813,
+            "confusion_counts": [
+              [
+                5272,
+                1575,
+                448,
+                173
+              ],
+              [
+                2815,
+                4258,
+                1015,
+                614
+              ],
+              [
+                1154,
+                747,
+                4156,
+                588
+              ],
+              [
+                283,
+                190,
+                400,
+                1904
+              ]
+            ],
+            "per_class_f1": [
+              0.620527306967985,
+              0.5504136504653567,
+              0.6563487049905243,
+              0.6287978863936592
+            ],
+            "support_array_keys": [
+              "support_indices_100_0",
+              "support_pixel_ids_100_0"
+            ],
+            "query_array_keys": [
+              "query_indices_100_0",
+              "query_pixel_ids_100_0"
+            ],
+            "prediction_array_key": "predictions_100_0"
+          },
+          {
+            "trial": 1,
+            "macro_f1": 0.6170653759477733,
+            "confusion_counts": [
+              [
+                5138,
+                1877,
+                264,
+                189
+              ],
+              [
+                2759,
+                4701,
+                664,
+                578
+              ],
+              [
+                1366,
+                751,
+                4052,
+                476
+              ],
+              [
+                326,
+                192,
+                469,
+                1790
+              ]
+            ],
+            "per_class_f1": [
+              0.6024506067890015,
+              0.5795475559390988,
+              0.6700843393418224,
+              0.6161790017211703
+            ],
+            "support_array_keys": [
+              "support_indices_100_1",
+              "support_pixel_ids_100_1"
+            ],
+            "query_array_keys": [
+              "query_indices_100_1",
+              "query_pixel_ids_100_1"
+            ],
+            "prediction_array_key": "predictions_100_1"
+          },
+          {
+            "trial": 2,
+            "macro_f1": 0.6085705391212679,
+            "confusion_counts": [
+              [
+                5002,
+                1860,
+                454,
+                152
+              ],
+              [
+                2278,
+                4365,
+                1534,
+                525
+              ],
+              [
+                1248,
+                639,
+                4173,
+                585
+              ],
+              [
+                290,
+                174,
+                434,
+                1879
+              ]
+            ],
+            "per_class_f1": [
+              0.6142699250890336,
+              0.5546378653113088,
+              0.6303625377643505,
+              0.6350118283203785
+            ],
+            "support_array_keys": [
+              "support_indices_100_2",
+              "support_pixel_ids_100_2"
+            ],
+            "query_array_keys": [
+              "query_indices_100_2",
+              "query_pixel_ids_100_2"
+            ],
+            "prediction_array_key": "predictions_100_2"
+          },
+          {
+            "trial": 3,
+            "macro_f1": 0.6102462250516505,
+            "confusion_counts": [
+              [
+                4653,
+                2358,
+                292,
+                165
+              ],
+              [
+                2285,
+                5043,
+                745,
+                629
+              ],
+              [
+                1217,
+                902,
+                3822,
+                704
+              ],
+              [
+                291,
+                244,
+                303,
+                1939
+              ]
+            ],
+            "per_class_f1": [
+              0.584768128691718,
+              0.5847295495391037,
+              0.6474125518760058,
+              0.6240746700997747
+            ],
+            "support_array_keys": [
+              "support_indices_100_3",
+              "support_pixel_ids_100_3"
+            ],
+            "query_array_keys": [
+              "query_indices_100_3",
+              "query_pixel_ids_100_3"
+            ],
+            "prediction_array_key": "predictions_100_3"
+          },
+          {
+            "trial": 4,
+            "macro_f1": 0.602879506548806,
+            "confusion_counts": [
+              [
+                4025,
+                2950,
+                306,
+                187
+              ],
+              [
+                1708,
+                5221,
+                1198,
+                575
+              ],
+              [
+                1044,
+                861,
+                4166,
+                574
+              ],
+              [
+                263,
+                256,
+                405,
+                1853
+              ]
+            ],
+            "per_class_f1": [
+              0.5548662806727322,
+              0.5804335742078933,
+              0.6550314465408805,
+              0.6211867247737177
+            ],
+            "support_array_keys": [
+              "support_indices_100_4",
+              "support_pixel_ids_100_4"
+            ],
+            "query_array_keys": [
+              "query_indices_100_4",
+              "query_pixel_ids_100_4"
+            ],
+            "prediction_array_key": "predictions_100_4"
+          },
+          {
+            "trial": 5,
+            "macro_f1": 0.6226885489234568,
+            "confusion_counts": [
+              [
+                5136,
+                1857,
+                318,
+                157
+              ],
+              [
+                2579,
+                4903,
+                674,
+                546
+              ],
+              [
+                1238,
+                1005,
+                3784,
+                618
+              ],
+              [
+                278,
+                243,
+                311,
+                1945
+              ]
+            ],
+            "per_class_f1": [
+              0.615126654290676,
+              0.5868342309994016,
+              0.645073303784521,
+              0.6437200066192289
+            ],
+            "support_array_keys": [
+              "support_indices_100_5",
+              "support_pixel_ids_100_5"
+            ],
+            "query_array_keys": [
+              "query_indices_100_5",
+              "query_pixel_ids_100_5"
+            ],
+            "prediction_array_key": "predictions_100_5"
+          },
+          {
+            "trial": 6,
+            "macro_f1": 0.6168017618891557,
+            "confusion_counts": [
+              [
+                5137,
+                1951,
+                208,
+                172
+              ],
+              [
+                2735,
+                4693,
+                629,
+                645
+              ],
+              [
+                1378,
+                765,
+                3913,
+                589
+              ],
+              [
+                309,
+                190,
+                383,
+                1895
+              ]
+            ],
+            "per_class_f1": [
+              0.6033946085628707,
+              0.575792896141341,
+              0.6644591611479028,
+              0.6235603817045081
+            ],
+            "support_array_keys": [
+              "support_indices_100_6",
+              "support_pixel_ids_100_6"
+            ],
+            "query_array_keys": [
+              "query_indices_100_6",
+              "query_pixel_ids_100_6"
+            ],
+            "prediction_array_key": "predictions_100_6"
+          },
+          {
+            "trial": 7,
+            "macro_f1": 0.6266178536799305,
+            "confusion_counts": [
+              [
+                5088,
+                1876,
+                308,
+                196
+              ],
+              [
+                2243,
+                4907,
+                874,
+                678
+              ],
+              [
+                1131,
+                853,
+                3979,
+                682
+              ],
+              [
+                242,
+                214,
+                334,
+                1987
+              ]
+            ],
+            "per_class_f1": [
+              0.6292357160524363,
+              0.5929192846785887,
+              0.6555189456342669,
+              0.6287974683544304
+            ],
+            "support_array_keys": [
+              "support_indices_100_7",
+              "support_pixel_ids_100_7"
+            ],
+            "query_array_keys": [
+              "query_indices_100_7",
+              "query_pixel_ids_100_7"
+            ],
+            "prediction_array_key": "predictions_100_7"
+          },
+          {
+            "trial": 8,
+            "macro_f1": 0.6046999621006607,
+            "confusion_counts": [
+              [
+                5115,
+                1826,
+                340,
+                187
+              ],
+              [
+                2686,
+                4552,
+                849,
+                615
+              ],
+              [
+                1354,
+                889,
+                3869,
+                533
+              ],
+              [
+                308,
+                216,
+                430,
+                1823
+              ]
+            ],
+            "per_class_f1": [
+              0.6042171165318055,
+              0.5624961383997529,
+              0.6377647737575208,
+              0.6143218197135636
+            ],
+            "support_array_keys": [
+              "support_indices_100_8",
+              "support_pixel_ids_100_8"
+            ],
+            "query_array_keys": [
+              "query_indices_100_8",
+              "query_pixel_ids_100_8"
+            ],
+            "prediction_array_key": "predictions_100_8"
+          },
+          {
+            "trial": 9,
+            "macro_f1": 0.621454492719243,
+            "confusion_counts": [
+              [
+                5434,
+                1577,
+                293,
+                164
+              ],
+              [
+                2947,
+                4450,
+                736,
+                569
+              ],
+              [
+                1314,
+                716,
+                4117,
+                498
+              ],
+              [
+                292,
+                213,
+                460,
+                1812
+              ]
+            ],
+            "per_class_f1": [
+              0.622629619020338,
+              0.5683995401711586,
+              0.6721083993143416,
+              0.622680412371134
+            ],
+            "support_array_keys": [
+              "support_indices_100_9",
+              "support_pixel_ids_100_9"
+            ],
+            "query_array_keys": [
+              "query_indices_100_9",
+              "query_pixel_ids_100_9"
+            ],
+            "prediction_array_key": "predictions_100_9"
+          }
+        ]
+      },
+      "200": {
+        "branch": "modal_leaf_agreement",
+        "mean": 0.6187575948514697,
+        "population_sd": 0.004338190649825947,
+        "scores": [
+          0.6180084797426588,
+          0.6213689731397545,
+          0.6197481756114342,
+          0.6256841696103893,
+          0.621035151543085,
+          0.6100905870688913,
+          0.6157343868618961,
+          0.6159518696927614,
+          0.6239500725843216,
+          0.6160040826595055
+        ],
+        "historical_reported_mean": 0.6215,
+        "historical_reported_population_sd": 0.0047,
+        "difference_from_historical_mean": -0.0027424051485303025,
+        "trials": [
+          {
+            "trial": 0,
+            "macro_f1": 0.6180084797426588,
+            "confusion_counts": [
+              [
+                5349,
+                1528,
+                338,
+                153
+              ],
+              [
+                2946,
+                4323,
+                871,
+                462
+              ],
+              [
+                1239,
+                724,
+                4112,
+                470
+              ],
+              [
+                301,
+                217,
+                463,
+                1696
+              ]
+            ],
+            "per_class_f1": [
+              0.6218682787885834,
+              0.5616473950889957,
+              0.667045178035526,
+              0.6214730670575302
+            ],
+            "support_array_keys": [
+              "support_indices_200_0",
+              "support_pixel_ids_200_0"
+            ],
+            "query_array_keys": [
+              "query_indices_200_0",
+              "query_pixel_ids_200_0"
+            ],
+            "prediction_array_key": "predictions_200_0"
+          },
+          {
+            "trial": 1,
+            "macro_f1": 0.6213689731397545,
+            "confusion_counts": [
+              [
+                4664,
+                2280,
+                243,
+                181
+              ],
+              [
+                2291,
+                5153,
+                576,
+                582
+              ],
+              [
+                1152,
+                938,
+                3982,
+                473
+              ],
+              [
+                262,
+                239,
+                428,
+                1748
+              ]
+            ],
+            "per_class_f1": [
+              0.5927432166232446,
+              0.5987683011852196,
+              0.6764056395447596,
+              0.6175587352057941
+            ],
+            "support_array_keys": [
+              "support_indices_200_1",
+              "support_pixel_ids_200_1"
+            ],
+            "query_array_keys": [
+              "query_indices_200_1",
+              "query_pixel_ids_200_1"
+            ],
+            "prediction_array_key": "predictions_200_1"
+          },
+          {
+            "trial": 2,
+            "macro_f1": 0.6197481756114342,
+            "confusion_counts": [
+              [
+                5213,
+                1706,
+                255,
+                194
+              ],
+              [
+                2729,
+                4611,
+                687,
+                575
+              ],
+              [
+                1259,
+                904,
+                3822,
+                560
+              ],
+              [
+                282,
+                223,
+                334,
+                1838
+              ]
+            ],
+            "per_class_f1": [
+              0.6187169900896089,
+              0.5747226723170884,
+              0.6565318216954393,
+              0.6290212183436003
+            ],
+            "support_array_keys": [
+              "support_indices_200_2",
+              "support_pixel_ids_200_2"
+            ],
+            "query_array_keys": [
+              "query_indices_200_2",
+              "query_pixel_ids_200_2"
+            ],
+            "prediction_array_key": "predictions_200_2"
+          },
+          {
+            "trial": 3,
+            "macro_f1": 0.6256841696103893,
+            "confusion_counts": [
+              [
+                5189,
+                1646,
+                391,
+                142
+              ],
+              [
+                2582,
+                4514,
+                1018,
+                488
+              ],
+              [
+                1144,
+                693,
+                4210,
+                498
+              ],
+              [
+                271,
+                205,
+                445,
+                1756
+              ]
+            ],
+            "per_class_f1": [
+              0.6269179654464178,
+              0.5765006385696041,
+              0.6677769846934729,
+              0.6315410897320626
+            ],
+            "support_array_keys": [
+              "support_indices_200_3",
+              "support_pixel_ids_200_3"
+            ],
+            "query_array_keys": [
+              "query_indices_200_3",
+              "query_pixel_ids_200_3"
+            ],
+            "prediction_array_key": "predictions_200_3"
+          },
+          {
+            "trial": 4,
+            "macro_f1": 0.621035151543085,
+            "confusion_counts": [
+              [
+                5142,
+                1786,
+                286,
+                154
+              ],
+              [
+                2800,
+                4510,
+                767,
+                525
+              ],
+              [
+                1267,
+                729,
+                4076,
+                473
+              ],
+              [
+                293,
+                189,
+                431,
+                1764
+              ]
+            ],
+            "per_class_f1": [
+              0.6096028452874926,
+              0.5703085483055134,
+              0.6734407269723255,
+              0.6307884856070087
+            ],
+            "support_array_keys": [
+              "support_indices_200_4",
+              "support_pixel_ids_200_4"
+            ],
+            "query_array_keys": [
+              "query_indices_200_4",
+              "query_pixel_ids_200_4"
+            ],
+            "prediction_array_key": "predictions_200_4"
+          },
+          {
+            "trial": 5,
+            "macro_f1": 0.6100905870688913,
+            "confusion_counts": [
+              [
+                5100,
+                1762,
+                368,
+                138
+              ],
+              [
+                2724,
+                4481,
+                936,
+                461
+              ],
+              [
+                1296,
+                802,
+                4030,
+                417
+              ],
+              [
+                295,
+                256,
+                479,
+                1647
+              ]
+            ],
+            "per_class_f1": [
+              0.6077578502055652,
+              0.5635414701628624,
+              0.6522090953228677,
+              0.6168539325842697
+            ],
+            "support_array_keys": [
+              "support_indices_200_5",
+              "support_pixel_ids_200_5"
+            ],
+            "query_array_keys": [
+              "query_indices_200_5",
+              "query_pixel_ids_200_5"
+            ],
+            "prediction_array_key": "predictions_200_5"
+          },
+          {
+            "trial": 6,
+            "macro_f1": 0.6157343868618961,
+            "confusion_counts": [
+              [
+                5252,
+                1422,
+                545,
+                149
+              ],
+              [
+                2473,
+                4233,
+                1368,
+                528
+              ],
+              [
+                1125,
+                691,
+                4229,
+                500
+              ],
+              [
+                285,
+                197,
+                449,
+                1746
+              ]
+            ],
+            "per_class_f1": [
+              0.6364903350905896,
+              0.5589963684384285,
+              0.6438794153471377,
+              0.6235714285714286
+            ],
+            "support_array_keys": [
+              "support_indices_200_6",
+              "support_pixel_ids_200_6"
+            ],
+            "query_array_keys": [
+              "query_indices_200_6",
+              "query_pixel_ids_200_6"
+            ],
+            "prediction_array_key": "predictions_200_6"
+          },
+          {
+            "trial": 7,
+            "macro_f1": 0.6159518696927614,
+            "confusion_counts": [
+              [
+                5015,
+                1755,
+                438,
+                160
+              ],
+              [
+                2534,
+                4417,
+                1107,
+                544
+              ],
+              [
+                1144,
+                702,
+                4180,
+                519
+              ],
+              [
+                262,
+                191,
+                440,
+                1784
+              ]
+            ],
+            "per_class_f1": [
+              0.6144703792195062,
+              0.563860343396949,
+              0.6577498033044846,
+              0.6277269528501056
+            ],
+            "support_array_keys": [
+              "support_indices_200_7",
+              "support_pixel_ids_200_7"
+            ],
+            "query_array_keys": [
+              "query_indices_200_7",
+              "query_pixel_ids_200_7"
+            ],
+            "prediction_array_key": "predictions_200_7"
+          },
+          {
+            "trial": 8,
+            "macro_f1": 0.6239500725843216,
+            "confusion_counts": [
+              [
+                4744,
+                2249,
+                229,
+                146
+              ],
+              [
+                2383,
+                5084,
+                617,
+                518
+              ],
+              [
+                1240,
+                875,
+                3930,
+                500
+              ],
+              [
+                269,
+                234,
+                387,
+                1787
+              ]
+            ],
+            "per_class_f1": [
+              0.5928517870532367,
+              0.5965735742783385,
+              0.67133583874274,
+              0.6350390902629709
+            ],
+            "support_array_keys": [
+              "support_indices_200_8",
+              "support_pixel_ids_200_8"
+            ],
+            "query_array_keys": [
+              "query_indices_200_8",
+              "query_pixel_ids_200_8"
+            ],
+            "prediction_array_key": "predictions_200_8"
+          },
+          {
+            "trial": 9,
+            "macro_f1": 0.6160040826595055,
+            "confusion_counts": [
+              [
+                5083,
+                1815,
+                325,
+                145
+              ],
+              [
+                2759,
+                4544,
+                775,
+                524
+              ],
+              [
+                1270,
+                803,
+                3963,
+                509
+              ],
+              [
+                281,
+                197,
+                428,
+                1771
+              ]
+            ],
+            "per_class_f1": [
+              0.6065270568581826,
+              0.5693878829647265,
+              0.6585244267198405,
+              0.629576964095272
+            ],
+            "support_array_keys": [
+              "support_indices_200_9",
+              "support_pixel_ids_200_9"
+            ],
+            "query_array_keys": [
+              "query_indices_200_9",
+              "query_pixel_ids_200_9"
+            ],
+            "prediction_array_key": "predictions_200_9"
+          }
+        ]
+      }
+    }
+  },
+  "development_benchmarks": {
+    "raw_prototype": {
+      "5": {
+        "mean": 0.5436864654724165,
+        "population_sd": 0.03240100566074138
+      },
+      "25": {
+        "mean": 0.5960243904143784,
+        "population_sd": 0.022233860239240236
+      },
+      "50": {
+        "mean": 0.605185621031355,
+        "population_sd": 0.013347978236561848
+      },
+      "100": {
+        "mean": 0.6111463924474492,
+        "population_sd": 0.010297207957952076
+      },
+      "200": {
+        "mean": 0.6152031082243232,
+        "population_sd": 0.005041208220517346
+      }
+    },
+    "amsterdam_support_logistic": {
+      "5": {
+        "mean": 0.5456702842313752,
+        "population_sd": 0.044550736314791804
+      },
+      "25": {
+        "mean": 0.6186511099071577,
+        "population_sd": 0.022654942332118323
+      },
+      "50": {
+        "mean": 0.6467325983578548,
+        "population_sd": 0.009193735314080232
+      },
+      "100": {
+        "mean": 0.6679246166464163,
+        "population_sd": 0.009456451089988058
+      },
+      "200": {
+        "mean": 0.6866652862743453,
+        "population_sd": 0.005605688896399261
+      }
+    },
+    "madrid_triplet_prototype": {
+      "5": {
+        "mean": 0.5166888758958994,
+        "population_sd": 0.05853717516311738
+      },
+      "25": {
+        "mean": 0.5804005448327283,
+        "population_sd": 0.025288439074932743
+      },
+      "50": {
+        "mean": 0.5825900525038482,
+        "population_sd": 0.021513069556560703
+      },
+      "100": {
+        "mean": 0.5873042813017839,
+        "population_sd": 0.012943694272133403
+      },
+      "200": {
+        "mean": 0.5911100605751692,
+        "population_sd": 0.003728375130741423
+      }
+    },
+    "madrid_triplet_logistic": {
+      "5": {
+        "mean": 0.46183783839306647,
+        "population_sd": 0.05718867828725974
+      },
+      "25": {
+        "mean": 0.5584295790554992,
+        "population_sd": 0.03927006269592787
+      },
+      "50": {
+        "mean": 0.5788464089947,
+        "population_sd": 0.013913985798078454
+      },
+      "100": {
+        "mean": 0.5973999173087349,
+        "population_sd": 0.008607085688211393
+      },
+      "200": {
+        "mean": 0.6074377823587941,
+        "population_sd": 0.004203318744344558
+      }
+    }
+  },
+  "environment": {
+    "python": "3.13.13",
+    "numpy": "2.5.3",
+    "pandas": "3.0.5",
+    "matplotlib": "3.11.1",
+    "scikit_learn": "1.9.0",
+    "pyarrow": "25.0.1",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_and_input_sha256": {
+    "src\\final_pipeline.py": "b2d102bf5e05f2aa8cd0cde73938dffcc31da0567dc372ee14139bd4cbc789ec",
+    "src\\reproduce_submission.py": "5e30cba88b555b89278c527fbc3a59c8ad43ab1b4822a68ceee49c7bfdf56dcf",
+    "outputs\\features_60.npz": "00d59c32ef44c22631609c210cf7b3523bb9bf09248fdbfdba5ab634d020dbd1",
+    "outputs\\amsterdam_fixed_splits.npz": "437d06a43c5f29e3a1b5ef624a6670bf3aef38ea8fbb23e87d94f7500d5ed988",
+    "Data\\madrid_train.parquet": "0e106a07044d867f8c68e77de8c36826c491d0f26692b8cde753d1046ce24c9c",
+    "Data\\amsterdam_data.parquet": "32388f3a9792b01d9831ca4d0fc4bfadba132a1c23c06e372d7a82e985be0719"
+  },
+  "model_artifact": {
+    "path": "artifacts\\stage1_madrid_rf.pkl",
+    "sha256": "6dddf7e4b2719d15804aac13c718568ee22d8465bde39f8b9734c7d8d9a95b91",
+    "reload_verified": true,
+    "metadata": {
+      "method": "frozen_two_tier_madrid_random_forest_transfer",
+      "transfer_direction": "Madrid -> Amsterdam",
+      "rf_parameters": {
+        "n_estimators": 500,
+        "class_weight": "balanced",
+        "random_state": 42,
+        "n_jobs": -1
+      },
+      "class_order": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "feature_names": [
+        "Blue_mean",
+        "Green_mean",
+        "Red_mean",
+        "NIR_mean",
+        "SWIR1_mean",
+        "SWIR2_mean",
+        "Blue_std",
+        "Green_std",
+        "Red_std",
+        "NIR_std",
+        "SWIR1_std",
+        "SWIR2_std",
+        "NDVI_mean",
+        "NDBI_mean",
+        "UI_mean",
+        "MNDWI_mean",
+        "BSI_mean",
+        "NDVI_std",
+        "NDBI_std",
+        "UI_std",
+        "MNDWI_std",
+        "BSI_std",
+        "Blue_early_mean",
+        "Green_early_mean",
+        "Red_early_mean",
+        "NIR_early_mean",
+        "SWIR1_early_mean",
+        "SWIR2_early_mean",
+        "Blue_early_std",
+        "Green_early_std",
+        "Red_early_std",
+        "NIR_early_std",
+        "SWIR1_early_std",
+        "SWIR2_early_std",
+        "Blue_late_mean",
+        "Green_late_mean",
+        "Red_late_mean",
+        "NIR_late_mean",
+        "SWIR1_late_mean",
+        "SWIR2_late_mean",
+        "Blue_late_std",
+        "Green_late_std",
+        "Red_late_std",
+        "NIR_late_std",
+        "SWIR1_late_std",
+        "SWIR2_late_std",
+        "d_Blue_mean",
+        "d_Green_mean",
+        "d_Red_mean",
+        "d_NIR_mean",
+        "d_SWIR1_mean",
+        "d_SWIR2_mean",
+        "d_Blue_std",
+        "d_Green_std",
+        "d_Red_std",
+        "d_NIR_std",
+        "d_SWIR1_std",
+        "d_SWIR2_std",
+        "has_early_data",
+        "has_late_data"
+      ],
+      "feature_count": 60,
+      "training_rows": 76263,
+      "training_dtype": "float32",
+      "model_seed": 42,
+      "evaluation_seed": 42,
+      "regime_switch": {
+        "product_if_n_lte": 50,
+        "modal_leaf_if_n_gt": 50
+      },
+      "score_product": {
+        "temperature": 1.0,
+        "epsilon": 1e-06,
+        "target_prior": "uniform",
+        "source_prior_adjustment": "multiply RF scores by uniform/source empirical class frequency and renormalise"
+      },
+      "feature_generation": {
+        "base_bands": [
+          "Blue",
+          "Green",
+          "Red",
+          "NIR",
+          "SWIR1",
+          "SWIR2"
+        ],
+        "indices": [
+          "NDVI",
+          "NDBI",
+          "UI",
+          "MNDWI",
+          "BSI"
+        ],
+        "best_observation_slots": [
+          1,
+          2,
+          3
+        ],
+        "blue_max_inclusive": 15000,
+        "early_year_max": 2003,
+        "late_year_min": 2004,
+        "gap_filling": "linear interpolation, then backward fill and forward fill within pixel",
+        "temporal_year_convention": "inclusive minimum-to-maximum year present in the supplied dataset",
+        "pandas_std_ddof": 1
+      },
+      "versions": {
+        "python": "3.13.13",
+        "numpy": "2.5.3",
+        "pandas": "3.0.5",
+        "scikit_learn": "1.9.0"
+      },
+      "source_hashes": {
+        "src\\final_pipeline.py": "b2d102bf5e05f2aa8cd0cde73938dffcc31da0567dc372ee14139bd4cbc789ec",
+        "src\\reproduce_submission.py": "5e30cba88b555b89278c527fbc3a59c8ad43ab1b4822a68ceee49c7bfdf56dcf",
+        "outputs\\features_60.npz": "00d59c32ef44c22631609c210cf7b3523bb9bf09248fdbfdba5ab634d020dbd1",
+        "outputs\\amsterdam_fixed_splits.npz": "437d06a43c5f29e3a1b5ef624a6670bf3aef38ea8fbb23e87d94f7500d5ed988",
+        "Data\\madrid_train.parquet": "0e106a07044d867f8c68e77de8c36826c491d0f26692b8cde753d1046ce24c9c",
+        "Data\\amsterdam_data.parquet": "32388f3a9792b01d9831ca4d0fc4bfadba132a1c23c06e372d7a82e985be0719"
+      },
+      "madrid_class_prior": {
+        "1": 0.18087408048463868,
+        "2": 0.35603110289393286,
+        "3": 0.244836945832186,
+        "4": 0.2182578707892425
+      },
+      "configuration_sha256": "20e7c34d4668e2b4a6ba0f605e0c76523a011ff3d56170dbaedb740932b9bf83"
+    }
+  },
+  "madrid_stage1_random_cv": {
+    "protocol": "5-fold x 5-repeat stratified random CV; scaler fitted within every fold",
+    "scores": [
+      0.628045042092702,
+      0.6350731576399585,
+      0.630986998426522,
+      0.6238046299411721,
+      0.6233124917750659,
+      0.6223304069126497,
+      0.632816502119367,
+      0.6301830404278563,
+      0.6271492171573195,
+      0.6248117507372091,
+      0.6219218557420074,
+      0.6361409674401741,
+      0.6258289035687716,
+      0.6332543375270547,
+      0.6226210609747682,
+      0.6303235833714793,
+      0.629845480269241,
+      0.6213259110182916,
+      0.6282823856935681,
+      0.6277563337609708,
+      0.6316836330481763,
+      0.6287688028498835,
+      0.6341023538403476,
+      0.6256728432058535,
+      0.6232259137322791
+    ],
+    "mean": 0.6279707041309076,
+    "population_sd": 0.004322366787610723,
+    "fold_confusion_counts": [
+      [
+        [
+          1475,
+          965,
+          179,
+          140
+        ],
+        [
+          769,
+          3692,
+          627,
+          343
+        ],
+        [
+          161,
+          890,
+          2214,
+          469
+        ],
+        [
+          79,
+          415,
+          553,
+          2282
+        ]
+      ],
+      [
+        [
+          1495,
+          994,
+          168,
+          102
+        ],
+        [
+          782,
+          3755,
+          582,
+          311
+        ],
+        [
+          162,
+          906,
+          2212,
+          455
+        ],
+        [
+          57,
+          387,
+          581,
+          2304
+        ]
+      ],
+      [
+        [
+          1438,
+          1011,
+          182,
+          128
+        ],
+        [
+          731,
+          3742,
+          612,
+          345
+        ],
+        [
+          156,
+          879,
+          2231,
+          469
+        ],
+        [
+          62,
+          379,
+          575,
+          2313
+        ]
+      ],
+      [
+        [
+          1479,
+          983,
+          169,
+          128
+        ],
+        [
+          802,
+          3652,
+          643,
+          333
+        ],
+        [
+          173,
+          909,
+          2167,
+          485
+        ],
+        [
+          88,
+          397,
+          551,
+          2293
+        ]
+      ],
+      [
+        [
+          1464,
+          982,
+          178,
+          134
+        ],
+        [
+          765,
+          3654,
+          627,
+          385
+        ],
+        [
+          163,
+          922,
+          2186,
+          463
+        ],
+        [
+          70,
+          387,
+          590,
+          2282
+        ]
+      ],
+      [
+        [
+          1452,
+          1002,
+          180,
+          125
+        ],
+        [
+          778,
+          3685,
+          656,
+          312
+        ],
+        [
+          190,
+          884,
+          2178,
+          482
+        ],
+        [
+          84,
+          380,
+          594,
+          2271
+        ]
+      ],
+      [
+        [
+          1454,
+          1034,
+          149,
+          122
+        ],
+        [
+          756,
+          3729,
+          629,
+          316
+        ],
+        [
+          168,
+          906,
+          2237,
+          424
+        ],
+        [
+          64,
+          406,
+          548,
+          2311
+        ]
+      ],
+      [
+        [
+          1477,
+          987,
+          160,
+          135
+        ],
+        [
+          784,
+          3665,
+          619,
+          362
+        ],
+        [
+          150,
+          927,
+          2215,
+          443
+        ],
+        [
+          66,
+          374,
+          564,
+          2325
+        ]
+      ],
+      [
+        [
+          1468,
+          986,
+          190,
+          115
+        ],
+        [
+          791,
+          3722,
+          591,
+          326
+        ],
+        [
+          158,
+          909,
+          2165,
+          502
+        ],
+        [
+          71,
+          411,
+          546,
+          2301
+        ]
+      ],
+      [
+        [
+          1455,
+          992,
+          180,
+          131
+        ],
+        [
+          705,
+          3725,
+          625,
+          376
+        ],
+        [
+          142,
+          916,
+          2176,
+          500
+        ],
+        [
+          74,
+          400,
+          588,
+          2267
+        ]
+      ],
+      [
+        [
+          1411,
+          1051,
+          188,
+          109
+        ],
+        [
+          745,
+          3698,
+          662,
+          326
+        ],
+        [
+          159,
+          975,
+          2168,
+          432
+        ],
+        [
+          69,
+          390,
+          577,
+          2293
+        ]
+      ],
+      [
+        [
+          1477,
+          998,
+          167,
+          117
+        ],
+        [
+          804,
+          3705,
+          569,
+          352
+        ],
+        [
+          160,
+          887,
+          2243,
+          445
+        ],
+        [
+          79,
+          361,
+          530,
+          2359
+        ]
+      ],
+      [
+        [
+          1468,
+          993,
+          176,
+          122
+        ],
+        [
+          777,
+          3716,
+          633,
+          304
+        ],
+        [
+          163,
+          886,
+          2192,
+          494
+        ],
+        [
+          76,
+          398,
+          594,
+          2261
+        ]
+      ],
+      [
+        [
+          1485,
+          988,
+          154,
+          132
+        ],
+        [
+          706,
+          3745,
+          631,
+          348
+        ],
+        [
+          157,
+          895,
+          2207,
+          475
+        ],
+        [
+          83,
+          390,
+          550,
+          2306
+        ]
+      ],
+      [
+        [
+          1455,
+          992,
+          163,
+          148
+        ],
+        [
+          795,
+          3665,
+          613,
+          358
+        ],
+        [
+          160,
+          900,
+          2180,
+          494
+        ],
+        [
+          64,
+          398,
+          582,
+          2285
+        ]
+      ],
+      [
+        [
+          1471,
+          995,
+          166,
+          127
+        ],
+        [
+          812,
+          3653,
+          626,
+          340
+        ],
+        [
+          164,
+          896,
+          2223,
+          451
+        ],
+        [
+          64,
+          406,
+          523,
+          2336
+        ]
+      ],
+      [
+        [
+          1427,
+          1015,
+          191,
+          126
+        ],
+        [
+          746,
+          3728,
+          610,
+          346
+        ],
+        [
+          146,
+          874,
+          2236,
+          479
+        ],
+        [
+          64,
+          375,
+          572,
+          2318
+        ]
+      ],
+      [
+        [
+          1475,
+          1010,
+          160,
+          114
+        ],
+        [
+          794,
+          3678,
+          628,
+          330
+        ],
+        [
+          163,
+          932,
+          2124,
+          516
+        ],
+        [
+          75,
+          419,
+          556,
+          2279
+        ]
+      ],
+      [
+        [
+          1501,
+          955,
+          172,
+          131
+        ],
+        [
+          754,
+          3695,
+          641,
+          340
+        ],
+        [
+          173,
+          945,
+          2177,
+          439
+        ],
+        [
+          79,
+          381,
+          588,
+          2281
+        ]
+      ],
+      [
+        [
+          1470,
+          994,
+          167,
+          127
+        ],
+        [
+          756,
+          3693,
+          640,
+          342
+        ],
+        [
+          174,
+          901,
+          2191,
+          468
+        ],
+        [
+          83,
+          379,
+          563,
+          2304
+        ]
+      ],
+      [
+        [
+          1479,
+          962,
+          192,
+          126
+        ],
+        [
+          730,
+          3715,
+          630,
+          356
+        ],
+        [
+          166,
+          886,
+          2247,
+          435
+        ],
+        [
+          70,
+          382,
+          600,
+          2277
+        ]
+      ],
+      [
+        [
+          1490,
+          994,
+          160,
+          115
+        ],
+        [
+          761,
+          3730,
+          583,
+          356
+        ],
+        [
+          158,
+          957,
+          2128,
+          492
+        ],
+        [
+          77,
+          400,
+          529,
+          2323
+        ]
+      ],
+      [
+        [
+          1471,
+          982,
+          185,
+          121
+        ],
+        [
+          784,
+          3707,
+          598,
+          341
+        ],
+        [
+          142,
+          855,
+          2271,
+          467
+        ],
+        [
+          68,
+          422,
+          534,
+          2305
+        ]
+      ],
+      [
+        [
+          1458,
+          1032,
+          132,
+          137
+        ],
+        [
+          792,
+          3694,
+          612,
+          332
+        ],
+        [
+          167,
+          922,
+          2175,
+          470
+        ],
+        [
+          72,
+          399,
+          559,
+          2299
+        ]
+      ],
+      [
+        [
+          1419,
+          1004,
+          192,
+          143
+        ],
+        [
+          768,
+          3696,
+          655,
+          312
+        ],
+        [
+          170,
+          906,
+          2174,
+          484
+        ],
+        [
+          66,
+          382,
+          564,
+          2317
+        ]
+      ]
+    ],
+    "confusion_counts": [
+      [
+        36614,
+        24901,
+        4300,
+        3155
+      ],
+      [
+        19187,
+        92539,
+        15542,
+        8492
+      ],
+      [
+        4045,
+        22665,
+        54917,
+        11733
+      ],
+      [
+        1804,
+        9818,
+        14111,
+        57492
+      ]
+    ],
+    "confusion_row_proportions": [
+      [
+        0.5308684935479194,
+        0.36104103233289836,
+        0.06234594751341163,
+        0.04574452660577062
+      ],
+      [
+        0.14133028874484385,
+        0.6816367118444313,
+        0.11448143783146729,
+        0.06255156157925751
+      ],
+      [
+        0.04332690659811483,
+        0.24276992287917737,
+        0.5882283633247644,
+        0.12567480719794344
+      ],
+      [
+        0.021676179032742566,
+        0.11796936016821868,
+        0.16955241814358665,
+        0.6908020426554521
+      ]
+    ],
+    "per_class_f1_from_pooled_counts": [
+      0.5606185882713214,
+      0.6478439389113108,
+      0.6027218350436262,
+      0.7007075083639555
+    ]
+  },
+  "amsterdam_internal_development": {
+    "5": {
+      "branch": "score_product",
+      "mean": 0.5475224753695379,
+      "population_sd": 0.03709713925874763,
+      "scores": [
+        0.53537038575871,
+        0.5645798944676153,
+        0.5366049843712215,
+        0.6087917570746924,
+        0.5231720305720249,
+        0.47099690697866364,
+        0.5884408375566937,
+        0.5774276647254191,
+        0.5424982458937833,
+        0.5273420462965551
+      ],
+      "historical_reported_mean": 0.5592,
+      "historical_reported_population_sd": 0.0316,
+      "difference_from_historical_mean": -0.011677524630462122,
+      "trials": [
+        {
+          "trial": 0,
+          "macro_f1": 0.53537038575871,
+          "confusion_counts": [
+            [
+              6672,
+              467,
+              122,
+              302
+            ],
+            [
+              5184,
+              2345,
+              245,
+              1023
+            ],
+            [
+              1205,
+              1223,
+              3153,
+              1159
+            ],
+            [
+              237,
+              261,
+              347,
+              2027
+            ]
+          ],
+          "per_class_f1": [
+            0.6396625281626,
+            0.3582066753226915,
+            0.5945130574149147,
+            0.5490992821346337
+          ],
+          "support_array_keys": [
+            "support_indices_5_0",
+            "support_pixel_ids_5_0"
+          ],
+          "query_array_keys": [
+            "query_indices_5_0",
+            "query_pixel_ids_5_0"
+          ],
+          "prediction_array_key": "predictions_5_0"
+        },
+        {
+          "trial": 1,
+          "macro_f1": 0.5645798944676153,
+          "confusion_counts": [
+            [
+              6650,
+              610,
+              186,
+              117
+            ],
+            [
+              4807,
+              3180,
+              471,
+              339
+            ],
+            [
+              1146,
+              1280,
+              3794,
+              520
+            ],
+            [
+              258,
+              553,
+              684,
+              1377
+            ]
+          ],
+          "per_class_f1": [
+            0.6511946729338034,
+            0.44105409153952846,
+            0.6389894736842106,
+            0.5270813397129187
+          ],
+          "support_array_keys": [
+            "support_indices_5_1",
+            "support_pixel_ids_5_1"
+          ],
+          "query_array_keys": [
+            "query_indices_5_1",
+            "query_pixel_ids_5_1"
+          ],
+          "prediction_array_key": "predictions_5_1"
+        },
+        {
+          "trial": 2,
+          "macro_f1": 0.5366049843712215,
+          "confusion_counts": [
+            [
+              5955,
+              1315,
+              209,
+              84
+            ],
+            [
+              3940,
+              4101,
+              478,
+              278
+            ],
+            [
+              1179,
+              2197,
+              2509,
+              855
+            ],
+            [
+              315,
+              583,
+              420,
+              1554
+            ]
+          ],
+          "per_class_f1": [
+            0.6284297171802449,
+            0.48266933443182486,
+            0.4845500193124759,
+            0.5507708665603402
+          ],
+          "support_array_keys": [
+            "support_indices_5_2",
+            "support_pixel_ids_5_2"
+          ],
+          "query_array_keys": [
+            "query_indices_5_2",
+            "query_pixel_ids_5_2"
+          ],
+          "prediction_array_key": "predictions_5_2"
+        },
+        {
+          "trial": 3,
+          "macro_f1": 0.6087917570746924,
+          "confusion_counts": [
+            [
+              5751,
+              1425,
+              150,
+              237
+            ],
+            [
+              2926,
+              4765,
+              389,
+              717
+            ],
+            [
+              948,
+              1398,
+              3612,
+              782
+            ],
+            [
+              218,
+              321,
+              498,
+              1835
+            ]
+          ],
+          "per_class_f1": [
+            0.6608066184074457,
+            0.5704537291990901,
+            0.6342962507682852,
+            0.5696104299239485
+          ],
+          "support_array_keys": [
+            "support_indices_5_3",
+            "support_pixel_ids_5_3"
+          ],
+          "query_array_keys": [
+            "query_indices_5_3",
+            "query_pixel_ids_5_3"
+          ],
+          "prediction_array_key": "predictions_5_3"
+        },
+        {
+          "trial": 4,
+          "macro_f1": 0.5231720305720249,
+          "confusion_counts": [
+            [
+              6827,
+              383,
+              181,
+              172
+            ],
+            [
+              5850,
+              1967,
+              346,
+              634
+            ],
+            [
+              1247,
+              1226,
+              3141,
+              1126
+            ],
+            [
+              310,
+              357,
+              290,
+              1915
+            ]
+          ],
+          "per_class_f1": [
+            0.6264164793320182,
+            0.30903377847604085,
+            0.5872125630959057,
+            0.5700253013841345
+          ],
+          "support_array_keys": [
+            "support_indices_5_4",
+            "support_pixel_ids_5_4"
+          ],
+          "query_array_keys": [
+            "query_indices_5_4",
+            "query_pixel_ids_5_4"
+          ],
+          "prediction_array_key": "predictions_5_4"
+        },
+        {
+          "trial": 5,
+          "macro_f1": 0.47099690697866364,
+          "confusion_counts": [
+            [
+              7073,
+              224,
+              104,
+              162
+            ],
+            [
+              6984,
+              918,
+              409,
+              486
+            ],
+            [
+              1561,
+              1203,
+              3225,
+              751
+            ],
+            [
+              503,
+              156,
+              621,
+              1592
+            ]
+          ],
+          "per_class_f1": [
+            0.5972808647187975,
+            0.16250663834306958,
+            0.5811334354446347,
+            0.5430666894081528
+          ],
+          "support_array_keys": [
+            "support_indices_5_5",
+            "support_pixel_ids_5_5"
+          ],
+          "query_array_keys": [
+            "query_indices_5_5",
+            "query_pixel_ids_5_5"
+          ],
+          "prediction_array_key": "predictions_5_5"
+        },
+        {
+          "trial": 6,
+          "macro_f1": 0.5884408375566937,
+          "confusion_counts": [
+            [
+              5668,
+              1520,
+              191,
+              184
+            ],
+            [
+              3161,
+              4573,
+              545,
+              518
+            ],
+            [
+              1136,
+              1057,
+              4108,
+              439
+            ],
+            [
+              216,
+              513,
+              817,
+              1326
+            ]
+          ],
+          "per_class_f1": [
+            0.6388638412984671,
+            0.5556500607533414,
+            0.6625272155471333,
+            0.49672223262783294
+          ],
+          "support_array_keys": [
+            "support_indices_5_6",
+            "support_pixel_ids_5_6"
+          ],
+          "query_array_keys": [
+            "query_indices_5_6",
+            "query_pixel_ids_5_6"
+          ],
+          "prediction_array_key": "predictions_5_6"
+        },
+        {
+          "trial": 7,
+          "macro_f1": 0.5774276647254191,
+          "confusion_counts": [
+            [
+              5845,
+              1371,
+              76,
+              271
+            ],
+            [
+              3488,
+              4268,
+              195,
+              846
+            ],
+            [
+              856,
+              1695,
+              3066,
+              1123
+            ],
+            [
+              209,
+              340,
+              367,
+              1956
+            ]
+          ],
+          "per_class_f1": [
+            0.6508546294749735,
+            0.5182441867524741,
+            0.5871313672922251,
+            0.5534804753820034
+          ],
+          "support_array_keys": [
+            "support_indices_5_7",
+            "support_pixel_ids_5_7"
+          ],
+          "query_array_keys": [
+            "query_indices_5_7",
+            "query_pixel_ids_5_7"
+          ],
+          "prediction_array_key": "predictions_5_7"
+        },
+        {
+          "trial": 8,
+          "macro_f1": 0.5424982458937833,
+          "confusion_counts": [
+            [
+              6352,
+              836,
+              117,
+              258
+            ],
+            [
+              4615,
+              3071,
+              256,
+              855
+            ],
+            [
+              912,
+              1873,
+              2589,
+              1366
+            ],
+            [
+              214,
+              331,
+              118,
+              2209
+            ]
+          ],
+          "per_class_f1": [
+            0.6463166463166463,
+            0.41199356050442715,
+            0.5272912423625254,
+            0.5843915343915344
+          ],
+          "support_array_keys": [
+            "support_indices_5_8",
+            "support_pixel_ids_5_8"
+          ],
+          "query_array_keys": [
+            "query_indices_5_8",
+            "query_pixel_ids_5_8"
+          ],
+          "prediction_array_key": "predictions_5_8"
+        },
+        {
+          "trial": 9,
+          "macro_f1": 0.5273420462965551,
+          "confusion_counts": [
+            [
+              6757,
+              501,
+              134,
+              171
+            ],
+            [
+              5377,
+              2537,
+              330,
+              553
+            ],
+            [
+              1407,
+              1208,
+              2993,
+              1132
+            ],
+            [
+              420,
+              292,
+              423,
+              1737
+            ]
+          ],
+          "per_class_f1": [
+            0.627857275599331,
+            0.3805024371953506,
+            0.5636534839924671,
+            0.5373549883990719
+          ],
+          "support_array_keys": [
+            "support_indices_5_9",
+            "support_pixel_ids_5_9"
+          ],
+          "query_array_keys": [
+            "query_indices_5_9",
+            "query_pixel_ids_5_9"
+          ],
+          "prediction_array_key": "predictions_5_9"
+        }
+      ]
+    },
+    "25": {
+      "branch": "score_product",
+      "mean": 0.5871648532309527,
+      "population_sd": 0.031016336879882513,
+      "scores": [
+        0.5571575589301837,
+        0.6233811401427222,
+        0.5678062014931686,
+        0.6151286265048357,
+        0.6079555703399907,
+        0.5798099110955869,
+        0.589003928000367,
+        0.6128573272803592,
+        0.6013795107165638,
+        0.5171687578057484
+      ],
+      "historical_reported_mean": 0.5976,
+      "historical_reported_population_sd": 0.0235,
+      "difference_from_historical_mean": -0.010435146769047332,
+      "trials": [
+        {
+          "trial": 0,
+          "macro_f1": 0.5571575589301837,
+          "confusion_counts": [
+            [
+              6723,
+              489,
+              154,
+              177
+            ],
+            [
+              5284,
+              2545,
+              338,
+              610
+            ],
+            [
+              1116,
+              1122,
+              3324,
+              1158
+            ],
+            [
+              303,
+              355,
+              208,
+              1986
+            ]
+          ],
+          "per_class_f1": [
+            0.6412322952930517,
+            0.38305237808549064,
+            0.6187639612807149,
+            0.5855816010614773
+          ],
+          "support_array_keys": [
+            "support_indices_25_0",
+            "support_pixel_ids_25_0"
+          ],
+          "query_array_keys": [
+            "query_indices_25_0",
+            "query_pixel_ids_25_0"
+          ],
+          "prediction_array_key": "predictions_25_0"
+        },
+        {
+          "trial": 1,
+          "macro_f1": 0.6233811401427222,
+          "confusion_counts": [
+            [
+              6026,
+              1123,
+              209,
+              185
+            ],
+            [
+              3231,
+              4414,
+              540,
+              592
+            ],
+            [
+              957,
+              849,
+              3915,
+              999
+            ],
+            [
+              215,
+              350,
+              363,
+              1924
+            ]
+          ],
+          "per_class_f1": [
+            0.6705987091030492,
+            0.5690711016566751,
+            0.666553162509577,
+            0.5873015873015873
+          ],
+          "support_array_keys": [
+            "support_indices_25_1",
+            "support_pixel_ids_25_1"
+          ],
+          "query_array_keys": [
+            "query_indices_25_1",
+            "query_pixel_ids_25_1"
+          ],
+          "prediction_array_key": "predictions_25_1"
+        },
+        {
+          "trial": 2,
+          "macro_f1": 0.5678062014931686,
+          "confusion_counts": [
+            [
+              6610,
+              633,
+              116,
+              184
+            ],
+            [
+              4739,
+              3181,
+              264,
+              593
+            ],
+            [
+              1363,
+              1155,
+              3346,
+              856
+            ],
+            [
+              370,
+              389,
+              348,
+              1745
+            ]
+          ],
+          "per_class_f1": [
+            0.640969696969697,
+            0.4500884329678104,
+            0.6199740596627756,
+            0.5601926163723917
+          ],
+          "support_array_keys": [
+            "support_indices_25_2",
+            "support_pixel_ids_25_2"
+          ],
+          "query_array_keys": [
+            "query_indices_25_2",
+            "query_pixel_ids_25_2"
+          ],
+          "prediction_array_key": "predictions_25_2"
+        },
+        {
+          "trial": 3,
+          "macro_f1": 0.6151286265048357,
+          "confusion_counts": [
+            [
+              6042,
+              1151,
+              182,
+              168
+            ],
+            [
+              3134,
+              4601,
+              523,
+              519
+            ],
+            [
+              945,
+              1143,
+              3685,
+              947
+            ],
+            [
+              191,
+              491,
+              371,
+              1799
+            ]
+          ],
+          "per_class_f1": [
+            0.676785214225707,
+            0.5693250015467426,
+            0.6419301454577128,
+            0.5724741447891806
+          ],
+          "support_array_keys": [
+            "support_indices_25_3",
+            "support_pixel_ids_25_3"
+          ],
+          "query_array_keys": [
+            "query_indices_25_3",
+            "query_pixel_ids_25_3"
+          ],
+          "prediction_array_key": "predictions_25_3"
+        },
+        {
+          "trial": 4,
+          "macro_f1": 0.6079555703399907,
+          "confusion_counts": [
+            [
+              5920,
+              1268,
+              184,
+              171
+            ],
+            [
+              3433,
+              4295,
+              504,
+              545
+            ],
+            [
+              1155,
+              1035,
+              3587,
+              943
+            ],
+            [
+              316,
+              230,
+              352,
+              1954
+            ]
+          ],
+          "per_class_f1": [
+            0.6446343986497522,
+            0.5504645946811919,
+            0.6322375958403103,
+            0.6044856921887084
+          ],
+          "support_array_keys": [
+            "support_indices_25_4",
+            "support_pixel_ids_25_4"
+          ],
+          "query_array_keys": [
+            "query_indices_25_4",
+            "query_pixel_ids_25_4"
+          ],
+          "prediction_array_key": "predictions_25_4"
+        },
+        {
+          "trial": 5,
+          "macro_f1": 0.5798099110955869,
+          "confusion_counts": [
+            [
+              6439,
+              800,
+              160,
+              144
+            ],
+            [
+              4287,
+              3653,
+              338,
+              499
+            ],
+            [
+              989,
+              1456,
+              3295,
+              980
+            ],
+            [
+              202,
+              592,
+              280,
+              1778
+            ]
+          ],
+          "per_class_f1": [
+            0.6617677286742035,
+            0.47820395339704147,
+            0.610580932085611,
+            0.5686870302254917
+          ],
+          "support_array_keys": [
+            "support_indices_25_5",
+            "support_pixel_ids_25_5"
+          ],
+          "query_array_keys": [
+            "query_indices_25_5",
+            "query_pixel_ids_25_5"
+          ],
+          "prediction_array_key": "predictions_25_5"
+        },
+        {
+          "trial": 6,
+          "macro_f1": 0.589003928000367,
+          "confusion_counts": [
+            [
+              6328,
+              946,
+              128,
+              141
+            ],
+            [
+              4029,
+              3994,
+              319,
+              435
+            ],
+            [
+              1270,
+              1519,
+              3282,
+              649
+            ],
+            [
+              375,
+              415,
+              354,
+              1708
+            ]
+          ],
+          "per_class_f1": [
+            0.6475313379380916,
+            0.5103827231486806,
+            0.6076089975006943,
+            0.5904926534140017
+          ],
+          "support_array_keys": [
+            "support_indices_25_6",
+            "support_pixel_ids_25_6"
+          ],
+          "query_array_keys": [
+            "query_indices_25_6",
+            "query_pixel_ids_25_6"
+          ],
+          "prediction_array_key": "predictions_25_6"
+        },
+        {
+          "trial": 7,
+          "macro_f1": 0.6128573272803592,
+          "confusion_counts": [
+            [
+              6186,
+              1018,
+              197,
+              142
+            ],
+            [
+              3675,
+              4139,
+              502,
+              461
+            ],
+            [
+              1207,
+              1210,
+              3660,
+              643
+            ],
+            [
+              350,
+              242,
+              404,
+              1856
+            ]
+          ],
+          "per_class_f1": [
+            0.6524972311586942,
+            0.5380215780579748,
+            0.6374640773317077,
+            0.6234464225730602
+          ],
+          "support_array_keys": [
+            "support_indices_25_7",
+            "support_pixel_ids_25_7"
+          ],
+          "query_array_keys": [
+            "query_indices_25_7",
+            "query_pixel_ids_25_7"
+          ],
+          "prediction_array_key": "predictions_25_7"
+        },
+        {
+          "trial": 8,
+          "macro_f1": 0.6013795107165638,
+          "confusion_counts": [
+            [
+              6199,
+              983,
+              166,
+              195
+            ],
+            [
+              3740,
+              4038,
+              376,
+              623
+            ],
+            [
+              1111,
+              1128,
+              3336,
+              1145
+            ],
+            [
+              267,
+              308,
+              210,
+              2067
+            ]
+          ],
+          "per_class_f1": [
+            0.6573700954400848,
+            0.5301299724300906,
+            0.6173205033308661,
+            0.6006974716652136
+          ],
+          "support_array_keys": [
+            "support_indices_25_8",
+            "support_pixel_ids_25_8"
+          ],
+          "query_array_keys": [
+            "query_indices_25_8",
+            "query_pixel_ids_25_8"
+          ],
+          "prediction_array_key": "predictions_25_8"
+        },
+        {
+          "trial": 9,
+          "macro_f1": 0.5171687578057484,
+          "confusion_counts": [
+            [
+              6913,
+              271,
+              159,
+              200
+            ],
+            [
+              6173,
+              1426,
+              559,
+              619
+            ],
+            [
+              1306,
+              822,
+              3379,
+              1213
+            ],
+            [
+              265,
+              319,
+              231,
+              2037
+            ]
+          ],
+          "per_class_f1": [
+            0.6227927927927928,
+            0.24554455445544554,
+            0.6116944243301955,
+            0.58864325964456
+          ],
+          "support_array_keys": [
+            "support_indices_25_9",
+            "support_pixel_ids_25_9"
+          ],
+          "query_array_keys": [
+            "query_indices_25_9",
+            "query_pixel_ids_25_9"
+          ],
+          "prediction_array_key": "predictions_25_9"
+        }
+      ]
+    },
+    "50": {
+      "branch": "score_product",
+      "mean": 0.5943454566668345,
+      "population_sd": 0.01338333227842946,
+      "scores": [
+        0.6050130672895484,
+        0.6034547246276671,
+        0.5779310232722137,
+        0.6068460364040942,
+        0.5945034952298454,
+        0.5909833533016416,
+        0.6148636837828546,
+        0.5940652369309406,
+        0.5680189439023624,
+        0.5877750019271777
+      ],
+      "historical_reported_mean": 0.6086,
+      "historical_reported_population_sd": 0.0095,
+      "difference_from_historical_mean": -0.014254543333165559,
+      "trials": [
+        {
+          "trial": 0,
+          "macro_f1": 0.6050130672895484,
+          "confusion_counts": [
+            [
+              5966,
+              1190,
+              203,
+              159
+            ],
+            [
+              3145,
+              4574,
+              483,
+              550
+            ],
+            [
+              869,
+              1184,
+              3490,
+              1152
+            ],
+            [
+              174,
+              504,
+              337,
+              1812
+            ]
+          ],
+          "per_class_f1": [
+            0.6751923947487551,
+            0.5645519624784004,
+            0.6227694503925767,
+            0.5575384615384615
+          ],
+          "support_array_keys": [
+            "support_indices_50_0",
+            "support_pixel_ids_50_0"
+          ],
+          "query_array_keys": [
+            "query_indices_50_0",
+            "query_pixel_ids_50_0"
+          ],
+          "prediction_array_key": "predictions_50_0"
+        },
+        {
+          "trial": 1,
+          "macro_f1": 0.6034547246276671,
+          "confusion_counts": [
+            [
+              6365,
+              752,
+              200,
+              201
+            ],
+            [
+              3851,
+              3758,
+              484,
+              659
+            ],
+            [
+              926,
+              1120,
+              3536,
+              1113
+            ],
+            [
+              208,
+              348,
+              239,
+              2032
+            ]
+          ],
+          "per_class_f1": [
+            0.674687301250795,
+            0.5102511880515954,
+            0.634032634032634,
+            0.594847775175644
+          ],
+          "support_array_keys": [
+            "support_indices_50_1",
+            "support_pixel_ids_50_1"
+          ],
+          "query_array_keys": [
+            "query_indices_50_1",
+            "query_pixel_ids_50_1"
+          ],
+          "prediction_array_key": "predictions_50_1"
+        },
+        {
+          "trial": 2,
+          "macro_f1": 0.5779310232722137,
+          "confusion_counts": [
+            [
+              6593,
+              598,
+              149,
+              178
+            ],
+            [
+              4785,
+              3048,
+              330,
+              589
+            ],
+            [
+              1191,
+              1040,
+              3512,
+              952
+            ],
+            [
+              265,
+              400,
+              290,
+              1872
+            ]
+          ],
+          "per_class_f1": [
+            0.6478970125786163,
+            0.44052608758491113,
+            0.6399416909620991,
+            0.5833593019632284
+          ],
+          "support_array_keys": [
+            "support_indices_50_2",
+            "support_pixel_ids_50_2"
+          ],
+          "query_array_keys": [
+            "query_indices_50_2",
+            "query_pixel_ids_50_2"
+          ],
+          "prediction_array_key": "predictions_50_2"
+        },
+        {
+          "trial": 3,
+          "macro_f1": 0.6068460364040942,
+          "confusion_counts": [
+            [
+              6295,
+              860,
+              168,
+              195
+            ],
+            [
+              3769,
+              3911,
+              392,
+              680
+            ],
+            [
+              1173,
+              828,
+              3586,
+              1108
+            ],
+            [
+              311,
+              267,
+              257,
+              1992
+            ]
+          ],
+          "per_class_f1": [
+            0.6603377740480436,
+            0.5350937200711452,
+            0.6462425662281492,
+            0.5857100852690386
+          ],
+          "support_array_keys": [
+            "support_indices_50_3",
+            "support_pixel_ids_50_3"
+          ],
+          "query_array_keys": [
+            "query_indices_50_3",
+            "query_pixel_ids_50_3"
+          ],
+          "prediction_array_key": "predictions_50_3"
+        },
+        {
+          "trial": 4,
+          "macro_f1": 0.5945034952298454,
+          "confusion_counts": [
+            [
+              6481,
+              686,
+              164,
+              187
+            ],
+            [
+              4337,
+              3399,
+              386,
+              630
+            ],
+            [
+              1042,
+              980,
+              3609,
+              1064
+            ],
+            [
+              234,
+              379,
+              252,
+              1962
+            ]
+          ],
+          "per_class_f1": [
+            0.6609218845604732,
+            0.47886728655959426,
+            0.6499189627228525,
+            0.5883058470764617
+          ],
+          "support_array_keys": [
+            "support_indices_50_4",
+            "support_pixel_ids_50_4"
+          ],
+          "query_array_keys": [
+            "query_indices_50_4",
+            "query_pixel_ids_50_4"
+          ],
+          "prediction_array_key": "predictions_50_4"
+        },
+        {
+          "trial": 5,
+          "macro_f1": 0.5909833533016416,
+          "confusion_counts": [
+            [
+              6310,
+              872,
+              174,
+              162
+            ],
+            [
+              4180,
+              3621,
+              431,
+              520
+            ],
+            [
+              1075,
+              1110,
+              3558,
+              952
+            ],
+            [
+              204,
+              496,
+              289,
+              1838
+            ]
+          ],
+          "per_class_f1": [
+            0.6543267485871312,
+            0.4876439297017036,
+            0.6383780389342424,
+            0.5835846959834894
+          ],
+          "support_array_keys": [
+            "support_indices_50_5",
+            "support_pixel_ids_50_5"
+          ],
+          "query_array_keys": [
+            "query_indices_50_5",
+            "query_pixel_ids_50_5"
+          ],
+          "prediction_array_key": "predictions_50_5"
+        },
+        {
+          "trial": 6,
+          "macro_f1": 0.6148636837828546,
+          "confusion_counts": [
+            [
+              6114,
+              1038,
+              159,
+              207
+            ],
+            [
+              3451,
+              4210,
+              373,
+              718
+            ],
+            [
+              1118,
+              976,
+              3605,
+              996
+            ],
+            [
+              284,
+              242,
+              285,
+              2016
+            ]
+          ],
+          "per_class_f1": [
+            0.6615093318907223,
+            0.5532921540281246,
+            0.6485562651794549,
+            0.5960969840331165
+          ],
+          "support_array_keys": [
+            "support_indices_50_6",
+            "support_pixel_ids_50_6"
+          ],
+          "query_array_keys": [
+            "query_indices_50_6",
+            "query_pixel_ids_50_6"
+          ],
+          "prediction_array_key": "predictions_50_6"
+        },
+        {
+          "trial": 7,
+          "macro_f1": 0.5940652369309406,
+          "confusion_counts": [
+            [
+              6221,
+              941,
+              180,
+              176
+            ],
+            [
+              3707,
+              4090,
+              355,
+              600
+            ],
+            [
+              1032,
+              1065,
+              3300,
+              1298
+            ],
+            [
+              229,
+              425,
+              251,
+              1922
+            ]
+          ],
+          "per_class_f1": [
+            0.6650986261827123,
+            0.5355856740653441,
+            0.6121881087097671,
+            0.5633885387659388
+          ],
+          "support_array_keys": [
+            "support_indices_50_7",
+            "support_pixel_ids_50_7"
+          ],
+          "query_array_keys": [
+            "query_indices_50_7",
+            "query_pixel_ids_50_7"
+          ],
+          "prediction_array_key": "predictions_50_7"
+        },
+        {
+          "trial": 8,
+          "macro_f1": 0.5680189439023624,
+          "confusion_counts": [
+            [
+              6673,
+              449,
+              189,
+              207
+            ],
+            [
+              4982,
+              2384,
+              710,
+              676
+            ],
+            [
+              1052,
+              806,
+              3793,
+              1044
+            ],
+            [
+              223,
+              318,
+              278,
+              2008
+            ]
+          ],
+          "per_class_f1": [
+            0.6526799687010955,
+            0.3751672043433787,
+            0.6503214744963566,
+            0.5939071280686188
+          ],
+          "support_array_keys": [
+            "support_indices_50_8",
+            "support_pixel_ids_50_8"
+          ],
+          "query_array_keys": [
+            "query_indices_50_8",
+            "query_pixel_ids_50_8"
+          ],
+          "prediction_array_key": "predictions_50_8"
+        },
+        {
+          "trial": 9,
+          "macro_f1": 0.5877750019271777,
+          "confusion_counts": [
+            [
+              5976,
+              1186,
+              182,
+              174
+            ],
+            [
+              3406,
+              4320,
+              473,
+              553
+            ],
+            [
+              1102,
+              1032,
+              3172,
+              1389
+            ],
+            [
+              237,
+              352,
+              323,
+              1915
+            ]
+          ],
+          "per_class_f1": [
+            0.655299084379626,
+            0.5523590333716916,
+            0.5849700322729369,
+            0.5584718576844561
+          ],
+          "support_array_keys": [
+            "support_indices_50_9",
+            "support_pixel_ids_50_9"
+          ],
+          "query_array_keys": [
+            "query_indices_50_9",
+            "query_pixel_ids_50_9"
+          ],
+          "prediction_array_key": "predictions_50_9"
+        }
+      ]
+    },
+    "100": {
+      "branch": "modal_leaf_agreement",
+      "mean": 0.6145046153186325,
+      "population_sd": 0.007474603930275258,
+      "scores": [
+        0.6140218872043813,
+        0.6170653759477733,
+        0.6085705391212679,
+        0.6102462250516505,
+        0.602879506548806,
+        0.6226885489234568,
+        0.6168017618891557,
+        0.6266178536799305,
+        0.6046999621006607,
+        0.621454492719243
+      ],
+      "historical_reported_mean": 0.62,
+      "historical_reported_population_sd": 0.0064,
+      "difference_from_historical_mean": -0.0054953846813674545,
+      "trials": [
+        {
+          "trial": 0,
+          "macro_f1": 0.6140218872043813,
+          "confusion_counts": [
+            [
+              5272,
+              1575,
+              448,
+              173
+            ],
+            [
+              2815,
+              4258,
+              1015,
+              614
+            ],
+            [
+              1154,
+              747,
+              4156,
+              588
+            ],
+            [
+              283,
+              190,
+              400,
+              1904
+            ]
+          ],
+          "per_class_f1": [
+            0.620527306967985,
+            0.5504136504653567,
+            0.6563487049905243,
+            0.6287978863936592
+          ],
+          "support_array_keys": [
+            "support_indices_100_0",
+            "support_pixel_ids_100_0"
+          ],
+          "query_array_keys": [
+            "query_indices_100_0",
+            "query_pixel_ids_100_0"
+          ],
+          "prediction_array_key": "predictions_100_0"
+        },
+        {
+          "trial": 1,
+          "macro_f1": 0.6170653759477733,
+          "confusion_counts": [
+            [
+              5138,
+              1877,
+              264,
+              189
+            ],
+            [
+              2759,
+              4701,
+              664,
+              578
+            ],
+            [
+              1366,
+              751,
+              4052,
+              476
+            ],
+            [
+              326,
+              192,
+              469,
+              1790
+            ]
+          ],
+          "per_class_f1": [
+            0.6024506067890015,
+            0.5795475559390988,
+            0.6700843393418224,
+            0.6161790017211703
+          ],
+          "support_array_keys": [
+            "support_indices_100_1",
+            "support_pixel_ids_100_1"
+          ],
+          "query_array_keys": [
+            "query_indices_100_1",
+            "query_pixel_ids_100_1"
+          ],
+          "prediction_array_key": "predictions_100_1"
+        },
+        {
+          "trial": 2,
+          "macro_f1": 0.6085705391212679,
+          "confusion_counts": [
+            [
+              5002,
+              1860,
+              454,
+              152
+            ],
+            [
+              2278,
+              4365,
+              1534,
+              525
+            ],
+            [
+              1248,
+              639,
+              4173,
+              585
+            ],
+            [
+              290,
+              174,
+              434,
+              1879
+            ]
+          ],
+          "per_class_f1": [
+            0.6142699250890336,
+            0.5546378653113088,
+            0.6303625377643505,
+            0.6350118283203785
+          ],
+          "support_array_keys": [
+            "support_indices_100_2",
+            "support_pixel_ids_100_2"
+          ],
+          "query_array_keys": [
+            "query_indices_100_2",
+            "query_pixel_ids_100_2"
+          ],
+          "prediction_array_key": "predictions_100_2"
+        },
+        {
+          "trial": 3,
+          "macro_f1": 0.6102462250516505,
+          "confusion_counts": [
+            [
+              4653,
+              2358,
+              292,
+              165
+            ],
+            [
+              2285,
+              5043,
+              745,
+              629
+            ],
+            [
+              1217,
+              902,
+              3822,
+              704
+            ],
+            [
+              291,
+              244,
+              303,
+              1939
+            ]
+          ],
+          "per_class_f1": [
+            0.584768128691718,
+            0.5847295495391037,
+            0.6474125518760058,
+            0.6240746700997747
+          ],
+          "support_array_keys": [
+            "support_indices_100_3",
+            "support_pixel_ids_100_3"
+          ],
+          "query_array_keys": [
+            "query_indices_100_3",
+            "query_pixel_ids_100_3"
+          ],
+          "prediction_array_key": "predictions_100_3"
+        },
+        {
+          "trial": 4,
+          "macro_f1": 0.602879506548806,
+          "confusion_counts": [
+            [
+              4025,
+              2950,
+              306,
+              187
+            ],
+            [
+              1708,
+              5221,
+              1198,
+              575
+            ],
+            [
+              1044,
+              861,
+              4166,
+              574
+            ],
+            [
+              263,
+              256,
+              405,
+              1853
+            ]
+          ],
+          "per_class_f1": [
+            0.5548662806727322,
+            0.5804335742078933,
+            0.6550314465408805,
+            0.6211867247737177
+          ],
+          "support_array_keys": [
+            "support_indices_100_4",
+            "support_pixel_ids_100_4"
+          ],
+          "query_array_keys": [
+            "query_indices_100_4",
+            "query_pixel_ids_100_4"
+          ],
+          "prediction_array_key": "predictions_100_4"
+        },
+        {
+          "trial": 5,
+          "macro_f1": 0.6226885489234568,
+          "confusion_counts": [
+            [
+              5136,
+              1857,
+              318,
+              157
+            ],
+            [
+              2579,
+              4903,
+              674,
+              546
+            ],
+            [
+              1238,
+              1005,
+              3784,
+              618
+            ],
+            [
+              278,
+              243,
+              311,
+              1945
+            ]
+          ],
+          "per_class_f1": [
+            0.615126654290676,
+            0.5868342309994016,
+            0.645073303784521,
+            0.6437200066192289
+          ],
+          "support_array_keys": [
+            "support_indices_100_5",
+            "support_pixel_ids_100_5"
+          ],
+          "query_array_keys": [
+            "query_indices_100_5",
+            "query_pixel_ids_100_5"
+          ],
+          "prediction_array_key": "predictions_100_5"
+        },
+        {
+          "trial": 6,
+          "macro_f1": 0.6168017618891557,
+          "confusion_counts": [
+            [
+              5137,
+              1951,
+              208,
+              172
+            ],
+            [
+              2735,
+              4693,
+              629,
+              645
+            ],
+            [
+              1378,
+              765,
+              3913,
+              589
+            ],
+            [
+              309,
+              190,
+              383,
+              1895
+            ]
+          ],
+          "per_class_f1": [
+            0.6033946085628707,
+            0.575792896141341,
+            0.6644591611479028,
+            0.6235603817045081
+          ],
+          "support_array_keys": [
+            "support_indices_100_6",
+            "support_pixel_ids_100_6"
+          ],
+          "query_array_keys": [
+            "query_indices_100_6",
+            "query_pixel_ids_100_6"
+          ],
+          "prediction_array_key": "predictions_100_6"
+        },
+        {
+          "trial": 7,
+          "macro_f1": 0.6266178536799305,
+          "confusion_counts": [
+            [
+              5088,
+              1876,
+              308,
+              196
+            ],
+            [
+              2243,
+              4907,
+              874,
+              678
+            ],
+            [
+              1131,
+              853,
+              3979,
+              682
+            ],
+            [
+              242,
+              214,
+              334,
+              1987
+            ]
+          ],
+          "per_class_f1": [
+            0.6292357160524363,
+            0.5929192846785887,
+            0.6555189456342669,
+            0.6287974683544304
+          ],
+          "support_array_keys": [
+            "support_indices_100_7",
+            "support_pixel_ids_100_7"
+          ],
+          "query_array_keys": [
+            "query_indices_100_7",
+            "query_pixel_ids_100_7"
+          ],
+          "prediction_array_key": "predictions_100_7"
+        },
+        {
+          "trial": 8,
+          "macro_f1": 0.6046999621006607,
+          "confusion_counts": [
+            [
+              5115,
+              1826,
+              340,
+              187
+            ],
+            [
+              2686,
+              4552,
+              849,
+              615
+            ],
+            [
+              1354,
+              889,
+              3869,
+              533
+            ],
+            [
+              308,
+              216,
+              430,
+              1823
+            ]
+          ],
+          "per_class_f1": [
+            0.6042171165318055,
+            0.5624961383997529,
+            0.6377647737575208,
+            0.6143218197135636
+          ],
+          "support_array_keys": [
+            "support_indices_100_8",
+            "support_pixel_ids_100_8"
+          ],
+          "query_array_keys": [
+            "query_indices_100_8",
+            "query_pixel_ids_100_8"
+          ],
+          "prediction_array_key": "predictions_100_8"
+        },
+        {
+          "trial": 9,
+          "macro_f1": 0.621454492719243,
+          "confusion_counts": [
+            [
+              5434,
+              1577,
+              293,
+              164
+            ],
+            [
+              2947,
+              4450,
+              736,
+              569
+            ],
+            [
+              1314,
+              716,
+              4117,
+              498
+            ],
+            [
+              292,
+              213,
+              460,
+              1812
+            ]
+          ],
+          "per_class_f1": [
+            0.622629619020338,
+            0.5683995401711586,
+            0.6721083993143416,
+            0.622680412371134
+          ],
+          "support_array_keys": [
+            "support_indices_100_9",
+            "support_pixel_ids_100_9"
+          ],
+          "query_array_keys": [
+            "query_indices_100_9",
+            "query_pixel_ids_100_9"
+          ],
+          "prediction_array_key": "predictions_100_9"
+        }
+      ]
+    },
+    "200": {
+      "branch": "modal_leaf_agreement",
+      "mean": 0.6187575948514697,
+      "population_sd": 0.004338190649825947,
+      "scores": [
+        0.6180084797426588,
+        0.6213689731397545,
+        0.6197481756114342,
+        0.6256841696103893,
+        0.621035151543085,
+        0.6100905870688913,
+        0.6157343868618961,
+        0.6159518696927614,
+        0.6239500725843216,
+        0.6160040826595055
+      ],
+      "historical_reported_mean": 0.6215,
+      "historical_reported_population_sd": 0.0047,
+      "difference_from_historical_mean": -0.0027424051485303025,
+      "trials": [
+        {
+          "trial": 0,
+          "macro_f1": 0.6180084797426588,
+          "confusion_counts": [
+            [
+              5349,
+              1528,
+              338,
+              153
+            ],
+            [
+              2946,
+              4323,
+              871,
+              462
+            ],
+            [
+              1239,
+              724,
+              4112,
+              470
+            ],
+            [
+              301,
+              217,
+              463,
+              1696
+            ]
+          ],
+          "per_class_f1": [
+            0.6218682787885834,
+            0.5616473950889957,
+            0.667045178035526,
+            0.6214730670575302
+          ],
+          "support_array_keys": [
+            "support_indices_200_0",
+            "support_pixel_ids_200_0"
+          ],
+          "query_array_keys": [
+            "query_indices_200_0",
+            "query_pixel_ids_200_0"
+          ],
+          "prediction_array_key": "predictions_200_0"
+        },
+        {
+          "trial": 1,
+          "macro_f1": 0.6213689731397545,
+          "confusion_counts": [
+            [
+              4664,
+              2280,
+              243,
+              181
+            ],
+            [
+              2291,
+              5153,
+              576,
+              582
+            ],
+            [
+              1152,
+              938,
+              3982,
+              473
+            ],
+            [
+              262,
+              239,
+              428,
+              1748
+            ]
+          ],
+          "per_class_f1": [
+            0.5927432166232446,
+            0.5987683011852196,
+            0.6764056395447596,
+            0.6175587352057941
+          ],
+          "support_array_keys": [
+            "support_indices_200_1",
+            "support_pixel_ids_200_1"
+          ],
+          "query_array_keys": [
+            "query_indices_200_1",
+            "query_pixel_ids_200_1"
+          ],
+          "prediction_array_key": "predictions_200_1"
+        },
+        {
+          "trial": 2,
+          "macro_f1": 0.6197481756114342,
+          "confusion_counts": [
+            [
+              5213,
+              1706,
+              255,
+              194
+            ],
+            [
+              2729,
+              4611,
+              687,
+              575
+            ],
+            [
+              1259,
+              904,
+              3822,
+              560
+            ],
+            [
+              282,
+              223,
+              334,
+              1838
+            ]
+          ],
+          "per_class_f1": [
+            0.6187169900896089,
+            0.5747226723170884,
+            0.6565318216954393,
+            0.6290212183436003
+          ],
+          "support_array_keys": [
+            "support_indices_200_2",
+            "support_pixel_ids_200_2"
+          ],
+          "query_array_keys": [
+            "query_indices_200_2",
+            "query_pixel_ids_200_2"
+          ],
+          "prediction_array_key": "predictions_200_2"
+        },
+        {
+          "trial": 3,
+          "macro_f1": 0.6256841696103893,
+          "confusion_counts": [
+            [
+              5189,
+              1646,
+              391,
+              142
+            ],
+            [
+              2582,
+              4514,
+              1018,
+              488
+            ],
+            [
+              1144,
+              693,
+              4210,
+              498
+            ],
+            [
+              271,
+              205,
+              445,
+              1756
+            ]
+          ],
+          "per_class_f1": [
+            0.6269179654464178,
+            0.5765006385696041,
+            0.6677769846934729,
+            0.6315410897320626
+          ],
+          "support_array_keys": [
+            "support_indices_200_3",
+            "support_pixel_ids_200_3"
+          ],
+          "query_array_keys": [
+            "query_indices_200_3",
+            "query_pixel_ids_200_3"
+          ],
+          "prediction_array_key": "predictions_200_3"
+        },
+        {
+          "trial": 4,
+          "macro_f1": 0.621035151543085,
+          "confusion_counts": [
+            [
+              5142,
+              1786,
+              286,
+              154
+            ],
+            [
+              2800,
+              4510,
+              767,
+              525
+            ],
+            [
+              1267,
+              729,
+              4076,
+              473
+            ],
+            [
+              293,
+              189,
+              431,
+              1764
+            ]
+          ],
+          "per_class_f1": [
+            0.6096028452874926,
+            0.5703085483055134,
+            0.6734407269723255,
+            0.6307884856070087
+          ],
+          "support_array_keys": [
+            "support_indices_200_4",
+            "support_pixel_ids_200_4"
+          ],
+          "query_array_keys": [
+            "query_indices_200_4",
+            "query_pixel_ids_200_4"
+          ],
+          "prediction_array_key": "predictions_200_4"
+        },
+        {
+          "trial": 5,
+          "macro_f1": 0.6100905870688913,
+          "confusion_counts": [
+            [
+              5100,
+              1762,
+              368,
+              138
+            ],
+            [
+              2724,
+              4481,
+              936,
+              461
+            ],
+            [
+              1296,
+              802,
+              4030,
+              417
+            ],
+            [
+              295,
+              256,
+              479,
+              1647
+            ]
+          ],
+          "per_class_f1": [
+            0.6077578502055652,
+            0.5635414701628624,
+            0.6522090953228677,
+            0.6168539325842697
+          ],
+          "support_array_keys": [
+            "support_indices_200_5",
+            "support_pixel_ids_200_5"
+          ],
+          "query_array_keys": [
+            "query_indices_200_5",
+            "query_pixel_ids_200_5"
+          ],
+          "prediction_array_key": "predictions_200_5"
+        },
+        {
+          "trial": 6,
+          "macro_f1": 0.6157343868618961,
+          "confusion_counts": [
+            [
+              5252,
+              1422,
+              545,
+              149
+            ],
+            [
+              2473,
+              4233,
+              1368,
+              528
+            ],
+            [
+              1125,
+              691,
+              4229,
+              500
+            ],
+            [
+              285,
+              197,
+              449,
+              1746
+            ]
+          ],
+          "per_class_f1": [
+            0.6364903350905896,
+            0.5589963684384285,
+            0.6438794153471377,
+            0.6235714285714286
+          ],
+          "support_array_keys": [
+            "support_indices_200_6",
+            "support_pixel_ids_200_6"
+          ],
+          "query_array_keys": [
+            "query_indices_200_6",
+            "query_pixel_ids_200_6"
+          ],
+          "prediction_array_key": "predictions_200_6"
+        },
+        {
+          "trial": 7,
+          "macro_f1": 0.6159518696927614,
+          "confusion_counts": [
+            [
+              5015,
+              1755,
+              438,
+              160
+            ],
+            [
+              2534,
+              4417,
+              1107,
+              544
+            ],
+            [
+              1144,
+              702,
+              4180,
+              519
+            ],
+            [
+              262,
+              191,
+              440,
+              1784
+            ]
+          ],
+          "per_class_f1": [
+            0.6144703792195062,
+            0.563860343396949,
+            0.6577498033044846,
+            0.6277269528501056
+          ],
+          "support_array_keys": [
+            "support_indices_200_7",
+            "support_pixel_ids_200_7"
+          ],
+          "query_array_keys": [
+            "query_indices_200_7",
+            "query_pixel_ids_200_7"
+          ],
+          "prediction_array_key": "predictions_200_7"
+        },
+        {
+          "trial": 8,
+          "macro_f1": 0.6239500725843216,
+          "confusion_counts": [
+            [
+              4744,
+              2249,
+              229,
+              146
+            ],
+            [
+              2383,
+              5084,
+              617,
+              518
+            ],
+            [
+              1240,
+              875,
+              3930,
+              500
+            ],
+            [
+              269,
+              234,
+              387,
+              1787
+            ]
+          ],
+          "per_class_f1": [
+            0.5928517870532367,
+            0.5965735742783385,
+            0.67133583874274,
+            0.6350390902629709
+          ],
+          "support_array_keys": [
+            "support_indices_200_8",
+            "support_pixel_ids_200_8"
+          ],
+          "query_array_keys": [
+            "query_indices_200_8",
+            "query_pixel_ids_200_8"
+          ],
+          "prediction_array_key": "predictions_200_8"
+        },
+        {
+          "trial": 9,
+          "macro_f1": 0.6160040826595055,
+          "confusion_counts": [
+            [
+              5083,
+              1815,
+              325,
+              145
+            ],
+            [
+              2759,
+              4544,
+              775,
+              524
+            ],
+            [
+              1270,
+              803,
+              3963,
+              509
+            ],
+            [
+              281,
+              197,
+              428,
+              1771
+            ]
+          ],
+          "per_class_f1": [
+            0.6065270568581826,
+            0.5693878829647265,
+            0.6585244267198405,
+            0.629576964095272
+          ],
+          "support_array_keys": [
+            "support_indices_200_9",
+            "support_pixel_ids_200_9"
+          ],
+          "query_array_keys": [
+            "query_indices_200_9",
+            "query_pixel_ids_200_9"
+          ],
+          "prediction_array_key": "predictions_200_9"
+        }
+      ]
+    }
+  },
+  "trial_array_artifact": "outputs\\final_submission\\amsterdam_trial_details.npz",
+  "development_benchmarks_not_primary_submission": {
+    "raw_prototype": {
+      "5": {
+        "mean": 0.5436864654724165,
+        "population_sd": 0.03240100566074138
+      },
+      "25": {
+        "mean": 0.5960243904143784,
+        "population_sd": 0.022233860239240236
+      },
+      "50": {
+        "mean": 0.605185621031355,
+        "population_sd": 0.013347978236561848
+      },
+      "100": {
+        "mean": 0.6111463924474492,
+        "population_sd": 0.010297207957952076
+      },
+      "200": {
+        "mean": 0.6152031082243232,
+        "population_sd": 0.005041208220517346
+      }
+    },
+    "amsterdam_support_logistic": {
+      "5": {
+        "mean": 0.5456702842313752,
+        "population_sd": 0.044550736314791804
+      },
+      "25": {
+        "mean": 0.6186511099071577,
+        "population_sd": 0.022654942332118323
+      },
+      "50": {
+        "mean": 0.6467325983578548,
+        "population_sd": 0.009193735314080232
+      },
+      "100": {
+        "mean": 0.6679246166464163,
+        "population_sd": 0.009456451089988058
+      },
+      "200": {
+        "mean": 0.6866652862743453,
+        "population_sd": 0.005605688896399261
+      }
+    },
+    "madrid_triplet_prototype": {
+      "5": {
+        "mean": 0.5166888758958994,
+        "population_sd": 0.05853717516311738
+      },
+      "25": {
+        "mean": 0.5804005448327283,
+        "population_sd": 0.025288439074932743
+      },
+      "50": {
+        "mean": 0.5825900525038482,
+        "population_sd": 0.021513069556560703
+      },
+      "100": {
+        "mean": 0.5873042813017839,
+        "population_sd": 0.012943694272133403
+      },
+      "200": {
+        "mean": 0.5911100605751692,
+        "population_sd": 0.003728375130741423
+      }
+    },
+    "madrid_triplet_logistic": {
+      "5": {
+        "mean": 0.46183783839306647,
+        "population_sd": 0.05718867828725974
+      },
+      "25": {
+        "mean": 0.5584295790554992,
+        "population_sd": 0.03927006269592787
+      },
+      "50": {
+        "mean": 0.5788464089947,
+        "population_sd": 0.013913985798078454
+      },
+      "100": {
+        "mean": 0.5973999173087349,
+        "population_sd": 0.008607085688211393
+      },
+      "200": {
+        "mean": 0.6074377823587941,
+        "population_sd": 0.004203318744344558
+      }
+    }
+  },
+  "smoke_tests": [
+    {
+      "n": 25,
+      "trial": 0,
+      "branch": "score_product",
+      "query_rows": 25892,
+      "query_columns": [
+        "px_key",
+        "py_key",
+        "Blue_mean",
+        "Green_mean",
+        "Red_mean",
+        "NIR_mean",
+        "SWIR1_mean",
+        "SWIR2_mean",
+        "Blue_std",
+        "Green_std",
+        "Red_std",
+        "NIR_std",
+        "SWIR1_std",
+        "SWIR2_std",
+        "NDVI_mean",
+        "NDBI_mean",
+        "UI_mean",
+        "MNDWI_mean",
+        "BSI_mean",
+        "NDVI_std",
+        "NDBI_std",
+        "UI_std",
+        "MNDWI_std",
+        "BSI_std",
+        "Blue_early_mean",
+        "Green_early_mean",
+        "Red_early_mean",
+        "NIR_early_mean",
+        "SWIR1_early_mean",
+        "SWIR2_early_mean",
+        "Blue_early_std",
+        "Green_early_std",
+        "Red_early_std",
+        "NIR_early_std",
+        "SWIR1_early_std",
+        "SWIR2_early_std",
+        "Blue_late_mean",
+        "Green_late_mean",
+        "Red_late_mean",
+        "NIR_late_mean",
+        "SWIR1_late_mean",
+        "SWIR2_late_mean",
+        "Blue_late_std",
+        "Green_late_std",
+        "Red_late_std",
+        "NIR_late_std",
+        "SWIR1_late_std",
+        "SWIR2_late_std",
+        "d_Blue_mean",
+        "d_Green_mean",
+        "d_Red_mean",
+        "d_NIR_mean",
+        "d_SWIR1_mean",
+        "d_SWIR2_mean",
+        "d_Blue_std",
+        "d_Green_std",
+        "d_Red_std",
+        "d_NIR_std",
+        "d_SWIR1_std",
+        "d_SWIR2_std",
+        "has_early_data",
+        "has_late_data"
+      ],
+      "query_labels_available_to_predict": false,
+      "deterministic_repeat": true,
+      "macro_f1_scored_after_prediction": 0.5571575589301837,
+      "prediction_sha256": "8d6f7b0c24c6e09c0eaf4ca58ea0e28166cb3e989db66a94c62d61ec53a4057e"
+    },
+    {
+      "n": 200,
+      "trial": 0,
+      "branch": "modal_leaf_agreement",
+      "query_rows": 25192,
+      "query_columns": [
+        "px_key",
+        "py_key",
+        "Blue_mean",
+        "Green_mean",
+        "Red_mean",
+        "NIR_mean",
+        "SWIR1_mean",
+        "SWIR2_mean",
+        "Blue_std",
+        "Green_std",
+        "Red_std",
+        "NIR_std",
+        "SWIR1_std",
+        "SWIR2_std",
+        "NDVI_mean",
+        "NDBI_mean",
+        "UI_mean",
+        "MNDWI_mean",
+        "BSI_mean",
+        "NDVI_std",
+        "NDBI_std",
+        "UI_std",
+        "MNDWI_std",
+        "BSI_std",
+        "Blue_early_mean",
+        "Green_early_mean",
+        "Red_early_mean",
+        "NIR_early_mean",
+        "SWIR1_early_mean",
+        "SWIR2_early_mean",
+        "Blue_early_std",
+        "Green_early_std",
+        "Red_early_std",
+        "NIR_early_std",
+        "SWIR1_early_std",
+        "SWIR2_early_std",
+        "Blue_late_mean",
+        "Green_late_mean",
+        "Red_late_mean",
+        "NIR_late_mean",
+        "SWIR1_late_mean",
+        "SWIR2_late_mean",
+        "Blue_late_std",
+        "Green_late_std",
+        "Red_late_std",
+        "NIR_late_std",
+        "SWIR1_late_std",
+        "SWIR2_late_std",
+        "d_Blue_mean",
+        "d_Green_mean",
+        "d_Red_mean",
+        "d_NIR_mean",
+        "d_SWIR1_mean",
+        "d_SWIR2_mean",
+        "d_Blue_std",
+        "d_Green_std",
+        "d_Red_std",
+        "d_NIR_std",
+        "d_SWIR1_std",
+        "d_SWIR2_std",
+        "has_early_data",
+        "has_late_data"
+      ],
+      "query_labels_available_to_predict": false,
+      "deterministic_repeat": true,
+      "macro_f1_scored_after_prediction": 0.6180084797426588,
+      "prediction_sha256": "094680b1992aeef4207eaa41d8ac703b98d6bb23551744694c8e42b51d87d4aa"
+    }
+  ],
+  "fresh_process_smoke_test": {
+    "branch": "modal_leaf_agreement",
+    "deterministic_repeat": true,
+    "macro_f1_scored_after_prediction": 0.6180084797426588,
+    "n": 200,
+    "prediction_sha256": "094680b1992aeef4207eaa41d8ac703b98d6bb23551744694c8e42b51d87d4aa",
+    "query_columns": [
+      "px_key",
+      "py_key",
+      "Blue_mean",
+      "Green_mean",
+      "Red_mean",
+      "NIR_mean",
+      "SWIR1_mean",
+      "SWIR2_mean",
+      "Blue_std",
+      "Green_std",
+      "Red_std",
+      "NIR_std",
+      "SWIR1_std",
+      "SWIR2_std",
+      "NDVI_mean",
+      "NDBI_mean",
+      "UI_mean",
+      "MNDWI_mean",
+      "BSI_mean",
+      "NDVI_std",
+      "NDBI_std",
+      "UI_std",
+      "MNDWI_std",
+      "BSI_std",
+      "Blue_early_mean",
+      "Green_early_mean",
+      "Red_early_mean",
+      "NIR_early_mean",
+      "SWIR1_early_mean",
+      "SWIR2_early_mean",
+      "Blue_early_std",
+      "Green_early_std",
+      "Red_early_std",
+      "NIR_early_std",
+      "SWIR1_early_std",
+      "SWIR2_early_std",
+      "Blue_late_mean",
+      "Green_late_mean",
+      "Red_late_mean",
+      "NIR_late_mean",
+      "SWIR1_late_mean",
+      "SWIR2_late_mean",
+      "Blue_late_std",
+      "Green_late_std",
+      "Red_late_std",
+      "NIR_late_std",
+      "SWIR1_late_std",
+      "SWIR2_late_std",
+      "d_Blue_mean",
+      "d_Green_mean",
+      "d_Red_mean",
+      "d_NIR_mean",
+      "d_SWIR1_mean",
+      "d_SWIR2_mean",
+      "d_Blue_std",
+      "d_Green_std",
+      "d_Red_std",
+      "d_NIR_std",
+      "d_SWIR1_std",
+      "d_SWIR2_std",
+      "has_early_data",
+      "has_late_data"
+    ],
+    "query_labels_available_to_predict": false,
+    "query_rows": 25192,
+    "trial": 0
+  },
+  "unlabelled_raw_feature_extraction_check": {
+    "pixels": 4,
+    "input_target_columns": [],
+    "output_target_columns": [],
+    "feature_count": 60,
+    "passed": true
+  },
+  "artifact_hashes": {
+    "stage1_model": "6dddf7e4b2719d15804aac13c718568ee22d8465bde39f8b9734c7d8d9a95b91",
+    "trial_details": "de9eebfe9a3d90fc0c56bd716e560b95420feec1378166689614df93ebe6751b"
+  },
+  "elapsed_seconds": 4611.929395914078
+}

@@ -1,5 +1,14 @@
 # Experiment log
 
+## A003 final critical audit
+
+- Completed the independent audit in `Docs/FINAL_CRITICAL_AUDIT.md`, including the teammate's two-tier RF, score-product and LDA files. Historical experiment entries below are preserved.
+- Ran `src/final_audit_verify.py`: all 184 saved summary-vector arithmetic checks passed, all 50 saved support/query sets passed integrity checks, and all 100 raw prototype/logistic trial scores reproduced exactly from cached features. Recomputed group shift and 25-shot logistic aggregate class metrics matched saved outputs. Evidence: `outputs/final_audit_verification.json`; complete tables: `Docs/VERIFIED_RESULT_TABLES.md`.
+- Revised submission verdict: all-60 logistic is category C as a primary transfer method because it uses only Madrid scaling. The existing two-tier RF is the provisional primary, pending a bounded reproduction and saved-model/unlabelled-inference packaging gate.
+- Broad modelling remains frozen. No new model family or targeted candidate was trained during the audit. Re-evaluating existing raw controls was verification, not model exploration.
+- Important qualifications: query scores informed model selection; metric-learning failure causes remain hypotheses; feature groups overlap; the support normalisation test primarily changes scaling rather than establishing a general alignment result; teammate RF provenance is incomplete and its model artifact is missing locally.
+- Team ownership and 24 judge questions are in `Docs/TEAM_HANDOFF.md`. No PowerPoint, polished abstract or final written justification was created.
+
 ## B000 organiser baseline reproduction
 
 - **Status:** completed 2026-09-08.

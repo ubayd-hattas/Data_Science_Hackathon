@@ -1,0 +1,1178 @@
+{
+  "scope": "Arithmetic, cached-feature raw-method reproduction, split integrity, shift and confusion verification; no new candidate training",
+  "environment": {
+    "python": "3.13.13",
+    "numpy": "2.5.3",
+    "sklearn": "1.9.0"
+  },
+  "summary_vectors_checked": [
+    {
+      "path": "baseline_results.json/madrid_cv",
+      "n": 25,
+      "max_error": 0.0
+    },
+    {
+      "path": "baseline_results.json/amsterdam_prototype/5",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "baseline_results.json/amsterdam_prototype/10",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "baseline_results.json/amsterdam_prototype/25",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "baseline_results.json/amsterdam_prototype/50",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "baseline_results.json/amsterdam_prototype/100",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "baseline_results.json/amsterdam_prototype/200",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/raw_60_prototype/5",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/raw_60_prototype/25",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/raw_60_prototype/50",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/raw_60_prototype/100",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/raw_60_prototype/200",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/raw_60_logistic/5",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/raw_60_logistic/25",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/raw_60_logistic/50",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/raw_60_logistic/100",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/raw_60_logistic/200",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/temporal_variability_logistic/5",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/temporal_variability_logistic/25",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/temporal_variability_logistic/50",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/temporal_variability_logistic/100",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/temporal_variability_logistic/200",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/support_standardised_60_logistic/5",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/support_standardised_60_logistic/25",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/support_standardised_60_logistic/50",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/support_standardised_60_logistic/100",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/support_standardised_60_logistic/200",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/madrid_triplet_embedding_prototype/5",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/madrid_triplet_embedding_prototype/25",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/madrid_triplet_embedding_prototype/50",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/madrid_triplet_embedding_prototype/100",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/madrid_triplet_embedding_prototype/200",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/madrid_triplet_embedding_logistic/5",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/madrid_triplet_embedding_logistic/25",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/madrid_triplet_embedding_logistic/50",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/madrid_triplet_embedding_logistic/100",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "consolidated_results.json/final_candidate_methods/madrid_triplet_embedding_logistic/200",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/all_60/5/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/all_60/5/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/all_60/25/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/all_60/25/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/all_60/50/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/all_60/50/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/all_60/100/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/all_60/100/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/all_60/200/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/all_60/200/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/absolute_spectral_means/5/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/absolute_spectral_means/5/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/absolute_spectral_means/25/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/absolute_spectral_means/25/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/absolute_spectral_means/50/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/absolute_spectral_means/50/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/absolute_spectral_means/100/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/absolute_spectral_means/100/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/absolute_spectral_means/200/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/absolute_spectral_means/200/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/spectral_indices/5/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/spectral_indices/5/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/spectral_indices/25/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/spectral_indices/25/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/spectral_indices/50/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/spectral_indices/50/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/spectral_indices/100/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/spectral_indices/100/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/spectral_indices/200/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/spectral_indices/200/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/temporal_variability/5/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/temporal_variability/5/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/temporal_variability/25/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/temporal_variability/25/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/temporal_variability/50/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/temporal_variability/50/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/temporal_variability/100/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/temporal_variability/100/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/temporal_variability/200/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/temporal_variability/200/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/early_period_statistics/5/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/early_period_statistics/5/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/early_period_statistics/25/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/early_period_statistics/25/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/early_period_statistics/50/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/early_period_statistics/50/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/early_period_statistics/100/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/early_period_statistics/100/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/early_period_statistics/200/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/early_period_statistics/200/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/late_period_statistics/5/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/late_period_statistics/5/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/late_period_statistics/25/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/late_period_statistics/25/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/late_period_statistics/50/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/late_period_statistics/50/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/late_period_statistics/100/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/late_period_statistics/100/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/late_period_statistics/200/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/late_period_statistics/200/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/year_to_year_change/5/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/year_to_year_change/5/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/year_to_year_change/25/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/year_to_year_change/25/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/year_to_year_change/50/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/year_to_year_change/50/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/year_to_year_change/100/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/year_to_year_change/100/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/year_to_year_change/200/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/ablations/year_to_year_change/200/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/correction/results/5/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/correction/results/5/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/correction/results/25/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/correction/results/25/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/correction/results/50/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/correction/results/50/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/correction/results/100/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/correction/results/100/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/correction/results/200/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/correction/results/200/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "feature_transfer_results.json/strongest_25/results",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "final_pipeline_sweep.json/stage1_spatial_cv",
+      "n": 5,
+      "max_error": 0.0
+    },
+    {
+      "path": "final_pipeline_sweep.json/adaptation_sweep/5",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "final_pipeline_sweep.json/adaptation_sweep/25",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "final_pipeline_sweep.json/adaptation_sweep/50",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "final_pipeline_sweep.json/adaptation_sweep/100",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "final_pipeline_sweep.json/adaptation_sweep/200",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/raw_features/5/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/raw_features/5/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/raw_features/25/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/raw_features/25/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/raw_features/50/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/raw_features/50/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/raw_features/100/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/raw_features/100/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/raw_features/200/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/raw_features/200/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/embedding/5/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/embedding/5/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/embedding/25/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/embedding/25/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/embedding/50/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/embedding/50/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/embedding/100/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/embedding/100/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/embedding/200/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results.json/embedding/200/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/raw_features/5/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/raw_features/5/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/raw_features/25/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/raw_features/25/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/raw_features/50/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/raw_features/50/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/raw_features/100/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/raw_features/100/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/raw_features/200/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/raw_features/200/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/embedding/5/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/embedding/5/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/embedding/25/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/embedding/25/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/embedding/50/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/embedding/50/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/embedding/100/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/embedding/100/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/embedding/200/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_hard_negative_8.json/embedding/200/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/raw_features/5/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/raw_features/5/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/raw_features/25/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/raw_features/25/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/raw_features/50/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/raw_features/50/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/raw_features/100/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/raw_features/100/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/raw_features/200/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/raw_features/200/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/embedding/5/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/embedding/5/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/embedding/25/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/embedding/25/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/embedding/50/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/embedding/50/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/embedding/100/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/embedding/100/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/embedding/200/prototype",
+      "n": 10,
+      "max_error": 0.0
+    },
+    {
+      "path": "metric_learning_results_random_negative.json/embedding/200/logistic_regression",
+      "n": 10,
+      "max_error": 0.0
+    }
+  ],
+  "errors": [],
+  "split_metadata": {
+    "seed": 42,
+    "trials": 10,
+    "budgets": [
+      5,
+      25,
+      50,
+      100,
+      200
+    ]
+  },
+  "split_sets_verified": 50,
+  "pulled_sweep_rng_matches_fixed_index_sets_given_identical_row_order": true,
+  "pulled_cache_row_order_verified": false,
+  "missing_artifacts": [
+    "outputs/stage1_model.pkl",
+    "outputs/features_cache.pkl",
+    "src/rf_leaf_transfer.py",
+    "src/hybrid_transfer.py",
+    "src/spatial_leakage_eval.py"
+  ],
+  "raw_reproduction": {
+    "5": {
+      "prototype": {
+        "mean": 0.5436864654724165,
+        "std": 0.03240100566074138,
+        "max_saved_score_error": 0.0
+      },
+      "logistic_regression": {
+        "mean": 0.5456702842313752,
+        "std": 0.044550736314791804,
+        "max_saved_score_error": 0.0
+      }
+    },
+    "25": {
+      "prototype": {
+        "mean": 0.5960243904143784,
+        "std": 0.022233860239240236,
+        "max_saved_score_error": 0.0
+      },
+      "logistic_regression": {
+        "mean": 0.6186511099071577,
+        "std": 0.022654942332118323,
+        "max_saved_score_error": 0.0
+      }
+    },
+    "50": {
+      "prototype": {
+        "mean": 0.605185621031355,
+        "std": 0.013347978236561848,
+        "max_saved_score_error": 0.0
+      },
+      "logistic_regression": {
+        "mean": 0.6467325983578548,
+        "std": 0.009193735314080232,
+        "max_saved_score_error": 0.0
+      }
+    },
+    "100": {
+      "prototype": {
+        "mean": 0.6111463924474492,
+        "std": 0.010297207957952076,
+        "max_saved_score_error": 0.0
+      },
+      "logistic_regression": {
+        "mean": 0.6679246166464163,
+        "std": 0.009456451089988058,
+        "max_saved_score_error": 0.0
+      }
+    },
+    "200": {
+      "prototype": {
+        "mean": 0.6152031082243232,
+        "std": 0.005041208220517346,
+        "max_saved_score_error": 0.0
+      },
+      "logistic_regression": {
+        "mean": 0.6866652862743453,
+        "std": 0.005605688896399261,
+        "max_saved_score_error": 0.0
+      }
+    }
+  },
+  "paired_raw_differences": {
+    "5": {
+      "logistic_minus_prototype_mean": 0.0019838187589586997,
+      "sd_of_paired_differences": 0.036810440761172,
+      "logistic_wins_of_10": 4
+    },
+    "25": {
+      "logistic_minus_prototype_mean": 0.02262671949277918,
+      "sd_of_paired_differences": 0.02005100729421412,
+      "logistic_wins_of_10": 9
+    },
+    "50": {
+      "logistic_minus_prototype_mean": 0.041546977326499854,
+      "sd_of_paired_differences": 0.011292133991142051,
+      "logistic_wins_of_10": 10
+    },
+    "100": {
+      "logistic_minus_prototype_mean": 0.056778224198967144,
+      "sd_of_paired_differences": 0.010028929595845757,
+      "logistic_wins_of_10": 10
+    },
+    "200": {
+      "logistic_minus_prototype_mean": 0.07146217805002189,
+      "sd_of_paired_differences": 0.006397430766117613,
+      "logistic_wins_of_10": 10
+    }
+  },
+  "recomputed_shift": {
+    "absolute_spectral_means": {
+      "feature_count": 6,
+      "mean_absolute_smd": 1.8486940264701843,
+      "median_absolute_smd": 1.8655185103416443,
+      "max_absolute_smd": 2.2711527347564697
+    },
+    "spectral_indices": {
+      "feature_count": 10,
+      "mean_absolute_smd": 0.5924597099423409,
+      "median_absolute_smd": 0.6522961556911469,
+      "max_absolute_smd": 1.4397814273834229
+    },
+    "temporal_variability": {
+      "feature_count": 29,
+      "mean_absolute_smd": 0.6740282198478436,
+      "median_absolute_smd": 0.666591227054596,
+      "max_absolute_smd": 1.4350630044937134
+    },
+    "early_period_statistics": {
+      "feature_count": 12,
+      "mean_absolute_smd": 1.3657650959988434,
+      "median_absolute_smd": 1.2323552966117859,
+      "max_absolute_smd": 2.5392379760742188
+    },
+    "late_period_statistics": {
+      "feature_count": 12,
+      "mean_absolute_smd": 0.9772888446847597,
+      "median_absolute_smd": 0.9260925352573395,
+      "max_absolute_smd": 1.729252815246582
+    },
+    "year_to_year_change": {
+      "feature_count": 12,
+      "mean_absolute_smd": 0.8493717213471731,
+      "median_absolute_smd": 0.9560915529727936,
+      "max_absolute_smd": 1.4350630044937134
+    },
+    "data_presence_flags": {
+      "feature_count": 2,
+      "mean_absolute_smd": 0.026951339095830917,
+      "median_absolute_smd": 0.026951339095830917,
+      "max_absolute_smd": 0.053902678191661835
+    }
+  },
+  "max_shift_error": 0.0,
+  "all60_logistic_25_aggregate_class_metrics": {
+    "1": {
+      "f1": 0.668152735308477,
+      "recall": 0.6894471695611826
+    },
+    "2": {
+      "f1": 0.5563851651891162,
+      "recall": 0.5166229919106756
+    },
+    "3": {
+      "f1": 0.6500623413300485,
+      "recall": 0.6439583333333333
+    },
+    "4": {
+      "f1": 0.6002210814821545,
+      "recall": 0.6949158485273492
+    }
+  },
+  "aggregate_macro_f1": 0.618705330827449,
+  "pixel_key_unique": {
+    "madrid": true,
+    "amsterdam": true
+  },
+  "all_feature_values_finite": true,
+  "hashes": {
+    "src\\audit_imports.py": "b36c226f8d2760aeffe61c7c214099a8d5d56f5a14097f052328b38c423827da",
+    "src\\bayes_combine_transfer.py": "dbd0696ef1b3b643896422ec324c2301ddb9333f5a6c21fbc8cd66a6a4d14de7",
+    "src\\data_audit.py": "57e756696db3f03db6d92ebd0550ba98f57988625d50e1bb3b4ce7dac80fe461",
+    "src\\final_audit_verify.py": "56ca2497cca20763fab35b8abd1f19748125c01ef4bb1c893758a15599ba4f45",
+    "src\\final_pipeline.py": "486aed06bbe916bf02c4b3072657f6240f29c76313a55a39195b22ad161d7361",
+    "src\\lda_embedding_transfer.py": "db9c42d2f24bc4cfc5b07c1eb8e3684283aa842f529f46ad4d2b8ce98fb9de12",
+    "src\\metric_learning_experiment.py": "3e3cab015294f73f2bb8895d43110512be20a91fd77bf35ccda71e5a1afc8c44",
+    "src\\organiser_baseline.py": "dca3ee2af2a087549478a17fa16a9d6f3ab0becd2f953ea0b7ec72bc8f9ffc8a",
+    "src\\split_audit.py": "a62468a33eb267cd3d9f093643f74c940b7f02327b370aed394abbbae884d378",
+    "src\\transfer_ablation_experiment.py": "0d5fc95f3473d9d7696cbe447bfb2652e68ebde2448a9b2fdba27159769fe018",
+    "Docs\\1-Introduction.ipynb": "dd2b1e23eb8bc79d23ad5ac96d75ec99b15c28166e72db6d4f84f2e90afe640a",
+    "Docs\\2-Reading_Data.ipynb": "aa093cf5980e2218629e9dfe3a68ec20e8814b4bf4c33ae1bdb525532658ad9a",
+    "Docs\\3-Preprocessing.ipynb": "86136f0ab901a4fd15f45e7545c5107f98fb17ed271e9c46c12d0d614b261175",
+    "Docs\\4-Modelling.ipynb": "709fa081f33186253715e1cd525b5d2a7c8b7a05259855fc72f137c9233551ae",
+    "Docs\\Evaluation Rubric Overview - Copy.docx": "87708f64a8c6bf0855d7045b1a3c1a904da1e246f98e010f942b7e95def6a23b",
+    "Docs\\Hackathon Final Schedule - Copy.xlsx": "b9f337bbc9398fac4f35932690f77f60c6866d24cfa09feda7f6493e0b0b4690",
+    "Docs\\METRIC_LEARNING_APPROACH - Copy.md": "957b5d2d707f5826643ab414b8d254f2fd4aebb9a375e2b5000e39f40eb51d64",
+    "outputs\\features_60.npz": "00d59c32ef44c22631609c210cf7b3523bb9bf09248fdbfdba5ab634d020dbd1",
+    "outputs\\amsterdam_fixed_splits.npz": "437d06a43c5f29e3a1b5ef624a6670bf3aef38ea8fbb23e87d94f7500d5ed988",
+    "Data\\madrid_train.parquet": "0e106a07044d867f8c68e77de8c36826c491d0f26692b8cde753d1046ce24c9c",
+    "Data\\amsterdam_data.parquet": "32388f3a9792b01d9831ca4d0fc4bfadba132a1c23c06e372d7a82e985be0719",
+    "Docs\\FINAL_CRITICAL_AUDIT.md": "d59a624a10deea7f2be9976842fca801dd15188b535ec6184e21521a10583be3",
+    "Docs\\TEAM_HANDOFF.md": "7f820c89a79710af51067ba4bf36d277f5700fe9049bb5735137ba4da5b85ab4",
+    "Docs\\VERIFIED_RESULT_TABLES.md": "897532f2e4198c595604614155d2e3746c851b56e3b9215bd1ca5013bb7b6d72",
+    "outputs\\baseline_results.json": "f64b983b9da002ee7ea13f8266d0ec96bb5236f1709fbcc01e193edb6ad27b1b",
+    "outputs\\bayes_combine_transfer_results.json": "1a1223e041b4381cee37580ef3351900665dde89dd91d0bb3290fbc8d29d7b63",
+    "outputs\\consolidated_results.json": "10e8a86bfccefe2f147388c2801f5307f84b119515ab16ec99505681d908e91a",
+    "outputs\\dataset_audit.json": "9ac671c67a6561b7cd63be114387ea9306785ddd90b3a5dca046ef8ba94b75eb",
+    "outputs\\feature_transfer_results.json": "f5a9eb52d8b48a07aac80bc870320e7c55793b8d6973889e14912328227f0727",
+    "outputs\\final_pipeline_sweep.json": "c6db422d53b1f4f66661d011863fa6a87460354831986a24b8702380e59a8987",
+    "outputs\\import_audit.json": "63d629ed19eb7118aa8cf1c9c19c23d8656698a6261061a200bb01fd28048940",
+    "outputs\\lda_embedding_transfer_results.json": "6b294e39fa1cc01fdec55f34f48c1299322bab18d3dab93b54e178e814e40a06",
+    "outputs\\metric_learning_results.json": "205041d162f8d5a86d779543c023fbadf51aa9a8b1e63b8904f600e0320cdb1d",
+    "outputs\\metric_learning_results_hard_negative_8.json": "44bb56d20738671cf722f5acb819fed4c20e5121bf1927c0079b6d648b7d00d8",
+    "outputs\\metric_learning_results_random_negative.json": "205041d162f8d5a86d779543c023fbadf51aa9a8b1e63b8904f600e0320cdb1d",
+    "outputs\\split_audit.json": "d300a2eabe05292f53938c86a80ad228cbed6332a14edb411bd1d9e104b81b98"
+  },
+  "archive_members": [
+    "experiments/",
+    "experiments/.gitkeep",
+    "outputs/",
+    "outputs/baseline_results.json",
+    "outputs/dataset_audit.json",
+    "outputs/figures/",
+    "outputs/figures/.gitkeep",
+    "outputs/import_audit.json",
+    "outputs/split_audit.json",
+    "src/",
+    "src/audit_imports.py",
+    "src/data_audit.py",
+    "src/organiser_baseline.py",
+    "src/split_audit.py",
+    "src/__pycache__/",
+    "src/__pycache__/audit_imports.cpython-313.pyc",
+    "src/__pycache__/data_audit.cpython-313.pyc",
+    "src/__pycache__/organiser_baseline.cpython-313.pyc",
+    "src/__pycache__/split_audit.cpython-313.pyc",
+    ".gitignore",
+    "CHALLENGE_SPEC.md",
+    "EXPERIMENT_LOG.md",
+    "LICENSE",
+    "README.md",
+    "requirements.txt"
+  ],
+  "archive_organiser_copy_matches": {},
+  "archive_contains_venv": true,
+  "hash_snapshot_note": "Source, document and result JSON hashes refreshed after audit authoring; raw data and cache hashes are from numerical verification."
+}

@@ -47,7 +47,7 @@ No prediction-file schema, model serialization format, file naming convention, p
 
 ## Written justification
 
-The rubric requires at most **500 words** and requires three pillars: model design and parameter rationale, transfer strategy, and interpretation of F1 trends across sample sizes. Notebook 1 says at most **300 words** for the same deliverable. Because the rubric is authoritative, 500 words is the formal cap; using at most 300 words is the only interpretation that satisfies both supplied documents unless organisers clarify.
+The rubric requires at most **500 words** and requires three pillars: model design and parameter rationale, transfer strategy, and interpretation of F1 trends across sample sizes. Notebook 1 says at most **300 words** for the same deliverable. Use **at most 300 words** to satisfy both; do not assume that the rubric's larger cap overrides the submission instruction without organiser clarification.
 
 ## Restrictions and judging priorities
 
