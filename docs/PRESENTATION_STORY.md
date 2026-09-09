@@ -1,182 +1,202 @@
-# Presentation — the story version (10 slides, ~10 min)
+# Presentation — data-science story (10 slides, ~10 min)
 
-Told as a story: a model that can't move house, the fix, the climb, the dead
-ends, the audit, the lesson. Anyone should follow it. Every rubric point has a
-home (tagged **[R]**).
+Told the way a DS team walks through a project: an observation, a hypothesis, an
+experiment, a number, what it means, then the next question. Each slide has 2–3
+**short paragraph points** (a sentence or two each) and **one visual**. Full
+spoken script in `docs/TALK_SCRIPT.md`. Rubric coverage tagged **[R]**.
 
-Per slide: the **heading** (engaging, plain), the **few words on the slide**, the
-**visual**, and a one-line **say** for the speaker. Full script in
-`docs/TALK_SCRIPT.md`.
-
-Numbers: baseline 0.43 zero-shot / 0.42–0.67 few-shot → ours 0.65 zero-shot /
-0.66 · 0.68 · 0.70 · 0.72 · 0.74 at 5 · 25 · 50 · 100 · 200 known buildings per
-group. Madrid on itself: 0.66.
+Key numbers: zero-shot 0.36 raw → 0.65 aligned · few-shot 0.66 / 0.68 / 0.70 /
+0.72 / 0.74 at 5 / 25 / 50 / 100 / 200 known buildings per group · Madrid
+in-city 0.66 · provided-notebook baseline 0.43 / 0.42–0.67.
 
 ---
 
-## 1 · "Can a model move to a new city?"  — 0:30 — *A*
+## 1 · Can a model trained in one city work in another?
 
-**On slide:** title · ⟨Author A–D⟩ · Team ⟨name⟩ · abstract (149 words, small box)
-**Visual:** faint city-from-above image behind the title
-**Say:** "We taught a model in Madrid and asked it to work in Amsterdam. This is
-what happened."
-**[R]** abstract on slide 1
+- **The question.** Building-age records exist for a handful of cities. If a
+  model trained where labels are plentiful could transfer to a city with almost
+  none, you could map building age almost anywhere. We test that with Madrid → Amsterdam.
+- **The setup.** Predict one of four construction-era classes per 30 m Landsat
+  pixel; adapt to Amsterdam with 5–200 labelled pixels per class; report macro-F1.
 
----
-
-## 2 · "Madrid taught it. Amsterdam confused it."  — 1:00 — *A*
-
-**On slide:**
-- Guess a building's age group from 40 years of satellite light
-- Learns in Madrid — brick, dry, one set of satellites
-- Meets Amsterdam — concrete, wet, different satellites
-**Visual:** two side-by-side crops, Madrid (warm) vs Amsterdam (cool), same age,
-caption *same age — different look*
-**Say:** "Same task, same age of building — but it *looks* different to the
-satellite, and the mix of ages is different too."
-**[R]** Challenge Understanding — domain shift
+**Visual:** title, authors, team; the 149-word abstract in a small box.
+**[R]** abstract on slide 1.
 
 ---
 
-## 3 · "It wasn't stupid — it was mis-tuned"  — 0:45 — *A → B*
+## 2 · The transfer gap is real and it's two effects, not one
 
-**On slide:**
-- The rules it learned were right
-- The numbers just sat in the wrong place
-- Fix the tuning, not the model
-**Visual:** one number, big: **zero-shot 0.43** with a small red down-arrow
-**Say:** "Dropped into Amsterdam cold, it scored 0.43. Not because it can't tell
-old from new — because its dials were set for Madrid."
-**[R]** Challenge Understanding — the core insight
+- **Observation.** A Random Forest trained on Madrid features scores **0.66**
+  in-city but only **0.43** applied straight to Amsterdam.
+- **Why.** Covariate shift — different building materials, wetter climate,
+  different Landsat sensors across 40 years — moves where the features sit. On
+  top of that, label shift: Amsterdam has ~1.6× more of the oldest class.
+- **Implication.** Retraining alone won't fix this; the feature distributions and
+  the class priors both have to be handled.
 
----
-
-## 4 · "The turning point: line the cities up"  — 1:30 — *B*
-
-**On slide:**
-- Reshape Madrid's data to match Amsterdam — **one age group at a time**
-- Uses the model's own first guesses · **no Amsterdam answers**
-- Repeat twice
-- Zero labels: **0.43 → 0.65**
-**Visual:** the 3-box pipeline (Fig. 1); or the before/after scatter — two clouds
-apart, then overlapping
-**Say:** "We predict Amsterdam once, use those guesses to line up each group,
-and retrain. That one step recovers most of the gap — with no labels at all."
-**[R]** Model Design + Transfer Strategy (pillars 1 & 2); "did it address domain shift"
+**Visual:** two aerial/Landsat crops — Madrid (warm) vs Amsterdam (cool), same
+building age, captioned *same class, different distribution*.
+**[R]** Challenge Understanding — domain shift.
 
 ---
 
-## 5 · "Then we kept climbing"  — 2:00 — *B → C*
+## 3 · Hypothesis: the model is mis-calibrated, not incapable
 
-**On slide — a rising list, each with its bump:**
-- Line up the cities → **+0.07**
-- Untangle the features, gently when data is thin → **+0.15 at 5 labels**
-- Let a local model and the Madrid model vote together → **+0.04**
-- Let neighbouring patches vote → **+0.01**
-- An overnight search over 500 setups → **+0.02**
-**Visual:** a small step-chart / ascending bars, baseline → final
-**Say:** "Every gain came from *using* the data better — not a bigger model. And
-the low-data case needed its own recipe: with 5 labels, lean on Madrid; with
-200, trust the local model."
-**[R]** design decisions / what worked; low-data mechanics
+- **The idea.** The decision rules the forest learned are probably fine — old
+  stock weathers, new stock has a construction signal. What's wrong is the
+  *coordinates*: a threshold that means "old" in Madrid lands somewhere else in
+  Amsterdam.
+- **The test that follows.** If that's true, aligning the feature distributions
+  before prediction — with no Amsterdam labels — should recover most of the gap.
 
----
-
-## 6 · "The things that didn't work"  — 1:15 — *C → D*
-
-**On slide — five, one reason each:**
-- Neural network — nothing to learn, data already separable
-- Ordinal training — smaller mistakes, not fewer
-- Self-training — teaches itself its own errors
-- Gradient boosting — falls apart at 5 labels
-- Fixing the age mix — needs trust it doesn't have across cities
-**Visual:** five ✗ rows, plain
-**Say:** "We show these on purpose. Every attempt to out-think the data lost to
-using it more carefully."
-**[R]** Originality — insightful failure; scientific soundness
+**Visual:** one large figure — the zero-shot number **0.43**, a red gap bar down
+to the Madrid line at 0.66.
+**[R]** Challenge Understanding — the framing.
 
 ---
 
-## 7 · "We checked our own homework"  — 1:00 — *D*
+## 4 · The move that worked: align the distributions, class by class
 
-**On slide:**
-- We drew our training examples at random — as instructed
-- Then measured: **~80%** sit right next to a test patch
-- 30 m pixels that touch are often the same building
-- So part of the score is *proximity*, not skill — **we say so**
-**Visual:** a small grid — support pixels (filled) and their touching query
-neighbours (outlined)
-**Say:** "A teammate audited this. It doesn't break any rule and we never use
-test answers — but it's honest to put the number on the slide rather than let a
-judge find it."
-**[R]** scientific soundness; Originality — insightful analysis
+- **Method.** Plain CORAL reshapes the whole Madrid feature cloud to Amsterdam's
+  covariance. We go further — **class-conditional CORAL**: predict Amsterdam
+  once, then for each class re-align Madrid's examples of that class to the
+  covariance of the pixels the model assigned to it, and refit. Two rounds. Only
+  the model's own pseudo-labels are used.
+- **Result.** Zero-shot macro-F1 goes **0.36 → 0.58** (pooled CORAL) **→ 0.65**
+  (class-conditional). No target labels touched.
+- **Discipline.** Every alignment statistic comes from the *unlabelled* Amsterdam
+  pool; the only labelled target data entering the model is the support set.
 
----
-
-## 8 · "What the data will and won't tell you"  — 0:45 — *D*
-
-**On slide:**
-- Groups 3 & 4 — built during the satellite era → we can see the construction
-- Groups 1 & 2 — both before 1984 → no event to see, can't be split
-- That's a data limit, not a bug — the research agrees
-**Visual:** 4-bar chart, score per age group — 3 & 4 tall, 1 & 2 short
-**Say:** "Most of our remaining error is groups 1 and 2, and it always will be
-with this data."
-**[R]** F1 interpretation — limitations; what we learnt
+**Visual:** 3-box pipeline (Fig. 1) and/or a before/after PCA scatter — two
+clouds separated, then overlapping.
+**[R]** Model Design + Transfer Strategy (pillars 1 & 2); "addressed domain shift".
 
 ---
 
-## 9 · "50 buildings buy a whole city"  — 1:30 — *C*
+## 5 · Then a sequence of small, measured gains — and the low-data regime is its own problem
 
-**On slide:**
-- **Table:** Madrid CV 0.66 · Amsterdam 0.66 / 0.68 / 0.70 / 0.72 / 0.74 (± SD)
-- **Plot:** score vs known-buildings-per-group, error bars, dashed Madrid line
-- Crosses the home-city line at ~50 · steep, then flat
-**Visual:** the curve, large, centred; the table small beside it — **both required**
-**Say:** "Read the jump — 0.36 to 0.65 with no labels. Then the climb. By about
-50 checked buildings per group — 200 total — the transferred model does as well
-on Amsterdam as any model does at home."
-**[R]** the required table + plot with error bars; F1-interpretation pillar
+- **Ablation, biggest first.** Class-conditional alignment **+0.07** (zero-shot).
+  Budget-scaled feature whitening **+0.15 at 5 labels** — the largest single
+  lever in the low-data regime. Blending a local model with the Madrid prior
+  **+0.04 at 5 labels**. Inverse-distance neighbour smoothing **+0.01** at every
+  budget. A 500-configuration search **+0.02–0.03**.
+- **Key finding.** The few-shot pipeline is *not* the full pipeline with less
+  data. With 5–25 labels the local model is unstable, so the blend leans on
+  Madrid and the whitening is dialled down; with 200 it leans local. The recipe
+  changes with the label budget.
 
----
-
-## 10 · "It's a tuning problem, not a hard one"  — 0:45 — *D → all*
-
-**On slide — three lines + names:**
-- A new-city model is mis-tuned, not incapable
-- ~50 known buildings buy home-city accuracy
-- Careful data use beat every fancy model
-- ⟨A⟩ features · ⟨B⟩ the line-up · ⟨C⟩ evaluation · ⟨D⟩ analysis
-**Visual:** none — let it breathe
-**Say:** "Our new bit: the group-by-group line-up, and the idea that few and many
-labels need different machinery. Questions?"
-**[R]** Originality — framing; Presentation — team, all four named
+**Visual:** an ascending step-chart — baseline → each gain stacked → final.
+**[R]** design decisions / what worked; low-data mechanics (why 25/class is distinct).
 
 ---
 
-## Arc at a glance
+## 6 · Five things we tried that didn't help — reported on purpose
 
-| # | Beat | Story move |
+- **Learned representations lost.** A triplet-loss embedding added variance with
+  no gain — the 108 features are already linearly separable, so there was
+  nothing for it to learn. Gradient boosting matched the forest in-city but
+  collapsed at 5 labels.
+- **"Sound" corrections backfired.** Ordinal training made errors *smaller* but
+  not *fewer*, and macro-F1 only counts right vs wrong. Label-shift EM needs
+  calibrated probabilities the domain gap doesn't provide. Self-training on the
+  unlabelled pool amplified its own ~35% early error.
+- **The pattern.** Every attempt to out-model the data lost to using it more
+  carefully.
+
+**Visual:** five ✗ rows, plain, with the one-line reason each.
+**[R]** Originality — insightful failure; scientific soundness.
+
+---
+
+## 7 · We audited our own evaluation
+
+- **What we checked.** Our support pixels are drawn at random per class — as the
+  protocol specifies. We measured how many sit adjacent to a query pixel.
+- **Finding.** ~80% of support pixels have an immediate map-neighbour in the
+  query set, stable across every budget. Two teammates measured this
+  independently.
+- **What we do about it.** No rule is broken and query labels are never used —
+  but part of every few-shot score reflects same-block proximity, not pure
+  cross-location generalisation. We state the number, and we kept the neighbour
+  smoothing prediction-only so it can't compound the effect.
+
+**Visual:** a small pixel grid — filled support pixels and their outlined
+touching query neighbours.
+**[R]** scientific soundness; Originality — insightful analysis.
+
+---
+
+## 8 · Error analysis: the ceiling is in the data, not the model
+
+- **Where the errors concentrate.** Classes 3 and 4 (built during the satellite
+  record) carry a visible construction event and are predicted well. Classes 1
+  and 2 are both pre-1984 — no event to separate them — and that's where most of
+  the residual error is (class-2 recall ≈ 0.52).
+- **Consistent with prior work.** The building-age literature reports the same:
+  pre-war stock is the hardest to date from remote sensing anywhere.
+
+**Visual:** 4-bar per-class F1 — classes 3 & 4 tall, 1 & 2 short.
+**[R]** F1 interpretation — limitations; what we learnt.
+
+---
+
+## 9 · Result: with ~50 labels per class, transfer reaches the in-city ceiling
+
+- **The table.** Madrid 5×5 CV **0.664 ± 0.004**. Amsterdam few-shot **0.66 /
+  0.68 / 0.70 / 0.72 / 0.74** at 5 / 25 / 50 / 100 / 200 per class, ± 0.003–0.009.
+  Provided-notebook baseline over the same budgets: 0.42 → 0.67.
+- **The curve.** Steep to ~50 labels, then it flattens — right at the Madrid
+  in-city score. The alignment does the heavy lifting; the labels buy the last
+  few points.
+- **Reading it.** Past ~50 labelled buildings per class — about 200 total —
+  moving the model to a new city costs essentially nothing.
+
+**Visual:** the F1-vs-log₂(labels) curve, large, with ±1 SD error bars and a
+dashed Madrid line; the table small beside it. **Both are required deliverables.**
+**[R]** the required table + plot with error bars; F1-interpretation pillar.
+
+---
+
+## 10 · Conclusion: cross-city transfer is a calibration problem
+
+- **Three takeaways.** A model in a new city is mis-calibrated, not incapable —
+  per-class alignment recovers most of the gap with zero labels. About 50
+  labelled pixels per class buy in-city accuracy. And on 30 m Landsat, careful
+  use of the distribution beat every learned-representation alternative we tried.
+- **What's new.** The iterative, pseudo-label-driven per-class alignment, and the
+  framing that transfer is a spectrum — different machinery at different label
+  budgets.
+
+**On slide, small:** ⟨A⟩ features & pipeline · ⟨B⟩ domain alignment · ⟨C⟩
+evaluation harness · ⟨D⟩ analysis & write-up.
+**[R]** Originality — framing; Presentation — team, all four named.
+
+---
+
+## Story arc
+
+| # | Beat | DS move |
 |---|---|---|
-| 1 | Can a model move cities? | hook |
-| 2 | Madrid taught it, Amsterdam confused it | the setup |
-| 3 | It was mis-tuned, not stupid | the diagnosis |
-| 4 | Line the cities up | the turning point |
-| 5 | Then we kept climbing | the rising action (**how we improved**) |
-| 6 | What didn't work | the setbacks (**what didn't work**) |
-| 7 | We checked our homework | the honesty beat (**what we audited**) |
-| 8 | What the data won't tell you | the limit (**what we learnt**) |
-| 9 | 50 buildings buy a whole city | the payoff (**results**) |
-| 10 | A tuning problem, not a hard one | the moral (**conclusion**) |
+| 1 | Can it move cities? | the question |
+| 2 | The gap is two effects | the observation |
+| 3 | Mis-calibrated, not incapable | the hypothesis |
+| 4 | Align class by class | the experiment that worked |
+| 5 | A sequence of measured gains | the ablation + a key finding |
+| 6 | Five that didn't help | negative results |
+| 7 | We audited our evaluation | the honesty check |
+| 8 | The ceiling is in the data | error analysis |
+| 9 | 50 labels reach the ceiling | the result |
+| 10 | It's a calibration problem | the conclusion |
 
-## Timing & handoffs
+## Timing & handoffs — total ≈ 10:00
 
-Total ≈ 10:00. A: 1–3 · B: 4–5 · C: 5–6, 9 · D: 6–8, 10. Slow on 4, 5, 9.
+A: 1–3 (2:15) · B: 4–5 (3:30) · C: 5→6 hand, 9 (2:15) · D: 6–8, 10 (2:00).
+Slow on 4, 5, 9.
 
-## Figures to generate (I can make these as PNGs)
+## Figures to generate (I can produce these as PNGs from the data)
 
 1. Madrid vs Amsterdam crops (slide 2)
-2. before/after scatter — clouds apart → overlapping (slide 4)
-3. ascending step-chart of the improvements (slide 5)
-4. the F1 curve restyled to match the deck (slide 9) — base is `results/transfer_curve.png`
-5. per-group score bars (slide 8)
+2. before/after PCA scatter (slide 4)
+3. ascending step-chart of the gains (slide 5)
+4. F1 curve restyled to the deck (slide 9) — base is `results/transfer_curve.png`
+5. per-class F1 bars (slide 8)
