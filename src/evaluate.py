@@ -386,3 +386,59 @@ def few_shot_ensemble_curve(
         out.per_shot[n] = np.asarray(scores)
 
     return out
+
+
+def few_shot_smoothed_curve(
+    X_target: np.ndarray,
+    y_target: np.ndarray,
+    prior_proba: np.ndarray,
+    make_clf,
+    smoother,
+    shots=DEFAULT_SHOTS,
+    n_trials: int = 10,
+    transform: "Transform | None" = None,
+    seed: int = 42,
+    beta_div: float = 50.0,
+    beta_floor: float = 0.4,
+) -> "FewShotResult":
+    """``few_shot_ensemble_curve`` plus anchored spatial smoothing of the output.
+
+    After blending the local head with the source prior, the class probabilities
+    are written into a full-grid field, support pixels are overwritten with their
+    true one-hot labels, and ``smoother`` (from
+    :func:`src.adapt.spatial_smoother`) averages each pixel with its geographic
+    neighbours before the winner is picked.
+
+    Still leakage-free: the only target labels used are the support set's, which
+    the protocol grants, and they are applied to their own rows.
+    """
+    Z = transform(X_target) if transform is not None else X_target
+    y = np.asarray(y_target)
+    rng = np.random.default_rng(seed)
+    classes = np.unique(y)
+    out = FewShotResult(tuple(shots))
+
+    for n in shots:
+        beta = float(np.clip(n / beta_div, beta_floor, 0.95))
+        scores = []
+        for _ in range(n_trials):
+            support = []
+            for c in classes:
+                idx = np.where(y == c)[0]
+                support.extend(rng.choice(idx, min(n, len(idx)), replace=False).tolist())
+            support = np.asarray(support)
+            query = np.where(~np.isin(np.arange(len(y)), support))[0]
+
+            clf = make_clf().fit(Z[support], y[support])
+            field = np.empty((len(y), len(classes)))
+            field[query] = (beta * clf.predict_proba(Z[query])
+                            + (1 - beta) * prior_proba[query])
+            onehot = np.zeros((len(support), len(classes)))
+            onehot[np.arange(len(support)), np.searchsorted(classes, y[support])] = 1.0
+            field[support] = onehot
+
+            pred = classes[smoother(field)[query].argmax(axis=1)]
+            scores.append(f1_score(y[query], pred, average="macro", zero_division=0))
+        out.per_shot[n] = np.asarray(scores)
+
+    return out

@@ -23,7 +23,7 @@ and produces the two required artefacts:
 | Features | temporal statistics per pixel (`src/data.py`); optional change-point and spatial-context blocks |
 | Madrid reference | 5×5 repeated stratified CV, Random Forest |
 | Zero-shot | CORAL-align Madrid features → Random Forest → predict Amsterdam |
-| Few-shot (per budget) | adaptive-shrinkage ZCA whitening of Amsterdam features (optional PCA) → small Random Forest head → probabilities blended with the CORAL zero-shot model, weight `clip(n/beta_div, beta_floor, 0.95)` toward the local head |
+| Few-shot (per budget) | adaptive-shrinkage ZCA whitening of Amsterdam features (optional PCA) → small Random Forest head → probabilities blended with the CORAL zero-shot model, weight `clip(n/beta_div, beta_floor, 0.95)` toward the local head, then anchored spatial smoothing of the predicted probabilities over each pixel's 4 map-neighbours |
 
 The pipeline settings (feature set, forest depth, shrinkage and blend
 coefficients, PCA) come from `results/overnight_best.json` when the overnight
@@ -46,9 +46,9 @@ from sklearn.metrics import confusion_matrix, f1_score
 
 sys.path.insert(0, "..")
 from src.data import build_city
-from src.adapt import make_coral, zca_whiten
+from src.adapt import make_coral, zca_whiten, spatial_smoother
 from src.evaluate import (
-    madrid_cv, fit_final_rf, zero_shot, few_shot_ensemble_curve,
+    madrid_cv, fit_final_rf, zero_shot, few_shot_smoothed_curve,
 )
 
 SEED = 42
@@ -164,11 +164,13 @@ def whitened(n):
 n_trials = 6 if QUICK else 20
 nf = Xa.shape[1]
 
+smoother = spatial_smoother(ams.pixels.to_numpy(dtype=float), k=4)
+
 curves = {}
 for n in SHOTS:
-    res = few_shot_ensemble_curve(
-        Xa, ya, prior_proba, make_head, shots=(n,), n_trials=n_trials,
-        transform=whitened(n), seed=SEED,
+    res = few_shot_smoothed_curve(
+        Xa, ya, prior_proba, make_head, smoother,
+        shots=(n,), n_trials=n_trials, transform=whitened(n), seed=SEED,
         beta_div=BETA_DIV, beta_floor=BETA_FLOOR,
     )
     curves[n] = res.per_shot[n]
@@ -233,8 +235,12 @@ query = np.setdiff1d(np.arange(len(ya)), support)
 
 head = make_head().fit(Z[support], ya[support])
 beta = np.clip(n_show/BETA_DIV, BETA_FLOOR, 0.95)
-blend = beta * head.predict_proba(Z[query]) + (1-beta) * prior_proba[query]
-pred = classes[blend.argmax(1)]
+field = np.empty((len(ya), len(classes)))
+field[query] = beta * head.predict_proba(Z[query]) + (1-beta) * prior_proba[query]
+oh = np.zeros((len(support), len(classes)))
+oh[np.arange(len(support)), np.searchsorted(classes, ya[support])] = 1.0
+field[support] = oh
+pred = classes[smoother(field)[query].argmax(1)]
 
 cm = confusion_matrix(ya[query], pred, labels=classes).astype(float)
 cm /= cm.sum(1, keepdims=True)

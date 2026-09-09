@@ -116,3 +116,28 @@ def shrink_for_shots(n_per_class: int, n_features: int = 60) -> float:
     """
     eff = n_per_class * 60.0 / max(n_features, 1)
     return float(np.clip(1.44 - 0.188 * np.log2(max(eff, 2.0)), 0.0, 1.0))
+
+
+def spatial_smoother(coords: np.ndarray, k: int = 4):
+    """Return ``smooth(P)`` averaging each pixel's row of ``P`` with its k neighbours.
+
+    ``P`` is an (n_pixels, n_classes) probability field over the *whole* grid, in
+    the same row order as ``coords``. Age classes cluster geographically, so this
+    removes speckle without adding any feature dimensions.
+
+    To *anchor* the smoothing, write one-hot rows into ``P`` for pixels whose true
+    label is known (the few-shot support set) before calling: certain pixels then
+    steady their neighbourhood instead of contributing a guess. That is worth
+    roughly half the total gain.
+
+    ``k`` is deliberately small - 3-4 is the optimum on this grid, and beyond ~8
+    the smoothing starts blurring genuine age boundaries.
+    """
+    from scipy.spatial import cKDTree
+
+    nei = cKDTree(coords).query(coords, k=k + 1)[1]
+
+    def smooth(P: np.ndarray) -> np.ndarray:
+        return P[nei].mean(axis=1)
+
+    return smooth
