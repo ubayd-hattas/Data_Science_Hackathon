@@ -1,0 +1,44 @@
+{
+  "grid": 4,
+  "min_tile_gap": 1,
+  "seed": 42,
+  "n_seeds": 3,
+  "quick": false,
+  "features": "both",
+  "per_budget": {
+    "zero_shot_per_tile": {
+      "mean": 0.5585617290357656,
+      "std": 0.0701815236725413,
+      "n_tiles": 16
+    },
+    "25": {
+      "mean": 0.5682489781643253,
+      "std": 0.07337505542437968,
+      "vs_zero_shot": 0.009687249128559602,
+      "n_folds": 48,
+      "tiles_skipped": 0
+    },
+    "50": {
+      "mean": 0.5791260536831527,
+      "std": 0.0759568594979161,
+      "vs_zero_shot": 0.020564324647386955,
+      "n_folds": 48,
+      "tiles_skipped": 0
+    },
+    "100": {
+      "mean": 0.5912079010300918,
+      "std": 0.07649993931694354,
+      "vs_zero_shot": 0.03264617199432604,
+      "n_folds": 48,
+      "tiles_skipped": 0
+    },
+    "200": {
+      "mean": 0.6029431392148757,
+      "std": 0.07655945490676411,
+      "vs_zero_shot": 0.04438141017910994,
+      "n_folds": 48,
+      "tiles_skipped": 0
+    }
+  },
+  "note": "support drawn only from tiles >= MIN_TILE_GAP tiles from the scored tile; no support pixel is adjacent to any query pixel"
+}
