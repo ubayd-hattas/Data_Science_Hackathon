@@ -89,27 +89,22 @@ every attempt to use the data more carefully won.*
 
 ---
 
-## 5. The numbers
+## 5. The numbers  (final, full data, tuned pipeline)
 
-*(final full-data numbers land when the last run finishes; these are the tuned
-held-out results — expect the final table within ±0.01)*
-
-| how many Amsterdam labels per class | our macro-F1 | starting baseline |
+| Amsterdam labels per age class | our macro-F1 | starting baseline |
 |---:|---:|---:|
-| 0 (zero-shot) | ~0.55 | 0.43 |
-| 5 per class | ~0.61 | 0.42 |
-| 25 per class | ~0.66 | 0.55 |
-| 50 per class | ~0.69 | 0.61 |
-| 100 per class | ~0.70 | 0.64 |
-| 200 per class | ~0.71 | 0.67 |
-| **Madrid, tested on itself** (the ceiling) | **0.63** | — |
+| 0 (zero-shot, with alignment) | 0.58 | 0.43 |
+| 5 per class | 0.62 &plusmn; 0.01 | 0.42 |
+| 25 per class | 0.66 &plusmn; 0.01 | 0.55 |
+| 50 per class | 0.68 &plusmn; 0.01 | 0.61 |
+| 100 per class | 0.70 &plusmn; 0.01 | 0.64 |
+| 200 per class | 0.72 &plusmn; 0.01 | 0.67 |
+| **Madrid, tested on itself** (the ceiling) | **0.66 &plusmn; 0.004** | &mdash; |
 
-**The headline:** with about **100 labelled buildings per class**, our
+**The headline:** by about **100 labelled buildings per age class**, our
 Madrid-trained model does **as well on Amsterdam as a model does on its own home
-city**. The curve climbs fast up to ~50 labels, then flattens — more labels
-barely help after that.
-
----
+city** (0.70 vs 0.66 &mdash; it actually edges ahead). The curve climbs fast up to
+~50 labels, then flattens.
 
 ## 6. The honest limitation to state up front
 

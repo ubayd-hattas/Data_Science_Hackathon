@@ -1,9 +1,9 @@
 setting,macro_F1,std
-Madrid 5x5 CV,0.626,0.0042
-Amsterdam zero-shot (raw),0.4481,
-Amsterdam zero-shot (CORAL),0.5449,
-"Amsterdam few-shot, 5/class",0.614,0.02
-"Amsterdam few-shot, 25/class",0.645,0.009
-"Amsterdam few-shot, 50/class",0.6591,0.0089
-"Amsterdam few-shot, 100/class",0.6795,0.0091
-"Amsterdam few-shot, 200/class",0.6854,0.0078
+Madrid 5x5 CV,0.6638,0.004
+Amsterdam zero-shot (raw),0.3577,
+Amsterdam zero-shot (CORAL),0.5776,
+"Amsterdam few-shot, 5/class",0.6225,0.0111
+"Amsterdam few-shot, 25/class",0.662,0.0123
+"Amsterdam few-shot, 50/class",0.6819,0.0099
+"Amsterdam few-shot, 100/class",0.702,0.0058
+"Amsterdam few-shot, 200/class",0.7174,0.0052
