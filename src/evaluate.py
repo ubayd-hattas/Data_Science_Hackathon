@@ -400,17 +400,24 @@ def few_shot_smoothed_curve(
     seed: int = 42,
     beta_div: float = 50.0,
     beta_floor: float = 0.4,
+    anchor: bool = False,
 ) -> "FewShotResult":
-    """``few_shot_ensemble_curve`` plus anchored spatial smoothing of the output.
+    """``few_shot_ensemble_curve`` plus spatial smoothing of the output field.
 
     After blending the local head with the source prior, the class probabilities
-    are written into a full-grid field, support pixels are overwritten with their
-    true one-hot labels, and ``smoother`` (from
+    are written into a full-grid field and ``smoother`` (from
     :func:`src.adapt.spatial_smoother`) averages each pixel with its geographic
     neighbours before the winner is picked.
 
-    Still leakage-free: the only target labels used are the support set's, which
-    the protocol grants, and they are applied to their own rows.
+    ``anchor``:
+        * ``False`` (default) — support pixels carry the same blended prediction
+          as everyone else. The smoothing never sees a true target label, so it
+          cannot benefit from a support pixel and its adjacent query pixel being
+          the same building (see docs/AMSTERDAM_SPATIAL_ADJACENCY_AUDIT.md:
+          ~80% of support pixels have an immediate query neighbour).
+        * ``True`` — support pixels are overwritten with their true one-hot
+          label before smoothing. Higher score (~+0.006), but part of that gain
+          is adjacency, not generalisation. Kept as an option, not the default.
     """
     Z = transform(X_target) if transform is not None else X_target
     y = np.asarray(y_target)
@@ -430,12 +437,11 @@ def few_shot_smoothed_curve(
             query = np.where(~np.isin(np.arange(len(y)), support))[0]
 
             clf = make_clf().fit(Z[support], y[support])
-            field = np.empty((len(y), len(classes)))
-            field[query] = (beta * clf.predict_proba(Z[query])
-                            + (1 - beta) * prior_proba[query])
-            onehot = np.zeros((len(support), len(classes)))
-            onehot[np.arange(len(support)), np.searchsorted(classes, y[support])] = 1.0
-            field[support] = onehot
+            field = beta * clf.predict_proba(Z) + (1 - beta) * prior_proba
+            if anchor:
+                oh = np.zeros((len(support), len(classes)))
+                oh[np.arange(len(support)), np.searchsorted(classes, y[support])] = 1.0
+                field[support] = oh
 
             pred = classes[smoother(field)[query].argmax(axis=1)]
             scores.append(f1_score(y[query], pred, average="macro", zero_division=0))

@@ -23,7 +23,7 @@ and produces the two required artefacts:
 | Features | temporal statistics per pixel (`src/data.py`); optional change-point and spatial-context blocks |
 | Madrid reference | 5×5 repeated stratified CV, Random Forest |
 | Zero-shot | class-conditional CORAL — iterative per-class alignment of Madrid to Amsterdam via pseudo-labels → Random Forest → predict Amsterdam |
-| Few-shot (per budget) | adaptive-shrinkage ZCA whitening of Amsterdam features (optional PCA) → small Random Forest head → probabilities blended with the CORAL zero-shot model, weight `clip(n/beta_div, beta_floor, 0.95)` toward the local head, then anchored spatial smoothing of the predicted probabilities over each pixel's 4 map-neighbours |
+| Few-shot (per budget) | adaptive-shrinkage ZCA whitening of Amsterdam features (optional PCA) → small Random Forest head → probabilities blended with the CORAL zero-shot model, weight `clip(n/beta_div, beta_floor, 0.95)` toward the local head, then spatial smoothing of the predicted probabilities over each pixel's 8 map-neighbours (no support-label anchoring) |
 
 The pipeline settings (feature set, forest depth, shrinkage and blend
 coefficients, PCA) come from `results/overnight_best.json` when the overnight
@@ -177,7 +177,7 @@ def whitened(n):
 n_trials = 6 if QUICK else 20
 nf = Xa.shape[1]
 
-smoother = spatial_smoother(ams.pixels.to_numpy(dtype=float), k=4)
+smoother = spatial_smoother(ams.pixels.to_numpy(dtype=float), k=8)
 
 curves = {}
 for n in SHOTS:
@@ -249,11 +249,7 @@ query = np.setdiff1d(np.arange(len(ya)), support)
 
 head = make_head().fit(Z[support], ya[support])
 beta = np.clip(n_show/BETA_DIV, BETA_FLOOR, 0.95)
-field = np.empty((len(ya), len(classes)))
-field[query] = beta * head.predict_proba(Z[query]) + (1-beta) * prior_proba[query]
-oh = np.zeros((len(support), len(classes)))
-oh[np.arange(len(support)), np.searchsorted(classes, ya[support])] = 1.0
-field[support] = oh
+field = beta * head.predict_proba(Z) + (1-beta) * prior_proba
 pred = classes[smoother(field)[query].argmax(1)]
 
 cm = confusion_matrix(ya[query], pred, labels=classes).astype(float)
@@ -284,6 +280,14 @@ md("""## 8. Notes for the write-up
   1984 satellite record, so there is no construction event to separate them.
   This is a data limit, consistent with the building-age literature, not a
   pipeline defect.
+- **Spatial-adjacency caveat.** The organiser protocol draws support and query
+  by random per-class sampling. Under it, ~80% of support pixels have an
+  immediate map-neighbour in the query set (measured, see
+  `docs/AMSTERDAM_SPATIAL_ADJACENCY_AUDIT.md`). No rule is broken and query
+  labels are never touched, but part of each few-shot score reflects
+  same-building/same-block proximity rather than pure cross-location
+  generalisation. The spatial smoothing here is prediction-only (no support
+  labels enter the smoothed field) specifically so it does not compound this.
 - Reproduce: `QUICK = False`, run top to bottom. All randomness is seeded.
 """)
 
