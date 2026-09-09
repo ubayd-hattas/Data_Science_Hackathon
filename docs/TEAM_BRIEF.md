@@ -1,5 +1,11 @@
 # Team Brief — what we did, in plain words
 
+
+> **A note on the word "band"**: it has two meanings here. A **spectral band** is
+> one of the 6 colours the satellite measures (Blue, Green, Red, and three
+> infrared). An **age class** is one of the 4 groups we predict (1 oldest ... 4
+> newest). This brief uses "age class" for the second; older docs sometimes say
+> "band" — same thing.
 Share this with the team. It explains the project, the findings, and who can
 present what. No jargon that isn't spelled out.
 
@@ -8,7 +14,7 @@ present what. No jargon that isn't spelled out.
 ## 1. The task, restated simply
 
 > Look at a satellite's view of a small patch of city (30 m × 30 m). Guess how
-> old the buildings on it are — not the exact year, one of **four age bands**.
+> old the buildings on it are — not the exact year, one of **four age classes**.
 
 The catch that makes it a research problem, not a homework exercise:
 
@@ -16,9 +22,9 @@ The catch that makes it a research problem, not a homework exercise:
 - The real goal is a method that works for **any city** with only a tiny amount
   of local checking.
 - So the challenge is: **train on Madrid, then make it work on Amsterdam** with
-  as few Amsterdam examples as possible (5, 25, 50, 100 or 200 per age band).
+  as few Amsterdam examples as possible (5, 25, 50, 100 or 200 per age class).
 
-The score is **macro-F1**: 0 = useless, 1 = perfect, and all four age bands
+The score is **macro-F1**: 0 = useless, 1 = perfect, and all four age classes
 count equally so you can't win by only getting the common ones right.
 
 ---
@@ -73,7 +79,7 @@ fancier model. Simple beat clever every time on this dataset.
 | what we tried | why it seemed sensible | why it failed |
 |---|---|---|
 | A small neural network | the challenge notes suggested one | our features are already easy to separate — nothing for it to learn; it just added noise |
-| Telling the model the bands are ordered (1 near 2, far from 4) | it's true, and won a similar competition | it makes wrong answers *smaller*, but the score only counts right vs wrong |
+| Telling the model the classes are ordered (1 near 2, far from 4) | it's true, and won a similar competition | it makes wrong answers *smaller*, but the score only counts right vs wrong |
 | Correcting for Amsterdam having more old buildings | the imbalance is real | the trick needs the model's confidence to be trustworthy across cities — it isn't, so it made things worse |
 | "Self-training" — let the model label the unlabelled data and learn from that | standard semi-supervised idea | at low label counts the model is ~35% wrong, so it just teaches itself its own mistakes |
 | Gradient boosting instead of Random Forest | usually a bit better on tables | tied in-city, and fell apart with only 5 labels |
@@ -88,17 +94,17 @@ every attempt to use the data more carefully won.*
 *(final full-data numbers land when the last run finishes; these are the tuned
 held-out results — expect the final table within ±0.01)*
 
-| how many Amsterdam labels per band | our macro-F1 | starting baseline |
+| how many Amsterdam labels per class | our macro-F1 | starting baseline |
 |---:|---:|---:|
 | 0 (zero-shot) | ~0.55 | 0.43 |
-| 5 per band | ~0.61 | 0.42 |
-| 25 per band | ~0.66 | 0.55 |
-| 50 per band | ~0.69 | 0.61 |
-| 100 per band | ~0.70 | 0.64 |
-| 200 per band | ~0.71 | 0.67 |
+| 5 per class | ~0.61 | 0.42 |
+| 25 per class | ~0.66 | 0.55 |
+| 50 per class | ~0.69 | 0.61 |
+| 100 per class | ~0.70 | 0.64 |
+| 200 per class | ~0.71 | 0.67 |
 | **Madrid, tested on itself** (the ceiling) | **0.63** | — |
 
-**The headline:** with about **100 labelled buildings per band**, our
+**The headline:** with about **100 labelled buildings per class**, our
 Madrid-trained model does **as well on Amsterdam as a model does on its own home
 city**. The curve climbs fast up to ~50 labels, then flattens — more labels
 barely help after that.
@@ -107,13 +113,13 @@ barely help after that.
 
 ## 6. The honest limitation to state up front
 
-**Age bands 1 and 2 are the hardest and always will be with this data.** Both are
+**Age classes 1 and 2 are the hardest and always will be with this data.** Both are
 buildings from *before 1984*, which is when the satellite record starts. For
 newer buildings we can literally see the construction happen (bare ground →
 building site → finished roof). For pre-1984 buildings there's no such event —
 just a settled surface — so telling "old" from "slightly less old" is genuinely
 close to impossible here. Published research on pre-war buildings says the same
-thing. Most of our remaining errors are bands 1↔2.
+thing. Most of our remaining errors are classes 1↔2.
 
 ---
 
@@ -127,7 +133,7 @@ thing. Most of our remaining errors are bands 1↔2.
 | Few-shot mechanism | member C | untangling features, dialling it by budget, two models voting |
 | Results table + curve | member C or D | read the numbers *with their error bars*; the "flattens at the home-city score" point |
 | What didn't work | member D | the five dead ends, one line each; the "simple beat clever" theme |
-| Limitations + next steps | member D | bands 1↔2 are a data limit; next would be more feature engineering |
+| Limitations + next steps | member D | classes 1↔2 are a data limit; next would be more feature engineering |
 
 Rubric checks that **everyone speaks** and that it's **clear who did what** —
 so split it and say so.
@@ -139,10 +145,10 @@ so split it and say so.
 1. A model trained in one city is *miscalibrated* in another, not stupid —
    its rules are right, its number-ranges are off. A one-step reshape
    ("CORAL") fixes most of that for free.
-2. With ~100 checked buildings per age band, that reshaped model works as well
+2. With ~100 checked buildings per age class, that reshaped model works as well
    in the new city as any model works at home.
 3. The wins all came from **using the data more carefully** (aligning number
    ranges, removing double-counted features, blending two models). Every
    attempt at a fancier model lost.
-4. The oldest two age bands can't be cleanly separated from 30 m satellite data
+4. The oldest two age classes can't be cleanly separated from 30 m satellite data
    — there's no construction event to see — and that's where our errors are.
