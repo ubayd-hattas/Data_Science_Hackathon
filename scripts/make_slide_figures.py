@@ -253,3 +253,52 @@ if __name__ == "__main__":
     perclass()
     scatter()
     print(f"done in {time.time()-t:.0f}s")
+
+
+# ---- 6 · F1 score table (slide 3) --------------------------------
+def score_table():
+    import csv
+    rows = list(csv.reader((ROOT / "results" / "deliverable_table.csv").open()))[1:]
+    d = {r[0]: (float(r[1]), float(r[2]) if r[2] else None) for r in rows}
+
+    def line(label, key, bold=False):
+        m, s = d[key]
+        val = f"{m:.2f}" + (f"  ± {s:.3f}" if s is not None else "")
+        return label, val, bold
+
+    data = [
+        line("Madrid, tested on itself", "Madrid 5x5 CV"),
+        ("", "", False),
+        line("Amsterdam — zero labels", "Amsterdam zero-shot (raw)"),
+        line("Amsterdam — zero labels, lined up", "Amsterdam zero-shot (class-cond CORAL)", True),
+        ("", "", False),
+        line("Amsterdam — 5 labels / class", "Amsterdam few-shot, 5/class"),
+        line("Amsterdam — 25 labels / class", "Amsterdam few-shot, 25/class"),
+        line("Amsterdam — 50 labels / class", "Amsterdam few-shot, 50/class", True),
+        line("Amsterdam — 100 labels / class", "Amsterdam few-shot, 100/class"),
+        line("Amsterdam — 200 labels / class", "Amsterdam few-shot, 200/class"),
+    ]
+
+    fig, ax = plt.subplots(figsize=(6.8, 4.6))
+    ax.axis("off")
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1)
+    n = len(data)
+    top = 0.92
+    ax.text(0.02, 0.985, "Setting", fontsize=11, color=MUT, weight="bold")
+    ax.text(0.98, 0.985, "macro-F1", fontsize=11, color=MUT, weight="bold", ha="right")
+    ax.plot([0.02, 0.98], [0.955, 0.955], color=INK, lw=1.8)
+    for i, (label, val, bold) in enumerate(data):
+        y = top - i * (top / n)
+        if not label:
+            ax.plot([0.02, 0.98], [y + 0.015, y + 0.015], color=RULE, lw=0.8)
+            continue
+        w = "bold" if bold else "normal"
+        col = AMS if bold else INK
+        ax.text(0.02, y, label, fontsize=11, color=INK, weight=w, va="center")
+        ax.text(0.98, y, val, fontsize=11, color=col, weight=w, ha="right", va="center",
+                family="DejaVu Sans Mono")
+    ax.plot([0.02, 0.98], [top - n * (top / n) + 0.02, top - n * (top / n) + 0.02],
+            color=INK, lw=1.8)
+    ax.text(0.02, -0.03, "± = 1 SD over folds / 20 resamples · baseline (provided notebook): 0.42 → 0.67",
+            fontsize=8.5, color=MUT)
+    save(fig, "fig_slide3_table.png")
