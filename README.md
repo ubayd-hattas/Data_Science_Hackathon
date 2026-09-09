@@ -30,6 +30,8 @@ transfer a Madrid-trained model to Amsterdam with few labels.
 └── requirements.txt
 ```
 
+**Full project summary: [docs/FINAL_SUMMARY.md](docs/FINAL_SUMMARY.md).**
+
 New to the project? Start with [docs/PROJECT_GUIDE.md](docs/PROJECT_GUIDE.md) — it explains
 every notebook, the data, and the modelling approach in simple terms. Then read
 [docs/MASTERCLASS.md](docs/MASTERCLASS.md) for the technical deep dive and how each stage
