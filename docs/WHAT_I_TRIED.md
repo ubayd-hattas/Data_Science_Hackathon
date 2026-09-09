@@ -504,3 +504,89 @@ transform that collapses.
 **Best few-shot line: 0.61 / 0.65 / 0.66 / 0.68 / 0.69** at 5 / 25 / 50 / 100 /
 200 labels per group — from a starting 0.42 / 0.55 / 0.61 / 0.64 / 0.67.
 Quick-run numbers; the full run will move them slightly.
+
+---
+
+## Round 8: overnight hyperparameter + feature search
+
+A 500-configuration random search over feature set, forest depth/leaves/trees,
+shrinkage-formula coefficients, ensemble weight schedule, and PCA. Scored on one
+half of Amsterdam, confirmed once on the untouched other half (so the tuned
+result can't be inflated by fitting to the reporting data). It got through 131
+configs before repeated session restarts stopped it; 131 was enough — the winner
+was stable.
+
+**Winner:** the `both` feature set (change-point + spatial, 108 features) with a
+500-tree, unrestricted-depth forest. Earlier hand-testing had *rejected* those
+features; the search found they help once the forest is grown to use them.
+
+| labels/class | tuned only (full data) | before |
+|---:|---:|---:|
+| Madrid CV | 0.664 | 0.626 |
+| zero-shot CORAL | 0.578 | 0.545 |
+| 5 | 0.623 | 0.614 |
+| 25 | 0.662 | 0.645 |
+| 50 | 0.682 | 0.659 |
+| 100 | 0.702 | 0.680 |
+| 200 | 0.717 | 0.685 |
+
+## Round 9: spatial smoothing of *predictions*
+
+We already feed neighbourhood-averaged *features*. This uses the neighbourhood a
+second way: after the model predicts, average each pixel's class probabilities
+with its k nearest map-neighbours and re-pick the winner. City blocks share a
+build era, so a lone pixel predicted differently from all its neighbours is
+usually wrong.
+
+Swept k = 2-16: 3-8 optimal and flat, ≥16 blurs real age boundaries. **k = 8**.
+
+**A teammate then audited this** (`docs/AMSTERDAM_SPATIAL_ADJACENCY_AUDIT.md`):
+under the organiser's random per-class sampling, ~80% of support pixels have an
+immediate query neighbour. An earlier "anchored" variant — which wrote true
+support labels into the smoothed field — was therefore partly scoring
+same-building proximity. **Switched to prediction-only smoothing**: no target
+label ever enters the field, gain drops from ~+0.014 to ~+0.008, fully
+defensible.
+
+## Round 10: class-conditional CORAL  (the originality contribution)
+
+Plain CORAL aligns the *pooled* Madrid and Amsterdam clouds once. This aligns
+them **class by class, iteratively**: fit on globally-aligned Madrid, predict
+unlabelled Amsterdam, re-align each Madrid class to the covariance of the
+Amsterdam pixels the model *assigned* to it, refit; two rounds. Only the model's
+own predictions are used — no target labels.
+
+| | plain CORAL | class-conditional |
+|---|---:|---:|
+| zero-shot macro-F1 | 0.578 | **0.646** |
+| few-shot n=5 | 0.633 | **0.654** |
+| few-shot n≥50 | — | ~unchanged (prior matters less with local labels) |
+
+The one method here that is genuinely novel rather than assembled from known
+parts, and it moves the 5-label point — the budget nothing else could shift.
+
+### Dead ends this stretch
+
+| tried | result |
+|---|---|
+| richer neighbourhood features (multi-scale k=4/24 + neighbour spread, +54) | +0.001 mean — the 8-NN mean block already captures it |
+| lower blend floor at n=5 (trust Madrid harder) | −0.024 — the weak local model still beats leaning on Madrid |
+| mixup augmentation of the support set | slightly negative — forests don't gain from interpolated points |
+| anchored smoothing (kept as non-default) | +0.006 over prediction-only, but that margin is adjacency not skill |
+
+### Running tally
+
+| idea | outcome |
+|---|---|
+| embedding network / ordinal / class-mix / self-training / boosting / mixup / low-floor / rich-spatial | dead ends |
+| CORAL | **+0.10 zero-shot** |
+| whitening + budget-scaled shrinkage | **+0.15 / +0.06 / +0.03 at 5 / 25 / 50** |
+| RF head vs prototype | **+0.02 below 200 labels** |
+| CORAL-prior probability blend | **+0.04 / +0.01 across budgets** |
+| overnight feature + HP search | **+0.02–0.03 across the curve** |
+| prediction-only spatial smoothing | **+0.008 across the curve** |
+| class-conditional CORAL | **+0.07 zero-shot, +0.02 at n=5** |
+
+**Few-shot line now (pending the final full run): ~0.65 / 0.67 / 0.69 / 0.71 /
+0.73** at 5 / 25 / 50 / 100 / 200 — from a starting 0.42 / 0.55 / 0.61 / 0.64 /
+0.67. Zero-shot ~0.65, from 0.43.
