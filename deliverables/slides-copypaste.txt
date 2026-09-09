@@ -1,0 +1,66 @@
+SLIDE 1
+A model trained in Madrid, moved to Amsterdam
+
+- Four building-age classes per 30 m satellite patch; scored on macro-F1
+- The same Madrid model: 0.66 on Madrid, 0.43 on Amsterdam
+- Amsterdam looks different, and its mix of building ages is different
+- (abstract, 149 words, in a box) + team names
+
+------------------------------------------------------------
+
+SLIDE 2
+The fix: line the cities up first
+
+- Reshape Madrid's data to match Amsterdam, one age class at a time
+- Uses the model's own first guesses; no Amsterdam labels; repeat twice
+- With zero labels: 0.36 to 0.65
+- Only the labels we're given ever touch the model
+
+(picture: pipeline diagram + before/after scatter - two clouds apart, then overlapping)
+
+------------------------------------------------------------
+
+SLIDE 3
+Then small, measured gains
+
+- Untangle the features, gently when data is thin: +0.15 at 5 labels per class
+- A local model and the Madrid model vote together
+- Neighbouring patches vote; a 500-setup search on a held-out half
+- A few labels is not the full pipeline with less data - it is a different recipe
+
+(chart: ascending step-chart - baseline, each gain stacked, final score)
+
+------------------------------------------------------------
+
+SLIDE 4
+What did not work, and what we will not claim
+
+- A neural network, ordinal training, self-training, gradient boosting - all lost to simpler fixes
+- Classes 1 and 2 (both pre-1984) cannot be separated - a limit of the data
+- About 80% of our examples sit next to a test patch - we state it openly
+
+(chart: four bars, score per age class - classes 3 and 4 tall, classes 1 and 2 short)
+
+------------------------------------------------------------
+
+SLIDE 5
+Result: about 50 labels reach the in-city ceiling
+
+- Amsterdam: 0.66 / 0.68 / 0.70 / 0.72 / 0.74 at 5 / 25 / 50 / 100 / 200 labels per class
+- Madrid tested on itself: 0.66; provided-notebook baseline: 0.42 to 0.67
+- Steep improvement to about 50 labels, then it flattens - right at the Madrid line
+
+(table + plot, both required: F1-vs-labels curve with error bars and a dashed Madrid
+line, large; the table of Madrid + five Amsterdam scores with mean and SD, small beside it)
+
+------------------------------------------------------------
+
+SLIDE 6
+Conclusion: it is a calibration problem, not a hard one
+
+- A new-city model is mis-tuned, not incapable
+- About 50 labels per class buy home-city accuracy
+- Careful use of the data beat every fancier model
+- New here: group-by-group alignment, and that few vs many labels need different pipelines
+
+(small, at the bottom: <A> features - <B> alignment - <C> evaluation - <D> analysis)
