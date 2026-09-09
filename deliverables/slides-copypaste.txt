@@ -33,15 +33,22 @@ boosting.
 SLIDE 2   WHAT WE DID  -  AND WHY
 ============================================================
 Line the cities up first - the model does the rest
+(sub: fix the calibration, not the model - no Amsterdam labels for the big jump)
 
-- Line the two cities up, one age class at a time  ->  it was mis-tuned, not wrong
-- Untangle the features, gently when data is thin  ->  few labels can't support a full one
-- Blend a local model with the Madrid one  ->  trust Madrid while local data is thin
-- Neighbouring patches vote; a 500-setup search picked the features and settings
-- Only the labels we're given ever touch the model; few-shot is a different recipe, not a smaller one
+01 · Line the cities up, one age group at a time   [our idea]
+     -> the model's rules are fine; its number-ranges are off
+02 · Untangle the features - gently when labels are thin
+     -> many of the 108 double-count; the maths needs enough examples to be stable
+03 · Blend a small local model with the Madrid one
+     -> trust Madrid while labels are few, trust local as they grow
+04 · Only the labels we're given ever touch the model
+     -> everything else uses unlabelled data only - the rule we never break
 
-FIGURE: fig_slide2_pipeline.png  (Madrid RF -> line-up x2 -> predict, 0.36 -> 0.65)
-LAYOUT: centred pipeline graphic, bullets in a column on the left
+FIGURE: fig_slide2_pipeline.png (Madrid -> line-up x2 -> predict, 0.36 -> 0.65)
+   + fig_slide2_scatter.png (before: cities apart -> after the line-up: they overlap)
+LAYOUT: pipeline full-width across the top; 01-04 as a 2x2 on the left half;
+before/after scatter filling the right half
+SPOKEN aside (not on slide): neighbour smoothing +0.02; a 500-setting search picked features/params
 
 ============================================================
 SLIDE 3   RESULTS

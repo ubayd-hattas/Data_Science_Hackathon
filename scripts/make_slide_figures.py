@@ -343,8 +343,11 @@ if __name__ == "__main__":
     curve()
     perclass()
     scatter()
+    scatter_single()
+    scatter_before_after()
     score_table()
     didnt_work()
+    spatial_audit()
     print(f"done in {time.time()-t:.0f}s")
 
 
@@ -445,3 +448,65 @@ def scatter_single():
             "108 standardized features → 2-D · contours = density, X = centre of each city",
             transform=ax.transAxes, ha="center", fontsize=8.8, color=MUT)
     save(fig, "fig_slide1_scatter.png")
+
+
+# ---- 2b · before / after the line-up (slide 2) ----------------------
+def scatter_before_after():
+    """fig_slide2_scatter.png - two panels sharing one projection so Madrid's
+    cloud is seen to *move* onto Amsterdam after the line-up. z-scored 108
+    features -> PCA (fit on the raw combined data, reused for both panels);
+    per-city density contours + centroid X, matching the slide-1 style."""
+    from sklearn.decomposition import PCA
+    from sklearn.preprocessing import StandardScaler
+    from scipy.stats import gaussian_kde
+    from src.data import build_city
+    from src.adapt import make_coral
+
+    fb = dict(changepoint=True, spatial=True)
+    m = build_city(str(ROOT / "data" / "madrid_train.parquet"), **fb)
+    a = build_city(str(ROOT / "data" / "amsterdam_data.parquet"), **fb)
+    rng = np.random.default_rng(0)
+    mi = rng.choice(len(m.X), 3500, replace=False)
+    ai = rng.choice(len(a.X), 3500, replace=False)
+    Xm, Xa = m.X[mi], a.X[ai]
+
+    coral = make_coral(m.X, a.X)          # fitted on the two unlabelled clouds
+    Xm_aligned = coral(Xm)
+
+    sc = StandardScaler().fit(np.vstack([Xm, Xa]))
+    pca = PCA(n_components=2, random_state=0).fit(sc.transform(np.vstack([Xm, Xa])))
+    proj = lambda X: pca.transform(sc.transform(X))
+    pm_raw, pa, pm_al = proj(Xm), proj(Xa), proj(Xm_aligned)
+
+    allpts = np.vstack([pm_raw, pa, pm_al])
+    lo = np.percentile(allpts, 1, axis=0)
+    hi = np.percentile(allpts, 99, axis=0)
+    xx, yy = np.mgrid[lo[0]:hi[0]:110j, lo[1]:hi[1]:110j]
+    grid = np.vstack([xx.ravel(), yy.ravel()])
+
+    def panel(ax, pm, title):
+        ax.set_xlim(lo[0], hi[0]); ax.set_ylim(lo[1], hi[1])
+        for pts, col in ((pm, MADRID), (pa, AMS)):
+            ax.scatter(pts[:, 0], pts[:, 1], s=5, c=col, alpha=0.10, linewidths=0)
+            d = gaussian_kde(pts.T)(grid).reshape(xx.shape)
+            ax.contour(xx, yy, d, levels=4, colors=col, linewidths=1.3, alpha=0.9)
+            c = pts.mean(axis=0)
+            ax.plot(c[0], c[1], "X", ms=13, mfc=col, mec="white", mew=2)
+        ax.set_xticks([]); ax.set_yticks([])
+        for s in ax.spines.values():
+            s.set_edgecolor(RULE)
+        ax.set_title(title, fontsize=12, color=INK, pad=8)
+
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4.7))
+    panel(axes[0], pm_raw, "Before  ·  the cities sit apart")
+    panel(axes[1], pm_al, "After the line-up  ·  they overlap")
+    axes[1].plot([], [], "X", ms=11, mfc=MADRID, mec="white", mew=1.6, label="Madrid")
+    axes[1].plot([], [], "X", ms=11, mfc=AMS, mec="white", mew=1.6, label="Amsterdam")
+    leg = axes[1].legend(loc="upper right", frameon=False, fontsize=10, handletextpad=0.3)
+    for t, col in zip(leg.get_texts(), (MADRID, AMS)):
+        t.set_color(col); t.set_fontweight("bold")
+    fig.text(0.5, -0.01,
+             "108 standardized features → 2-D, one shared projection · "
+             "contours = density, X = centre of each city",
+             ha="center", fontsize=8.8, color=MUT)
+    save(fig, "fig_slide2_scatter.png")
