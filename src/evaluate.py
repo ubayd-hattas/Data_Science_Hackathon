@@ -350,6 +350,8 @@ def few_shot_ensemble_curve(
     n_trials: int = 10,
     transform: "Transform | None" = None,
     seed: int = 42,
+    beta_div: float = 50.0,
+    beta_floor: float = 0.4,
 ) -> "FewShotResult":
     """Blend a few-shot head's probabilities with a fixed source-model prior.
 
@@ -357,9 +359,9 @@ def few_shot_ensemble_curve(
     a Madrid-trained model (e.g. a CORAL-aligned Random Forest) evaluated on the
     whole target once. Each trial fits ``make_clf()`` on the whitened support set
     and combines: ``beta * head + (1 - beta) * prior``, with
-    ``beta = clip(shots / 50, 0.4, 0.95)`` so the local head takes over as labels
-    accumulate. Leakage-safe: the prior uses no target labels, the head only the
-    support set.
+    ``beta = clip(shots / beta_div, beta_floor, 0.95)`` so the local head takes
+    over as labels accumulate. Leakage-safe: the prior uses no target labels, the
+    head only the support set.
     """
     Z = transform(X_target) if transform is not None else X_target
     y = np.asarray(y_target)
@@ -368,7 +370,7 @@ def few_shot_ensemble_curve(
     out = FewShotResult(tuple(shots))
 
     for n in shots:
-        beta = float(np.clip(n / 50.0, 0.4, 0.95))
+        beta = float(np.clip(n / beta_div, beta_floor, 0.95))
         scores = []
         for _ in range(n_trials):
             support = []
