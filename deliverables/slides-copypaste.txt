@@ -45,9 +45,11 @@ Line the cities up first - the model does the rest
      -> everything else uses unlabelled data only - the rule we never break
 
 FIGURE: fig_slide2_pipeline.png (Madrid -> line-up x2 -> predict, 0.36 -> 0.65)
-   + fig_slide2_scatter.png (before: cities apart -> after the line-up: they overlap)
+   + fig_slide2_scatter.png (single "after the line-up" panel - Madrid's cloud now
+     sits on Amsterdam's; slide 1 already showed them apart)
+   (alt_slide2_scatter_2panel.png = before+after together, if you'd rather show both)
 LAYOUT: pipeline full-width across the top; 01-04 as a 2x2 on the left half;
-before/after scatter filling the right half
+the "after" scatter filling the right half
 SPOKEN aside (not on slide): neighbour smoothing +0.02; a 500-setting search picked features/params
 
 ============================================================

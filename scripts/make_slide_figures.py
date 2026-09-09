@@ -344,6 +344,7 @@ if __name__ == "__main__":
     perclass()
     scatter()
     scatter_single()
+    scatter_after()
     scatter_before_after()
     score_table()
     didnt_work()
@@ -509,4 +510,54 @@ def scatter_before_after():
              "108 standardized features → 2-D, one shared projection · "
              "contours = density, X = centre of each city",
              ha="center", fontsize=8.8, color=MUT)
+    save(fig, "alt_slide2_scatter_2panel.png")
+
+
+# ---- 2c · single "after the line-up" panel (slide 2, less clutter) ---
+def scatter_after():
+    """fig_slide2_scatter.png as ONE panel: the clouds after the line-up.
+    Slide 1 already showed them apart; this is just the payoff. Same shared
+    projection as scatter_before_after so the two stay consistent if swapped."""
+    from sklearn.decomposition import PCA
+    from sklearn.preprocessing import StandardScaler
+    from scipy.stats import gaussian_kde
+    from src.data import build_city
+    from src.adapt import make_coral
+
+    fb = dict(changepoint=True, spatial=True)
+    m = build_city(str(ROOT / "data" / "madrid_train.parquet"), **fb)
+    a = build_city(str(ROOT / "data" / "amsterdam_data.parquet"), **fb)
+    rng = np.random.default_rng(0)
+    Xm, Xa = m.X[rng.choice(len(m.X), 3500, replace=False)], a.X[rng.choice(len(a.X), 3500, replace=False)]
+    Xm_al = make_coral(m.X, a.X)(Xm)
+
+    sc = StandardScaler().fit(np.vstack([Xm, Xa]))
+    pca = PCA(n_components=2, random_state=0).fit(sc.transform(np.vstack([Xm, Xa])))
+    proj = lambda X: pca.transform(sc.transform(X))
+    pa, pm = proj(Xa), proj(Xm_al)
+
+    allp = np.vstack([pa, pm])
+    lo, hi = np.percentile(allp, 1, axis=0), np.percentile(allp, 99, axis=0)
+    xx, yy = np.mgrid[lo[0]:hi[0]:120j, lo[1]:hi[1]:120j]
+    grid = np.vstack([xx.ravel(), yy.ravel()])
+
+    fig, ax = plt.subplots(figsize=(7.2, 5.6))
+    ax.set_xlim(lo[0], hi[0]); ax.set_ylim(lo[1], hi[1])
+    for pts, col, lab in ((pm, MADRID, "Madrid (lined up)"), (pa, AMS, "Amsterdam")):
+        ax.scatter(pts[:, 0], pts[:, 1], s=6, c=col, alpha=0.11, linewidths=0)
+        d = gaussian_kde(pts.T)(grid).reshape(xx.shape)
+        ax.contour(xx, yy, d, levels=4, colors=col, linewidths=1.4, alpha=0.9)
+        c = pts.mean(axis=0)
+        ax.plot(c[0], c[1], "X", ms=15, mfc=col, mec="white", mew=2, label=lab)
+    leg = ax.legend(loc="upper right", frameon=False, fontsize=11, handletextpad=0.3)
+    for t, col in zip(leg.get_texts(), (MADRID, AMS)):
+        t.set_color(col); t.set_fontweight("bold")
+    ax.set_xticks([]); ax.set_yticks([])
+    for s in ax.spines.values():
+        s.set_edgecolor(RULE)
+    ax.set_title("After the line-up — Madrid now sits on Amsterdam",
+                 fontsize=12.5, color=INK, pad=12)
+    ax.text(0.5, -0.05,
+            "same features as slide 1, where the two clouds sat apart · X = centre of each city",
+            transform=ax.transAxes, ha="center", fontsize=8.8, color=MUT)
     save(fig, "fig_slide2_scatter.png")
