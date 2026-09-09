@@ -346,3 +346,52 @@ if __name__ == "__main__":
     score_table()
     didnt_work()
     print(f"done in {time.time()-t:.0f}s")
+
+
+# ---- 8 · spatial-block audit (slide 5) --------------------------------
+def spatial_audit():
+    import csv
+    import json
+    budgets = [25, 50, 100, 200]
+    zs = 0.6513                                   # zero-shot class-cond CORAL, whole city
+    tbl = {r[0]: float(r[1]) for r in
+           csv.reader((ROOT / "results" / "deliverable_table.csv").open())
+           if r and r[0].startswith("Amsterdam few-shot")}
+    rnd = [tbl[f"Amsterdam few-shot, {n}/class"] - zs for n in budgets]
+    g2 = json.loads((ROOT / "results" / "spatial_block_eval_gap2.json").read_text())["per_budget"]
+    spat = [g2[str(n)]["vs_zero_shot"] for n in budgets]
+    se = [g2[str(n)]["std"] / (g2[str(n)]["n_folds"] ** 0.5) for n in budgets]
+
+    x = np.arange(len(budgets))
+    nl = chr(10)
+    fig, ax = plt.subplots(figsize=(8.4, 5.0))
+    ax.axhline(0, color=MUT, lw=1, ls=(0, (4, 3)))
+    ax.text(x[-1] + 0.06, 0, "  zero-shot" + nl + "  (no local labels)", va="center",
+            fontsize=10, color=MUT)
+
+    ax.plot(x, rnd, "o-", color=ACC, lw=2.4, ms=7, label="random split  (our deliverable)")
+    ax.plot(x, spat, "s-", color=MADRID, lw=2.4, ms=6,
+            label="labels held a map-tile away")
+    ax.fill_between(x, np.array(spat) - np.array(se), np.array(spat) + np.array(se),
+                    color=MADRID, alpha=0.15, lw=0)
+
+    for xi, yv in zip(x, rnd):
+        ax.annotate(f"+{yv:.2f}", (xi, yv), textcoords="offset points", xytext=(0, 9),
+                    ha="center", fontsize=10, color=ACC, weight="bold")
+    ax.text(1.5, 0.030, "the gap between the lines" + nl + "is proximity, not the labels",
+            fontsize=10.5, color=INK, ha="center", style="italic")
+
+    ax.set_xticks(x); ax.set_xticklabels(budgets)
+    ax.set_xlabel("labelled Amsterdam pixels per class")
+    ax.set_ylabel("macro-F1 gained from the local labels")
+    ax.set_xlim(-0.3, len(budgets) - 0.15 + 0.9)
+    ax.set_title("How much of the few-shot gain is real?", fontsize=13, color=INK, pad=10)
+    ax.legend(loc="upper left", frameon=False, fontsize=10)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.text(0, -0.235,
+            "Same pipeline, same budgets. Support pixels drawn only from map tiles a full "
+            "tile from" + nl + "the scored area, so none sit next to a scored pixel. "
+            "Per-tile macro-F1 is noisy (band = SE).",
+            transform=ax.get_xaxis_transform(), fontsize=8.5, color=MUT)
+    save(fig, "fig_slide5_spatial.png")

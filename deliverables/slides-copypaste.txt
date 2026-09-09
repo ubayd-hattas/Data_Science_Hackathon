@@ -40,6 +40,8 @@ About 50 labels per class reach the in-city ceiling
 FIGURE: fig_slide3_curve.png  (F1 vs labels/class, error bars, dashed Madrid line) - LARGE
 plus a 3-row table beside it (both are required deliverables, both with error bars)
 LAYOUT: chart two-thirds left, table one-third right
+NOTE (spoken, not on slide): a spatial-block re-run (slide 5) shows much of the
+few-shot lift is support/query proximity; the zero-shot 0.65 is unaffected.
 
 ============================================================
 SLIDE 4   WHAT DIDN'T WORK
@@ -58,15 +60,17 @@ LAYOUT: figure fills the slide; heading above it, generous whitespace
 ============================================================
 SLIDE 5   WHAT WE AUDITED
 ============================================================
-We checked our own evaluation and our error pattern
+We stress-tested our own few-shot result
 
-- ~80% of our labelled examples sit next to a test patch - measured twice; we disclose it
-- No rule broken (test answers never used); the neighbour smoothing is prediction-only so it can't compound it
-- Error analysis: class 1 (pre-1945) is our strongest class (~0.78); classes 2-4 cluster near 0.7
-- We corrected an earlier assumption - there is no single unsolvable class pair
+- ~80% of support pixels touch a test patch - measured twice
+- We re-ran few-shot with the labels held a full map-tile from the scored area
+- About half the few-shot gain was proximity, not the labels
+- Zero-shot transfer (0.36 -> 0.65) uses no labels, so it is unaffected - that is the solid result
+- No rule broken: the organiser's split is random; we just measured what it costs
 
-FIGURE: fig_slide5_perclass.png  (per-class F1, 15 draws, error bars)  or  alt_slide5_confusion_from_notebook.png
+FIGURE: fig_slide5_spatial.png  (gain over zero-shot: random split vs labels held a tile away)
 LAYOUT: left text / right chart
+ALT figures if asked: fig_slide5_perclass.png (per-class F1) · alt_slide5_confusion_from_notebook.png
 
 ============================================================
 SLIDE 6   SUMMARY
