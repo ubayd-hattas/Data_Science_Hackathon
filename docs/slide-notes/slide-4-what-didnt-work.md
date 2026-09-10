@@ -148,6 +148,20 @@ five labels. The pattern: clever lost to careful, every time."* ~15 seconds.
 - **"What about the age-mix correction — can't you fix the confidence issue?"**
   Possibly with calibration, but the city gap itself distorts calibration — it's
   the same underlying problem we're already solving with the line-up.
+- **"Did any of these help even a little, at some budget?"** Anchoring the
+  smoothing to true labels gave +0.006, but that gain turned out to be the same
+  spatial-adjacency effect slide 5 measures directly — not real skill — so we
+  dropped it even though the number looked good.
+- **"Why not ensemble the neural net with the random forest instead of dropping
+  it?"** If a model has nothing to learn, blending it in mostly adds noise and
+  variance, not signal — we tested this and it didn't help.
+- **"Could self-training work with a stricter confidence threshold?"** Possibly,
+  but at 5 labels per class the model's confidence itself isn't yet reliable
+  enough to threshold safely — the errors that get through are still highly
+  correlated with the errors it's already making.
+- **"Why show five failures instead of your two best-explained ones?"** Breadth
+  matters here — the rubric rewards showing the range of reasonable ideas tried,
+  not just the cleanest story.
 
 ## 11. Common mistakes presenting this slide
 

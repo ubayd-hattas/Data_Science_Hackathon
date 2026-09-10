@@ -129,6 +129,18 @@ next."* ~15 seconds.
 - **"What's in the 108 numbers?"** Averages and wobble per colour, the size and
   timing of the biggest year-to-year jump (that's the construction event), and
   the same stats averaged over the 8 nearest patches.
+- **"Is 30 m resolution enough to see one building?"** Not always — a 30 m
+  pixel can straddle several small buildings or sit inside one large one.
+  That's part of why we score whole patches, not individual buildings.
+- **"What if a building was renovated later — does that confuse the model?"**
+  It can look like a smaller version of a construction event. We don't
+  specifically separate renovation from original construction; it's a source of
+  noise we haven't tried to remove.
+- **"How many patches are in each city?"** Tens of thousands per city — enough
+  for the plot to show real density, not just a handful of dots.
+- **"Could this method work on a city with no labels at all?"** That's exactly
+  the zero-shot case on slide 2 — Amsterdam gets the full pipeline with zero
+  labels, using only the line-up.
 
 ## 11. Common mistakes presenting this slide
 

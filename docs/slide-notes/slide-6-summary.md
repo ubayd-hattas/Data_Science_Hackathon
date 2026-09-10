@@ -140,6 +140,20 @@ cheapest point on the whole rubric and costs five seconds.
   next. The mechanism — align, then add labels — isn't Madrid-specific.
 - **"If you had one more week?"** Spatial-block-disjoint evaluation as the
   default, and a third city.
+- **"What's the biggest risk or weakness in this method?"** That the ~80%
+  adjacency effect might be larger in a real deployment than in this dataset —
+  we've quantified it here, but a genuinely new city with no nearby labelled
+  neighbourhoods at all is the untested edge case.
+- **"How would you actually deploy this?"** Run the zero-shot line-up first for
+  full city-wide coverage, then spend any labelling budget on a spatially
+  spread-out sample rather than a convenient cluster — that's the direct
+  practical lesson from slide 5.
+- **"What was the hardest part of the project?"** Probably deciding when a
+  result was real versus an artefact of how the data was sampled — that's what
+  led to the spatial-block audit in the first place.
+- **"Which of your results are you most confident will hold up under scrutiny?"**
+  The zero-shot 0.36 → 0.65 number — it uses no labels at all, so there's no
+  sampling quirk that could be inflating it.
 
 ## 11. Common mistakes presenting this slide
 

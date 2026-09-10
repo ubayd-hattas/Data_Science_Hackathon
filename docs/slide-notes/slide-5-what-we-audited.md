@@ -162,6 +162,18 @@ it's cheap (one sentence) and it's a correction you should own out loud.
 - **"What changed about classes 1 and 2?"** The rough baseline model couldn't
   separate the two oldest bands. Our final pipeline, with the construction-timing
   features and the line-up, does. Class 1 is now our strongest.
+- **"How did you decide how far 'held away' should be?"** We split the map into
+  a grid of tiles and only let the labelled patches come from tiles at least two
+  tiles away from anything we score — enough that they can't be neighbours.
+- **"Does this mean the model doesn't really generalise?"** No — the zero-shot
+  result (no labels at all) shows it does generalise; what's inflated is
+  specifically the *extra* boost from adding a handful of nearby labels on top.
+- **"Should the organisers change how they evaluate this challenge?"** That's
+  their call, but it's exactly why we suggest spatial-block-disjoint evaluation
+  as a "next step" on the final slide — for us and for future teams.
+- **"Why only check 50, 100, and 200 labels, not all five budgets?"** Time and
+  compute — those three show the pattern clearly; the same check at 5 and 25
+  would likely show an even smaller absolute gain to begin with.
 
 ## 11. Common mistakes presenting this slide
 

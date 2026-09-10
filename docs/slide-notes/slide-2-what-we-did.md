@@ -145,6 +145,22 @@ originality credit.
 - **"Does the alignment actually work — can we see it?"** Yes — pull up
   `fig_slide2_scatter.png`: after the line-up, Madrid's cloud sits on top of
   Amsterdam's.
+- **"What if a class has very few Amsterdam patches for the model to guess
+  onto?"** It's less stable for that class specifically — this is the same
+  reason we scale the feature-untangling by label count later. We haven't
+  built a separate fix for a severely rare class beyond what the pipeline
+  already does.
+- **"Why not align using real Amsterdam labels once you have some, instead of
+  guesses?"** We do, for the few-shot stage — the group-by-group step uses
+  guesses because it runs at zero labels; the local model in step two uses
+  whatever real labels we're given.
+- **"How is this different from standard domain adaptation research?"**
+  Standard CORAL aligns the whole dataset once. Doing it per age class, driven
+  by the model's own iterated predictions, is the part that isn't off-the-shelf.
+- **"Could you align Amsterdam onto Madrid instead of Madrid onto Amsterdam?"**
+  We tried the direction we use because it lets us keep training on Madrid's
+  real labels throughout; aligning the other way would need retraining on
+  reshaped labels, which is messier and untested here.
 
 ## 11. Common mistakes presenting this slide
 

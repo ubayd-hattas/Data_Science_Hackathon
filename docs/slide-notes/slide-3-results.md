@@ -143,6 +143,19 @@ the shape. Never cut the closing bridge line to slide 5 — losing it makes slid
   nothing — not enough to learn much beyond what the line-up already gave you.
 - **"± is a confidence interval?"** No — it's the spread over repeated random
   draws of the labelled set. It tells you how much the number wobbles run to run.
+- **"Did you try more than 200 labels — does it keep climbing?"** Not beyond
+  200; that's the top of the challenge's required budgets. We'd expect
+  diminishing returns eventually, but we haven't measured where.
+- **"Is comparing to Madrid's own CV score fair, given it's a different
+  city?"** It's a reference line, not a strict apples-to-apples comparison —
+  it answers "how close to as-good-as-home are we," not "are the two cities
+  identical."
+- **"What causes the wobble in the error bars?"** Which specific patches get
+  drawn into the labelled set changes slightly each run; the ± shows how much
+  that randomness moves the final score.
+- **"Why report five budgets instead of one?"** The challenge specifically asks
+  for the trend across sample sizes, not a single score — that's what the whole
+  curve is for.
 
 ## 11. Common mistakes presenting this slide
 
