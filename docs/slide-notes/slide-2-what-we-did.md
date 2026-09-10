@@ -74,7 +74,7 @@ labels, we add a small local model that votes alongside the Madrid one.
 | number | meaning |
 |---|---|
 | 0.36 → 0.65 | Amsterdam macro-F1 with **no labels**, before vs after the line-up |
-| ×2 | rounds of the group-by-group line-up (we tested 1–4; 2 was best) |
+| ×2 | rounds of the group-by-group line-up (2 vs 4 tested; 4 gave no gain, see §10) |
 
 ## 5. Bullets for the slide (left column, not expanded — the diagram carries the detail)
 
@@ -137,8 +137,10 @@ originality credit.
 - **"What's this technique called?"** CORAL — matching the spread and
   correlations of one dataset to another. Standard trick; we made it work per
   age group, driven by pseudo-labels.
-- **"Why two rounds?"** We swept 1 to 4. Two was the sweet spot; more started to
-  drift.
+- **"Why two rounds?"** We compared 2 vs 4 rounds directly (`results/polish_scores.json`):
+  4 rounds gave the same score from 50 labels up and was a touch worse at 5 and
+  25. No benefit to going further, so we kept 2. (We have not tested 1 or 3 —
+  don't claim a full sweep if asked precisely.)
 - **"How can untangling features hurt at low data?"** It estimates relationships
   between features from your examples. With 5 examples per class those estimates
   are garbage, so it adds noise. With 50+ they're solid and it pays off.
