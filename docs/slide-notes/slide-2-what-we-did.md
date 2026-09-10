@@ -1,12 +1,30 @@
 # Slide 2 — Line the cities up first, the model does the rest
 
-**Speaker:** B · **Time:** 2:00 · **Figures:** `fig_slide2_pipeline.png` (top, full width)
-+ `fig_slide2_scatter.png` (right half) — the "after the line-up" panel: Madrid's cloud
-now sits on Amsterdam's, the two centres on top of each other. Slide 1 already showed
-them apart, so this is just the payoff. (`alt_slide2_scatter_2panel.png` shows before +
-after together if you'd rather not rely on the audience remembering slide 1.)
+**Speaker:** B · **Time:** 2:00 · **Figure:** `fig_slide2_pipeline.png` (right side, the only figure on this slide)
+**Subheading:** Fix the calibration, not the model — no Amsterdam labels for the big jump
 
 ---
+
+## 0. Layout
+
+```
+┌────────────────────────────────────────────────┐
+│  TITLE (the claim)                             │
+│  subheading                                    │
+├──────────────────────────┬─────────────────────┤
+│  • bullet (not expanded)  │                     │
+│  • bullet (not expanded)  │  fig_slide2_pipeline│
+│  • bullet (not expanded)  │  .png               │
+│  • bullet (not expanded)  │                     │
+└──────────────────────────┴─────────────────────┘
+```
+
+Bullets left, **pipeline diagram only** on the right — it already shows the
+method (Madrid features → line up ×2 → predict, 0.36→0.65, "no Amsterdam
+labels used"), so the bullets don't need to repeat it; they cover what the
+diagram *doesn't* say. The before/after scatter (`fig_slide2_scatter.png`,
+Madrid's cloud landing on Amsterdam's) is **backup**, not on this slide — it
+naturally comes up again near slide 3's results, or in Q&A.
 
 ## 1. What this slide says
 
@@ -46,7 +64,16 @@ labels, we add a small local model that votes alongside the Madrid one.
 | 0.36 → 0.65 | Amsterdam macro-F1 with **no labels**, before vs after the line-up |
 | ×2 | rounds of the group-by-group line-up (we tested 1–4; 2 was best) |
 
-## 4. What to actually say (~50 s)
+## 4. Bullets for the slide (left column, not expanded — the diagram carries the detail)
+
+```
+• One age group at a time — our main idea
+• A few labels: untangle the features, blend a small local model with Madrid
+• Few labels ≠ the full pipeline with less data — a different recipe
+• Only the labels we're given ever touch the model
+```
+
+## 5. What to actually say (~50 s)
 
 > "We don't touch the model architecture. We fix the calibration.
 >
@@ -64,7 +91,7 @@ labels, we add a small local model that votes alongside the Madrid one.
 > Throughout, the only Amsterdam labels that reach the model are the ones the
 > challenge hands us."
 
-## 5. If someone asks
+## 6. If someone asks
 
 - **"Isn't using the model's own guesses circular?"** A little, but the guesses
   only steer the reshaping, not the final answer, and two rounds is enough —
@@ -77,8 +104,11 @@ labels, we add a small local model that votes alongside the Madrid one.
 - **"How can untangling features hurt at low data?"** It estimates relationships
   between features from your examples. With 5 examples per class those estimates
   are garbage, so it adds noise. With 50+ they're solid and it pays off.
+- **"Does the alignment actually work — can we see it?"** Yes — pull up
+  `fig_slide2_scatter.png`: after the line-up, Madrid's cloud sits on top of
+  Amsterdam's.
 
-## 6. Words to avoid
+## 7. Words to avoid
 
 | don't say | say instead |
 |---|---|

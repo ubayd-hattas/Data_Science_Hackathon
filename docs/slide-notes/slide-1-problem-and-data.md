@@ -1,9 +1,28 @@
 # Slide 1 — A model that fails in a new city is mis-tuned, not broken
 
 **Speaker:** A · **Time:** 1:30 · **Figure:** `fig_slide1_scatter.png`
-**Subheading on the slide:** *Train in Madrid, deploy in Amsterdam — same model, 0.66 → 0.43*
+**Subheading:** Train in Madrid, deploy in Amsterdam — same model, 0.66 → 0.43
 
 ---
+
+## 0. Layout
+
+```
+┌─────────────────────────────────────────────┐
+│  TITLE (the claim)                          │
+│  subheading                                 │
+├──────────────────────┬──────────────────────┤
+│  • bullet             │                      │
+│  • bullet             │   fig_slide1_scatter │
+│  • bullet             │   .png               │
+│  • bullet             │                      │
+├──────────────────────┴──────────────────────┤
+│  Abstract — small, quiet, full width         │
+└─────────────────────────────────────────────┘
+```
+
+Bullets left, figure right, abstract in a small quiet strip along the bottom
+(required by the rubric on slide 1).
 
 ## 1. What this slide says
 
@@ -39,7 +58,16 @@ land in the wrong place. The rest of the talk is how we fix that.
 | 108 | features per patch |
 | 5–200 | labelled Amsterdam patches per class the challenge lets us use |
 
-## 4. What to actually say (~40 s)
+## 4. Bullets for the slide (left column, not expanded)
+
+```
+• 4 construction-era classes per 30 m satellite pixel · scored on macro-F1
+• Train on Madrid (labels); deploy on Amsterdam with 5–200 local labels per class
+• Same model, unchanged: 0.66 at home → 0.43 in Amsterdam
+• The gap is distribution shift — not a broken model
+```
+
+## 5. What to actually say (~40 s)
 
 > "The task: look at a satellite's view of a 30-metre patch of city and say
 > which of four age bands its buildings are in. We're scored on macro-F1, so all
@@ -53,7 +81,7 @@ land in the wrong place. The rest of the talk is how we fix that.
 > That's not a broken model. It's mis-tuned. And you can fix most of it with no
 > local labels — that's what the next slide is about."
 
-## 5. If someone asks
+## 6. If someone asks
 
 - **"Why not just retrain on Amsterdam?"** We barely have Amsterdam labels —
   that's the point of the challenge. The method has to work with 5 to 200 per
@@ -66,7 +94,7 @@ land in the wrong place. The rest of the talk is how we fix that.
   timing of the biggest year-to-year jump (that's the construction event), and
   the same stats averaged over the 8 nearest patches.
 
-## 6. Words to avoid
+## 7. Words to avoid
 
 | don't say | say instead |
 |---|---|
