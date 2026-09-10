@@ -273,22 +273,96 @@ md("""## 8. Notes for the write-up
 
 - **Zero-shot** raw → CORAL is the single-step domain-adaptation gain, no target
   labels used.
-- **Few-shot** rises steeply to ~50 labels/class, then flattens near the Madrid
-  in-city score — i.e. with ~100 labels/class the transferred model is about as
-  good on Amsterdam as a model is on its home city.
-- **Classes 1 and 2** carry most of the residual confusion: both pre-date the
-  1984 satellite record, so there is no construction event to separate them.
-  This is a data limit, consistent with the building-age literature, not a
-  pipeline defect.
-- **Spatial-adjacency caveat.** The organiser protocol draws support and query
-  by random per-class sampling. Under it, ~80% of support pixels have an
-  immediate map-neighbour in the query set (measured, see
-  `docs/AMSTERDAM_SPATIAL_ADJACENCY_AUDIT.md`). No rule is broken and query
-  labels are never touched, but part of each few-shot score reflects
-  same-building/same-block proximity rather than pure cross-location
-  generalisation. The spatial smoothing here is prediction-only (no support
-  labels enter the smoothed field) specifically so it does not compound this.
+- **Few-shot** climbs roughly +0.02 macro-F1 per doubling of the label budget —
+  no plateau through 200/class — and crosses the Madrid in-city score at
+  around 50 labels/class.
+- **Per-class performance (corrected from an earlier draft of this notebook).**
+  The *raw* baseline collapses classes 1 and 2 (both pre-1984, no construction
+  event to see) — matching the building-age literature. The *final aligned
+  pipeline*, shown in the confusion matrix above, separates them: class 1 is
+  the strongest class (~0.78), classes 2-4 cluster near 0.70. There is no
+  single unsolvable pair.
+- **Spatial-adjacency caveat, quantified in §10 below.** The organiser protocol
+  draws support and query by random per-class sampling. Under it, ~80% of
+  support pixels have an immediate map-neighbour in the query set (measured
+  twice independently, see `docs/AMSTERDAM_SPATIAL_ADJACENCY_AUDIT.md`). No
+  rule is broken and query labels are never touched, but §10 shows that
+  roughly **half of the few-shot gain above is that proximity**, not the
+  labels themselves — the zero-shot result just above is unaffected, since it
+  uses no labels at all. The spatial smoothing here is prediction-only (no
+  support labels enter the smoothed field) specifically so it does not
+  compound this.
 - Reproduce: `QUICK = False`, run top to bottom. All randomness is seeded.
+""")
+
+md("""## 9. What we tried and rejected
+
+Five ideas that lost to the simpler pipeline above, each for a specific
+reason. Full code for each lives in `scripts/run_*.py`; scores are saved in
+`results/*.json` / `results/*.npz` (not re-run here — each was its own
+multi-minute sweep, so this table reports the saved result rather than
+recomputing it live).
+
+| tried | result | why | script / result file |
+|---|---|---|---|
+| Neural-net embedding | no gain | features already linearly separable — nothing to learn | `src/embedding.py` |
+| Ordinal training (classes are ordered) | no gain in macro-F1 | shrinks error *size*, not *count*; the metric only counts right vs wrong | `scripts/run_ordinal.py`, `results/ordinal_scores.npz` |
+| Self-training on unlabelled Amsterdam | worse | ~35% pseudo-label error at low *n* compounds each round | `scripts/run_selftrain.py`, `results/selftrain_scores.npz` |
+| Gradient boosting (HistGB / LightGBM) instead of Random Forest | ties in-city, **0.113** at 5 labels/class | collapses at the smallest budget | `scripts/run_boosting.py`, `results/boosting_scores.npz` |
+| Label-shift (EM) correction for the class-mix difference | zero-shot CORAL 0.542 → 0.442 | needs calibrated probabilities; the domain gap breaks that | `src/ordinal.py`, `scripts/run_ordinal.py`, `results/ordinal_scores.npz` |
+| Richer multi-scale neighbourhood features | +0.001 | the 8-neighbour mean already captures the useful signal | `scripts/run_more_feats.py`, `results/more_feats_scores.json` |
+| Anchoring the spatial smoothing to true support labels | +0.006 | that gain is the same same-block-proximity effect audited in §10, not model skill — dropped after the audit below | `src/adapt.py :: spatial_smoother(..., anchor=True)` |
+
+**Pattern:** every attempt to out-*model* the data lost to a better *use* of it.
+""")
+
+md("""## 10. What we audited — how much of the few-shot gain is real
+
+The few-shot support set is drawn at random by the organiser's protocol, and
+~80% of support pixels turn out to sit next to a query pixel (§8). Landsat
+pixels close together look alike, so this could be flattering the few-shot
+curve above. To measure it, `scripts/run_spatial_block.py` re-runs this exact
+pipeline (same tuned config, same class-conditional CORAL prior, same
+whitening/blend/smoothing) but draws the support set **only from map tiles a
+full tile away from whatever is being scored** — so no support pixel is
+adjacent to any query pixel. That run takes ~15-20 minutes on its own (the
+class-conditional CORAL prior alone is ~5-10 min), so it is not re-executed
+inside this notebook — the cell below loads its saved output
+(`results/spatial_block_eval_gap2.json`) and plots it against the curve
+computed live above.
+""")
+
+code(r"""import json as _json
+
+_budgets = [50, 100, 200]
+_zs = f1_zero_cc                                    # the live zero-shot score from cell 7 above
+_std_gain = {n: curves[n].mean() - _zs for n in _budgets}   # live few-shot curve from cell 9
+
+_g2 = _json.loads(Path("../results/spatial_block_eval_gap2.json").read_text())["per_budget"]
+_far_gain = {n: _g2[str(n)]["vs_zero_shot"] for n in _budgets}
+
+fig, ax = plt.subplots(figsize=(7, 4.5))
+x = np.arange(len(_budgets)); w = 0.36
+ax.bar(x - w/2, [_std_gain[n] for n in _budgets], w, color="#1F5C7A", label="normal test (this run)")
+ax.bar(x + w/2, [_far_gain[n] for n in _budgets], w, color="#A85D28",
+       label="labels held a map-tile away (scripts/run_spatial_block.py)")
+ax.axhline(0, color="grey", lw=1)
+ax.set_xticks(x); ax.set_xticklabels([f"{n}/class" for n in _budgets])
+ax.set_ylabel("macro-F1 the labels add\n(over the zero-label score)")
+ax.set_title("How much of the few-shot gain survives when labels aren't nearby?")
+ax.legend(frameon=False, fontsize=9)
+fig.tight_layout(); plt.show()
+
+print("normal test   :", {n: round(v, 4) for n, v in _std_gain.items()})
+print("held away     :", {n: round(v, 4) for n, v in _far_gain.items()})
+""")
+
+md("""**Reading it:** the blue bars are this run's own few-shot gain over its own
+zero-shot score. The orange bars are what that gain shrinks to once the labels
+can no longer be near what's being scored — roughly half, at every budget.
+The zero-shot result in §3 uses no labels at all, so it carries none of this
+caveat; treat it as the transferable number, and the few-shot curve as an
+upper bound.
 """)
 
 nb = {
