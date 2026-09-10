@@ -17,8 +17,28 @@ if [ "${1:-}" = "--fresh" ]; then
 fi
 
 echo "== data =="
+mkdir -p data
+find_and_link () {
+  local name="$1"
+  # already a working link/file? nothing to do
+  if [ -s "data/$name" ]; then return 0; fi
+  # broken symlink from an earlier run -> clear it before searching
+  [ -L "data/$name" ] && rm -f "data/$name"
+  local found
+  found="$(find "$HOME" -name "$name" -not -path "*/data/$name" -print -quit 2>/dev/null)"
+  if [ -n "$found" ]; then
+    ln -sf "$found" "data/$name"
+    echo "  found $name -> $found"
+  fi
+}
+find_and_link madrid_train.parquet
+find_and_link amsterdam_data.parquet
+
 ls -laL data/madrid_train.parquet data/amsterdam_data.parquet || {
-  echo "!! parquet files missing from data/ -- fix the symlinks first"; exit 1;
+  echo "!! parquet files not found anywhere under \$HOME -- point data/*.parquet"
+  echo "   at the challenge data by hand, e.g.:"
+  echo "   ln -s /path/to/madrid_train.parquet data/madrid_train.parquet"
+  exit 1
 }
 
 echo
