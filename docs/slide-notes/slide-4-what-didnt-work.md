@@ -39,7 +39,18 @@ or in the HTML/research deck where it was originally made.
 No subheading, no emoji, no separate closing line — the title **is** the
 thesis. Don't restate it again at the bottom; one clear statement, once.
 
-## 1. What this slide says
+## 1. What this earns on the rubric
+
+- **This slide's entire job is the "Insightful Failure" line item** — worth
+  points under Originality & Creativity: *"if their bold approach yielded lower
+  metric scores, did they extract clear, valuable scientific insight from why?"*
+  A one-word "it didn't work" earns nothing; the *reason* per method is what's
+  graded. Never drop the reason to save time — cut a whole row instead.
+- Also supports the **Model Design pillar** of the written justification
+  ("rationale behind model choice") by showing what was tried and rejected,
+  which is evidence the final choice wasn't arbitrary.
+
+## 2. What this slide says
 
 Things we tried that did **not** beat the simple pipeline: a neural network,
 ordinal training, self-training, gradient boosting, and correcting for the age
@@ -47,7 +58,7 @@ mix between cities. Each failed for a specific, understandable reason. The
 pattern: every attempt to out-think the data lost to a simpler fix that just
 used the data more carefully.
 
-## 2. In plain words — one line per dead end
+## 3. In plain words — one line per dead end
 
 - **Neural network.** The challenge notes suggested one. But our features are
   already easy to tell apart, so there was nothing for a network to learn — it
@@ -69,13 +80,35 @@ used the data more carefully.
   neighbourhood features (+0.001), and synthetic "mixup" support examples
   (slightly worse — random forests don't gain from blended points).
 
-## 3. Why we show failures
+## 4. Bullets for the slide, exactly as they go
+
+```
+✗ Neural network — features already separable, nothing to learn
+✗ Ordinal training — smaller mistakes, not fewer; score counts right vs wrong
+✗ Self-training — learns its own early mistakes, then compounds them
+✗ Gradient boosting — ties us with many labels, collapses at 5
+✗ Correcting the age mix — needs confident probabilities the city gap breaks
+```
+
+## 5. Timing breakdown (1:15 total)
+
+| segment | time | content |
+|---|---|---|
+| framing | 0:10 | "we show what didn't work on purpose" |
+| 5 rows | 0:50 | ~10s each: name it, one-sentence reason |
+| closing line | 0:15 | "every one of these was reasonable; each lost to a simpler fix" |
+
+Ten seconds per row is tight — that's why each reason is one sentence, not two.
+If you're behind, drop to three rows (neural net, self-training, boosting) and
+mention the other two only if asked.
+
+## 6. Why we show failures
 
 The challenge rubric **explicitly rewards** explaining why a reasonable idea
 didn't work. A team that shows its dead ends and the reason for each reads as
 more competent than one that only shows wins.
 
-## 4. What to actually say (~35 s)
+## 7. What to actually say (~35 s)
 
 > "We show what didn't work on purpose — it's the same story as what did.
 >
@@ -89,7 +122,21 @@ more competent than one that only shows wins.
 > Every one of these was a reasonable idea. Each lost to a simpler accounting
 > fix. That's the pattern of the whole project."
 
-## 5. If someone asks
+## 8. Handoff to (D continues, into slide 5)
+
+> "And we didn't just check other people's methods — we checked our own result
+> too. Here's what we found."
+
+Since D typically holds both slides 4 and 5, this is a self-handoff — say it
+as a beat, not a full stop, so the two slides read as one continuous audit.
+
+## 9. If you're running short — cut to this
+
+Three rows only: *"A neural network lost because the data was already separable.
+Self-training taught itself its own mistakes. Gradient boosting collapsed at
+five labels. The pattern: clever lost to careful, every time."* ~15 seconds.
+
+## 10. If someone asks
 
 - **"Did you tune the neural net properly?"** Yes — several sizes and settings.
   The ceiling was the data, not the model.
@@ -102,7 +149,16 @@ more competent than one that only shows wins.
   Possibly with calibration, but the city gap itself distorts calibration — it's
   the same underlying problem we're already solving with the line-up.
 
-## 6. Words to avoid
+## 11. Common mistakes presenting this slide
+
+- **Saying "it didn't work" without the reason.** The reason is the entire
+  point — that's what's graded, not the fact of failure.
+- **Sounding apologetic.** These are honest negative results presented on
+  purpose; deliver them with the same confidence as slide 2's wins.
+- **Reading five rows flatly.** Vary pace — the boosting one ("collapses at
+  five") lands better with a small pause before "five."
+
+## 12. Words to avoid
 
 | don't say | say instead |
 |---|---|

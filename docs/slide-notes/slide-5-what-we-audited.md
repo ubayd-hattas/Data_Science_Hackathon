@@ -29,14 +29,30 @@ a fourth numbered point — mixing it in with the audit made an earlier draft of
 this slide read as two unrelated topics and confused even us. Keep it separate
 and small.
 
-## 1. What this slide says
+## 1. What this earns on the rubric
+
+- **This slide is your leakage-disclosure and low-data-mechanics insurance.**
+  The rubric's harshest deduction — up to 20 points or disqualification — is
+  for "method is not scientifically sound, such as having data leakage." You
+  did not leak anything, but the ~80% adjacency finding is exactly the kind of
+  thing a sharp judge would probe for. Disclosing it *and quantifying it
+  yourself* converts a potential deduction into a "good understanding of
+  limitations" point under Challenge Understanding.
+- **Also earns "Insightful Failure"** under Originality — auditing your own
+  headline number and reporting what you found, even though it complicates the
+  story, is exactly what that line item wants.
+- This is arguably your **highest-leverage slide for risk management** in the
+  whole deck. Don't rush it, and don't let it get cut if you're behind — cut
+  slide 4's fifth row or slide 6's "next steps" line instead.
+
+## 2. What this slide says
 
 We checked how the few labelled patches are chosen and found that **~80% of them
 sit right next to a patch we're scored on**. So we re-ran the whole pipeline with
 the labels forced to be **far away** — a full map-tile from anything we score.
 **About half the few-shot gain disappeared.** The no-label result is untouched.
 
-## 2. In plain words
+## 3. In plain words
 
 - The challenge picks the few labelled patches **at random**. Patches next to
   each other on the map look almost identical — often the same building or block.
@@ -62,7 +78,7 @@ the labels forced to be **far away** — a full map-tile from anything we score.
   them fine — **class 1 is actually our best class (~0.78)**, and classes 2, 3, 4
   sit together near 0.70.
 
-## 3. The picture (`fig_slide5_bars.png`)
+## 4. The picture (`fig_slide5_bars.png`)
 
 - Three pairs of bars — one pair for each label budget (50, 100, 200 per class).
 - **Tall blue bar** — how much the labels add on the organiser's normal test
@@ -73,7 +89,7 @@ the labels forced to be **far away** — a full map-tile from anything we score.
 - Per-tile scoring is noisy, so read the *pattern* (blue big, orange near zero at
   every budget), not the exact orange values.
 
-## 4. The three points, exactly as they go on the slide
+## 5. The three points, exactly as they go on the slide
 
 ```
 01 · The few labelled patches are picked at random —
@@ -88,7 +104,16 @@ footer (small): we also corrected an earlier claim — class 1 is our
 strongest class, not our weakest; no single unsolvable pair
 ```
 
-## 5. What to actually say (~40 s)
+## 6. Timing breakdown (1:30 total)
+
+| segment | time | content |
+|---|---|---|
+| 01, the setup | 0:25 | random sampling, 80% adjacency |
+| 02, what we did | 0:25 | held-away re-run, point at the short bars |
+| 03, the finding | 0:25 | half vanished; zero-shot untouched |
+| footer, spoken | 0:15 | class 1&2 correction |
+
+## 7. What to actually say (~40 s)
 
 > "We stress-tested our own result. The few labelled patches are picked at
 > random, and it turns out about 80% of them sit right next to a patch we're
@@ -109,7 +134,21 @@ strongest class, not our weakest; no single unsolvable pair
 > the two oldest classes can't be told apart. That turned out to be true of the
 > rough starter model, not ours — class 1 is actually our strongest."
 
-## 6. If someone asks
+## 8. Handoff to Speaker A / all (into slide 6)
+
+> "So — what does all of that add up to?"
+
+Short and plain; slide 6 answers the question all four of you asked together.
+
+## 9. If you're running short — cut to this
+
+Skip the "how the sampling works" framing and go straight to the finding:
+*"We checked how much of our few-shot gain was real by re-running it with the
+labels held away from what we score. Half the gain vanished — it was proximity.
+Zero-shot has no labels, so it's untouched."* Keep the footer line regardless —
+it's cheap (one sentence) and it's a correction you should own out loud.
+
+## 10. If someone asks
 
 - **"So are your numbers wrong?"** No — they're the right numbers for the
   organiser's test. We're being upfront that part of the few-shot lift is
@@ -124,7 +163,17 @@ strongest class, not our weakest; no single unsolvable pair
   separate the two oldest bands. Our final pipeline, with the construction-timing
   features and the line-up, does. Class 1 is now our strongest.
 
-## 7. Words to avoid
+## 11. Common mistakes presenting this slide
+
+- **Sounding like you're confessing a flaw.** You're not — you're demonstrating
+  rigor. Deliver this with the same confidence as slide 3, not an apologetic tone.
+- **Letting it get cut for time.** Given the deduction this slide protects
+  against, it should be one of the last things trimmed, not one of the first.
+- **Skipping straight to "half the gain vanished" without the setup.** Without
+  01 (why the chart exists), 03 sounds like a contradiction of slide 3 instead
+  of a natural extension of it.
+
+## 12. Words to avoid
 
 | don't say | say instead |
 |---|---|

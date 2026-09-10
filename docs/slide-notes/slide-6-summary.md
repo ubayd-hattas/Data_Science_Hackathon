@@ -33,13 +33,27 @@ line 1** (what's original — the rubric scores this explicitly), **small line
 **Check your team name is consistent** with slide 1 — don't let one slide say
 "F1DEVS UNLIMITED" and another say a different team name.
 
-## 1. What this slide says
+## 1. What this earns on the rubric
+
+- **Team roles line = Cohesion.** "Is it evident all team members contributed
+  meaningfully... did they all speak?" is graded directly off this line plus
+  who actually said something during the talk. If a name is on the slide but
+  that person never spoke, it's worse than not listing roles at all.
+- **"New here" line = restates Originality** one more time at the point judges
+  are forming their overall impression — the last thing said is disproportionately
+  memorable, so this is a second, cheap shot at the Originality criterion.
+- **The close overall = Presentation & Collaboration.** A crisp three-point
+  recap that doesn't introduce new numbers reads as "communicated complex
+  concepts clearly within the time limit" — rambling or adding a new claim here
+  undercuts that.
+
+## 2. What this slide says
 
 The takeaways. A model in a new city isn't incapable — it's mis-tuned. The
 reusable win is the **label-free line-up** (0.36 → 0.65). Careful use of the
 data beat every fancier model. It's a recap: **introduce no new numbers here.**
 
-## 2. In plain words
+## 3. In plain words
 
 - **The headline.** A working model that fails in a new city usually just needs
   its number-ranges adjusted — and you can do that with **no local labels**.
@@ -55,12 +69,12 @@ data beat every fancier model. It's a recap: **introduce no new numbers here.**
 - **Team roles** are on the slide so it's clear who did what — the rubric checks
   this and checks that every member speaks.
 
-## 3. The numbers on this slide
+## 4. The numbers on this slide
 
 None new. It's a recap — do **not** introduce a number here that wasn't on an
 earlier slide.
 
-## 4. Bullets + footer lines, exactly as they go on the slide
+## 5. Bullets + footer lines, exactly as they go on the slide
 
 ```
 • A new-city model is mis-tuned, not incapable
@@ -73,7 +87,20 @@ New here: per-group alignment · few vs many labels need different machinery
 A — features · B — the line-up · C — evaluation · D — analysis
 ```
 
-## 5. What to actually say (~35 s, split across the team)
+## 6. Timing breakdown (0:40 total, split across the team)
+
+| segment | time | who |
+|---|---|---|
+| bullet 1 | 0:10 | A or whoever opens |
+| bullet 2 | 0:10 | B |
+| bullet 3 | 0:10 | C or D |
+| roles + "questions?" | 0:10 | whoever closes |
+
+Forty seconds is short by design — this is a landing, not a re-pitch. If every
+speaker says one bullet, it also visibly demonstrates "all team members spoke"
+right at the end, which is graded.
+
+## 7. What to actually say (~35 s, split across the team)
 
 > "Three things to take away.
 >
@@ -90,7 +117,22 @@ A — features · B — the line-up · C — evaluation · D — analysis
 >
 > Roles are on the slide. Happy to take questions."
 
-## 6. If someone asks
+## 8. Handoff — into Q&A
+
+> "Roles are on the slide. Happy to take questions."
+
+Whoever says this should already know who's answering what kind of question —
+agree beforehand roughly who takes method questions vs numbers questions vs
+"what would you do next" questions, so nobody stalls looking at each other.
+
+## 9. If you're running short — cut to this
+
+One sentence, one speaker: *"A model that fails in a new city is mis-tuned, not
+broken — the fix needs no local labels, and careful data use beat every
+fancier model we tried. Questions?"* Keep the roles line even here — it's the
+cheapest point on the whole rubric and costs five seconds.
+
+## 10. If someone asks
 
 - **"What's the single most reusable result?"** The no-label line-up: 0.36 → 0.65
   with zero Amsterdam labels. It has no caveats.
@@ -99,7 +141,16 @@ A — features · B — the line-up · C — evaluation · D — analysis
 - **"If you had one more week?"** Spatial-block-disjoint evaluation as the
   default, and a third city.
 
-## 7. Words to avoid
+## 11. Common mistakes presenting this slide
+
+- **Introducing a new claim or number here.** It reads as disorganised rather
+  than thorough this late in the talk. Everything on this slide should already
+  be familiar from an earlier slide.
+- **One person delivering the whole slide.** Split it — even one bullet each —
+  so "all team members spoke" is unambiguous to the judges.
+- **Forgetting to check the team name matches slide 1.**
+
+## 12. Words to avoid
 
 | don't say | say instead |
 |---|---|

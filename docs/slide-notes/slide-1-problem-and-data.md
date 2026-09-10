@@ -24,7 +24,18 @@
 Bullets left, figure right, abstract in a small quiet strip along the bottom
 (required by the rubric on slide 1).
 
-## 1. What this slide says
+## 1. What this earns on the rubric
+
+- **Presentation & Collaboration — Abstract & Pitch.** This is the only slide
+  the abstract lives on; a concise, accurate one that matches what the deck
+  actually argues is graded directly.
+- **Challenge Understanding.** Stating the domain-shift problem plainly, up
+  front, shows you understood *what kind* of problem this is before showing
+  any fix. Judges are told to check "did the team understand the domain shift."
+- Nothing here is deduction-risk — just don't let the abstract disagree with
+  the slides (e.g. don't quote a different F1 number in the abstract).
+
+## 2. What this slide says
 
 We predict how old buildings are from satellite data. We train the model in
 Madrid and want it to work in Amsterdam. The **exact same model** scores 0.66 in
@@ -32,7 +43,7 @@ Madrid but only 0.43 in Amsterdam. That drop isn't because the model is bad —
 the two cities *look* different to the satellite, so the model's number-ranges
 land in the wrong place. The rest of the talk is how we fix that.
 
-## 2. In plain words
+## 3. In plain words
 
 - The satellite doesn't take photos. It measures **how much light of six
   colours bounces off each 30-metre patch of ground**, once a year, for about
@@ -48,7 +59,7 @@ land in the wrong place. The rest of the talk is how we fix that.
   **different regions** — same measurement, different city, different readings.
   The "X" marks the centre of each city. That offset is the whole problem.
 
-## 3. The numbers on this slide
+## 4. The numbers on this slide
 
 | number | meaning |
 |---|---|
@@ -58,7 +69,7 @@ land in the wrong place. The rest of the talk is how we fix that.
 | 108 | features per patch |
 | 5–200 | labelled Amsterdam patches per class the challenge lets us use |
 
-## 4. Bullets for the slide (left column, not expanded)
+## 5. Bullets for the slide (left column, not expanded)
 
 ```
 • 4 construction-era classes per 30 m satellite pixel · scored on macro-F1
@@ -67,7 +78,19 @@ land in the wrong place. The rest of the talk is how we fix that.
 • The gap is distribution shift — not a broken model
 ```
 
-## 5. What to actually say (~40 s)
+## 6. Timing breakdown (1:30 total)
+
+| segment | time | content |
+|---|---|---|
+| open | 0:15 | one-line hook — "a model that fails in a new city is mis-tuned, not broken" |
+| the task | 0:30 | satellite, 4 classes, macro-F1 |
+| the problem | 0:30 | point at the plot; 0.66 → 0.43 |
+| bridge | 0:15 | "that's what the rest of the talk fixes" |
+
+If you're behind, the abstract does not need reading aloud — it's there for the
+rubric and for anyone reading later, not for the spoken pitch.
+
+## 7. What to actually say (~40 s)
 
 > "The task: look at a satellite's view of a 30-metre patch of city and say
 > which of four age bands its buildings are in. We're scored on macro-F1, so all
@@ -81,7 +104,20 @@ land in the wrong place. The rest of the talk is how we fix that.
 > That's not a broken model. It's mis-tuned. And you can fix most of it with no
 > local labels — that's what the next slide is about."
 
-## 6. If someone asks
+## 8. Handoff to Speaker B
+
+> "...that's what the rest of the talk fixes. [Name of B] will show you how."
+
+Keep it to one sentence — don't summarise slide 2 for B, just point at it.
+
+## 9. If you're running short — cut to this
+
+Skip the macro-F1 explanation (judges already know it) and go straight from the
+task to the plot: *"Same model, Madrid to Amsterdam: 0.66 to 0.43. Why? [point
+at plot] — the two cities look different to the satellite. That's what we fix
+next."* ~15 seconds.
+
+## 10. If someone asks
 
 - **"Why not just retrain on Amsterdam?"** We barely have Amsterdam labels —
   that's the point of the challenge. The method has to work with 5 to 200 per
@@ -94,7 +130,16 @@ land in the wrong place. The rest of the talk is how we fix that.
   timing of the biggest year-to-year jump (that's the construction event), and
   the same stats averaged over the 8 nearest patches.
 
-## 7. Words to avoid
+## 11. Common mistakes presenting this slide
+
+- **Reading the abstract aloud.** It's a rubric requirement to have it *on* the
+  slide, not to narrate it. Say the one-line version instead.
+- **Explaining macro-F1 for too long.** One sentence — judges know the metric.
+  Don't spend 20 seconds defining it.
+- **Under-selling the plot.** Point at it explicitly ("you can see the two
+  clouds sit apart") rather than talking over it without reference.
+
+## 12. Words to avoid
 
 | don't say | say instead |
 |---|---|
